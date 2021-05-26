@@ -16,4 +16,7 @@ const val materialVersion = "1.3.0"
 const val kotsonVersion = "2.5.0"
 const val gsonVersion = "2.8.6"
 
+const val okhttpVersion = "4.9.1"
 const val retrofitVersion = "2.9.0"
+
+const val hiltVersion = "2.35.1"

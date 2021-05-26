@@ -1,11 +1,14 @@
+import com.android.build.gradle.internal.cxx.configure.*
 import org.gradle.api.JavaVersion.*
 
 plugins {
 	`android-application`
 	`kotlin-android`
 	`kotlin-android-extensions`
+	kapt
 	
 	id("androidx.navigation.safeargs.kotlin")
+	id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -23,6 +26,13 @@ android {
 	}
 	
 	buildTypes {
+		/*all {
+			val localProperties = gradleLocalProperties(rootDir)
+			buildConfigField("String", "correiosUsername", localProperties.getProperty("correios.username"))
+			buildConfigField("String", "correiosPassword", localProperties.getProperty("correios.password"))
+			buildConfigField("String", "correiosToken", localProperties.getProperty("correios.token"))
+		}*/
+		
 		getByName("release") {
 			isMinifyEnabled = false
 			proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
@@ -66,6 +76,10 @@ dependencies {
 	implementation("com.github.salomonbrys.kotson", "kotson", kotsonVersion)
 	implementation("com.google.code.gson", "gson", gsonVersion)
 	
+	implementation("com.squareup.okhttp3", "logging-interceptor", okhttpVersion)
 	implementation("com.squareup.retrofit2", "converter-gson", retrofitVersion)
 	implementation("com.squareup.retrofit2", "retrofit", retrofitVersion)
+	
+	implementation("com.google.dagger:hilt-android:$hiltVersion")
+	kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
 }

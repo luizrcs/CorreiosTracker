@@ -5,14 +5,14 @@ import android.view.*
 import androidx.fragment.app.*
 import androidx.lifecycle.*
 import br.com.luizrcs.correiostracker.*
+import br.com.luizrcs.correiostracker.R
 import br.com.luizrcs.correiostracker.viewmodel.*
+import dagger.hilt.android.*
 
+@AndroidEntryPoint
 class InTransitFragment: Fragment() {
 	
-	val viewModel by viewModels<InTransitViewModel>(
-		{ this },
-		{ SavedStateViewModelFactory(activity?.application, this) }
-	)
+	val viewModel by viewModels<InTransitViewModel>()
 	
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
 		inflater.inflate(R.layout.fragment_in_transit, container, false)
