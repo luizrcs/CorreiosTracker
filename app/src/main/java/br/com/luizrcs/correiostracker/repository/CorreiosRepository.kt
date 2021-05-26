@@ -6,6 +6,8 @@ import javax.inject.*
 
 class CorreiosRepository @Inject constructor(private val webService: CorreiosWebService) {
 	
+	private val xmlMediaType = "application/xml".toMediaType()
+	
 	suspend fun getParcels(trackingCodes: List<String>) =
-		webService.track(buildXml(trackingCodes).toRequestBody("application/xml".toMediaType()))
+		webService.track(buildXml(trackingCodes).toRequestBody(xmlMediaType))
 }
