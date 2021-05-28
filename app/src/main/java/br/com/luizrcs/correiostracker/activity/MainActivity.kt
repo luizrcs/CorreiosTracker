@@ -1,22 +1,27 @@
 package br.com.luizrcs.correiostracker.activity
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import android.os.*
+import androidx.appcompat.app.*
 import androidx.navigation.fragment.*
 import androidx.navigation.ui.*
 import br.com.luizrcs.correiostracker.R
+import br.com.luizrcs.correiostracker.databinding.*
 import dagger.hilt.android.*
-import kotlinx.android.synthetic.main.activity_main.*
 
 @AndroidEntryPoint
 class MainActivity: AppCompatActivity() {
 	
+	private lateinit var _binding: ActivityMainBinding
+	private val binding by ::_binding
+	
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		
-		setContentView(R.layout.activity_main)
+		_binding = ActivityMainBinding.inflate(layoutInflater)
 		
-		val navHostController = fragmentContainer.findNavController()
-		bottomNavigation.setupWithNavController(navHostController)
+		setContentView(binding.root)
+		
+		val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
+		binding.bottomNavigation.setupWithNavController(navHostFragment.navController)
 	}
 }

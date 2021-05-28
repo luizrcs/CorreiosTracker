@@ -4,7 +4,6 @@ import org.gradle.api.JavaVersion.*
 plugins {
 	`android-application`
 	`kotlin-android`
-	`kotlin-android-extensions`
 	kapt
 	
 	id("androidx.navigation.safeargs.kotlin")
@@ -23,6 +22,10 @@ android {
 		
 		versionCode = 1
 		versionName = "1.0.0"
+	}
+	
+	buildFeatures {
+		viewBinding = true
 	}
 	
 	buildTypes {
@@ -57,6 +60,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 	
 	implementation("androidx.appcompat:appcompat:$appCompatVersion")
+	implementation("androidx.cardview:cardview:$cardViewVersion")
 	implementation("androidx.collection:collection-ktx:$collectionKtxVersion")
 	implementation("androidx.constraintlayout:constraintlayout:$constraintLayoutVersion")
 	implementation("androidx.core:core-ktx:$coreKtxVersion")
@@ -68,6 +72,7 @@ dependencies {
 	implementation("androidx.navigation:navigation-fragment-ktx:$navigationKtxVersion")
 	implementation("androidx.navigation:navigation-ui-ktx:$navigationKtxVersion")
 	implementation("androidx.palette:palette-ktx:$paletteKtxVersion")
+	implementation("androidx.recyclerview:recyclerview:$recyclerViewVersion")
 	implementation("androidx.room:room-ktx:$roomKtxVersion")
 	implementation("androidx.work:work-runtime-ktx:$workRuntimeKtx")
 	

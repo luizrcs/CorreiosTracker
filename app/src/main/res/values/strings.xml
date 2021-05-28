@@ -1,6 +1,11 @@
 <resources>
+
     <string name="app_name">Correios Tracker</string>
+
     <string name="bottom_navigation_in_transit">Em trânsito</string>
     <string name="bottom_navigation_finished">Finalizadas</string>
     <string name="bottom_navigation_tools">Ferramentas</string>
+
+    <string name="fab_add">Adicionar</string>
+
 </resources>
