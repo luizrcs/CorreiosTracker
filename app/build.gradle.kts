@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.cxx.configure.*
 import org.gradle.api.JavaVersion.*
 
 plugins {
@@ -57,34 +56,34 @@ repositories {
 }
 
 dependencies {
-	implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+	kotlin("stdlib-jdk8", Versions.kotlin)
 	
-	implementation("androidx.appcompat:appcompat:$appCompatVersion")
-	implementation("androidx.cardview:cardview:$cardViewVersion")
-	implementation("androidx.collection:collection-ktx:$collectionKtxVersion")
-	implementation("androidx.constraintlayout:constraintlayout:$constraintLayoutVersion")
-	implementation("androidx.core:core-ktx:$coreKtxVersion")
-	implementation("androidx.fragment:fragment-ktx:$fragmentKtxVersion")
-	implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleKtxVersion")
-	implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleKtxVersion")
-	implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleKtxVersion")
-	implementation("androidx.navigation:navigation-runtime-ktx:$navigationKtxVersion")
-	implementation("androidx.navigation:navigation-fragment-ktx:$navigationKtxVersion")
-	implementation("androidx.navigation:navigation-ui-ktx:$navigationKtxVersion")
-	implementation("androidx.palette:palette-ktx:$paletteKtxVersion")
-	implementation("androidx.recyclerview:recyclerview:$recyclerViewVersion")
-	implementation("androidx.room:room-ktx:$roomKtxVersion")
-	implementation("androidx.work:work-runtime-ktx:$workRuntimeKtx")
+	androidx("appcompat", Versions.appCompat)
+	androidx("cardview", Versions.cardView)
+	androidxKtx("collection", Versions.collectionKtx)
+	androidx("constraintlayout", Versions.constraintLayout)
+	androidxKtx("core", Versions.coreKtx)
+	androidxKtx("fragment", Versions.fragmentKtx)
+	androidxKtx("lifecycle", "livedata", Versions.lifecycleKtx)
+	androidxKtx("lifecycle", "runtime", Versions.lifecycleKtx)
+	androidxKtx("lifecycle", "viewmodel", Versions.lifecycleKtx)
+	androidxKtx("navigation", "fragment", Versions.navigationKtx)
+	androidxKtx("navigation", "runtime", Versions.navigationKtx)
+	androidxKtx("navigation", "ui", Versions.navigationKtx)
+	androidxKtx("palette", Versions.paletteKtx)
+	androidx("recyclerview", Versions.recyclerView)
+	androidxKtx("room", Versions.roomKtx)
+	androidxKtx("work", "runtime", Versions.workRuntimeKtx)
 	
-	implementation("com.google.android.material:material:$materialVersion")
+	implementation("com.google.android.material", "material", Versions.material)
 	
-	implementation("com.github.salomonbrys.kotson", "kotson", kotsonVersion)
-	implementation("com.google.code.gson", "gson", gsonVersion)
+	implementation("com.github.salomonbrys.kotson", "kotson", Versions.kotson)
+	implementation("com.google.code.gson", "gson", Versions.gson)
 	
-	implementation("com.squareup.okhttp3", "logging-interceptor", okhttpVersion)
-	implementation("com.squareup.retrofit2", "converter-gson", retrofitVersion)
-	implementation("com.squareup.retrofit2", "retrofit", retrofitVersion)
+	okHttp("logging-interceptor", Versions.okHttp)
+	retrofit("converter-gson", Versions.retrofit)
+	retrofit(Versions.retrofit)
 	
-	implementation("com.google.dagger:hilt-android:$hiltVersion")
-	kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
+	implementation("com.google.dagger", "hilt-android", Versions.hilt)
+	kapt("com.google.dagger", "hilt-android-compiler", Versions.hilt)
 }
