@@ -2,7 +2,6 @@ package br.com.luizrcs.correiostracker.repository
 
 import okhttp3.*
 import retrofit2.http.*
-import retrofit2.http.Headers
 
 interface CorreiosWebService {
 	
@@ -19,4 +18,4 @@ fun buildXml(trackingCodes: List<String>) = """
 	</rastroObjeto>
 """.trimIndent()
 
-fun joinTrackingCodes(trackingCodes: List<String>) = buildString { trackingCodes.forEach(::append) }
+fun joinTrackingCodes(trackingCodes: List<String>) = buildString { trackingCodes.onEach(::append) }

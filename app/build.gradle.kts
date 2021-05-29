@@ -11,13 +11,13 @@ plugins {
 
 android {
 	buildToolsVersion = "30.0.3"
-	compileSdkVersion = "android-30"
+	compileSdk = 30
 	
 	defaultConfig {
 		applicationId = "br.com.luizrcs.correiostracker"
 		
-		minSdkVersion(21)
-		targetSdkVersion(30)
+		minSdk = 21
+		targetSdk = 30
 		
 		versionCode = 1
 		versionName = "1.0.0"

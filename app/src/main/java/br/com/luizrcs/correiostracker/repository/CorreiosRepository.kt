@@ -8,6 +8,10 @@ class CorreiosRepository @Inject constructor(private val webService: CorreiosWeb
 	
 	private val xmlMediaType = "application/xml".toMediaType()
 	
-	suspend fun getParcels(trackingCodes: List<String>) =
-		webService.track(buildXml(trackingCodes).toRequestBody(xmlMediaType))
+	private var _parcels = emptyList<Object>()
+	val parcels by ::_parcels
+	
+	suspend fun refreshParcels(trackingCodes: List<String>) {
+		_parcels = webService.track(buildXml(trackingCodes).toRequestBody(xmlMediaType)).objects
+	}
 }

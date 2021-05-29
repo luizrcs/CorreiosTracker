@@ -2,6 +2,7 @@
 <resources>
 
     <dimen name="border_radius">16dp</dimen>
+    <dimen name="border_radius_negative">-16dp</dimen>
     <dimen name="text_border_radius">4dp</dimen>
 
 </resources>

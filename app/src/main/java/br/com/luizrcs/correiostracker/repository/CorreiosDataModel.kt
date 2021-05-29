@@ -11,14 +11,14 @@ data class TrackingResponse(
 )
 
 data class Object(
-	@Json("numero") val trackingNumber: String,
+	@Json("numero") val trackingCode: String,
 	@Json("sigla") val serviceCode: String,
 	@Json("nome") val serviceName: String,
 	@Json("categoria") val serviceType: String,
 	@Json("evento") val events: List<Evento>
 ) {
 	
-	val countryCode get() = trackingNumber.takeLast(2)
+	val countryCode get() = trackingCode.takeLast(2)
 }
 
 data class Evento(

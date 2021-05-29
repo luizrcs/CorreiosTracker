@@ -3,7 +3,6 @@ package br.com.luizrcs.correiostracker.fragment
 import android.os.*
 import android.view.*
 import androidx.fragment.app.*
-import br.com.luizrcs.correiostracker.*
 import br.com.luizrcs.correiostracker.databinding.*
 import br.com.luizrcs.correiostracker.viewmodel.*
 
@@ -14,7 +13,7 @@ class FinishedFragment: Fragment() {
 	
 	val viewModel by viewModels<InTransitViewModel>()
 	
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 		_binding = FragmentFinishedBinding.inflate(inflater, container, false)
 		
 		return binding.root

@@ -1,6 +1,5 @@
 package br.com.luizrcs.correiostracker.viewmodel
 
-import android.util.*
 import androidx.lifecycle.*
 import br.com.luizrcs.correiostracker.repository.*
 import dagger.hilt.android.lifecycle.*
@@ -20,7 +19,16 @@ class InTransitViewModel @Inject constructor(
 	init {
 		viewModelScope.launch {
 			try {
-				_parcels.value = withContext(IO) { correiosRepository.getParcels(emptyList()).objects }
+				val trackingCodes = listOf(
+					"OF405104119BR",
+					"LE261562552SE",
+					"OF405104119BR",
+					"LE261562552SE",
+					"OF405104119BR",
+					"LE261562552SE"
+				)
+				withContext(IO) { correiosRepository.refreshParcels(trackingCodes) }
+				_parcels.value = correiosRepository.parcels
 			} catch (e: Exception) {
 			}
 		}
