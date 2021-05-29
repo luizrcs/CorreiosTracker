@@ -72,6 +72,6 @@
             android:layout_marginBottom="72dp"
 
             app:icon="@drawable/outline_add_24"
-            android:text="@string/fab_add"/>
+            android:text="@string/main_fab_add"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

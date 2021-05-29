@@ -6,6 +6,12 @@
     <string name="bottom_navigation_finished">Finalizadas</string>
     <string name="bottom_navigation_tools">Ferramentas</string>
 
-    <string name="fab_add">Adicionar</string>
+    <string name="main_fab_add">Adicionar</string>
+
+    <string name="add_parcel_dialog_title">Adicionar encomenda</string>
+    <string name="add_parcel_dialog_name">Nome</string>
+    <string name="add_parcel_dialog_tracking_code">Código de rastreamento</string>
+    <string name="add_parcel_dialog_add">Adicionar</string>
+    <string name="add_parcel_dialog_cancel">Cancelar</string>
 
 </resources>
