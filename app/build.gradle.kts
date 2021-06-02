@@ -72,10 +72,12 @@ dependencies {
 	androidxKtx("navigation", "ui", Versions.navigationKtx)
 	androidxKtx("palette", Versions.paletteKtx)
 	androidx("recyclerview", Versions.recyclerView)
-	androidxKtx("room", Versions.roomKtx)
+	androidx("swiperefreshlayout", Versions.swipeRefreshLayout)
 	androidxKtx("work", "runtime", Versions.workRuntimeKtx)
 	
 	implementation("com.google.android.material", "material", Versions.material)
+	
+	implementation("io.coil-kt", "coil", Versions.coil)
 	
 	implementation("com.github.salomonbrys.kotson", "kotson", Versions.kotson)
 	implementation("com.google.code.gson", "gson", Versions.gson)

@@ -11,10 +11,12 @@ object Versions {
 	const val navigationKtx = "2.3.5"
 	const val paletteKtx = "1.0.0"
 	const val recyclerView = "1.2.0"
-	const val roomKtx = "2.3.0"
+	const val swipeRefreshLayout = "1.1.0"
 	const val workRuntimeKtx = "2.5.0"
 	
 	const val material = "1.3.0"
+	
+	const val coil = "1.2.1"
 	
 	const val kotson = "2.5.0"
 	const val gson = "2.8.6"

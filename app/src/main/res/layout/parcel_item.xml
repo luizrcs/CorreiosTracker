@@ -10,7 +10,12 @@
         android:layout_marginVertical="10dp"
 
         app:cardCornerRadius="16dp"
-        app:cardElevation="4dp">
+        app:cardElevation="4dp"
+
+        android:clickable="true"
+        android:focusable="true"
+
+        android:foreground="?android:attr/selectableItemBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -29,7 +34,7 @@
                 app:layout_constraintStart_toStartOf="parent"
 
                 android:background="@drawable/circle"
-                android:backgroundTint="?attr/colorSecondary">
+                android:backgroundTint="@color/gray">
 
             <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/status_icon"
@@ -79,9 +84,7 @@
                 app:layout_constraintEnd_toStartOf="@id/date_time"
 
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textColor="?attr/colorSecondary"
                 android:textSize="16sp"
-                android:textStyle="bold"
 
                 android:ellipsize="marquee"
                 android:singleLine="true"/>
@@ -126,11 +129,10 @@
             <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/flag_icon"
 
-                    android:src="@drawable/br"
-                    android:visibility="gone"
-
                     android:layout_width="24dp"
-                    android:layout_height="24dp"/>
+                    android:layout_height="24dp"
+
+                    android:src="@drawable/br"/>
 
         </LinearLayout>
 

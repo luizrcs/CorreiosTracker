@@ -1,8 +1,11 @@
 package br.com.luizrcs.correiostracker.hilt
 
+import android.content.*
 import br.com.luizrcs.correiostracker.repository.*
+import com.google.gson.*
 import dagger.*
 import dagger.hilt.*
+import dagger.hilt.android.qualifiers.*
 import dagger.hilt.components.*
 import okhttp3.*
 import retrofit2.*
@@ -21,11 +24,15 @@ class CorreiosTrackerModule {
 	
 	@Provides
 	@Singleton
-	fun provideRetrofit(okHttpClient: OkHttpClient) =
+	fun provideGson() = GsonBuilder().create()
+	
+	@Provides
+	@Singleton
+	fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson) =
 		Retrofit.Builder()
 			.client(okHttpClient)
 			.baseUrl(baseUrl)
-			.addConverterFactory(GsonConverterFactory.create())
+			.addConverterFactory(GsonConverterFactory.create(gson))
 			.build()
 	
 	@Provides
@@ -34,7 +41,11 @@ class CorreiosTrackerModule {
 	
 	@Provides
 	@Singleton
-	fun provideCorreiosRepository(correiosWebService: CorreiosWebService) = CorreiosRepository(correiosWebService)
+	fun provideCorreiosRepository(
+		@ApplicationContext context: Context,
+		gson: Gson,
+		correiosWebService: CorreiosWebService
+	) = CorreiosRepository(context.filesDir, gson, correiosWebService)
 	
 	companion object {
 		

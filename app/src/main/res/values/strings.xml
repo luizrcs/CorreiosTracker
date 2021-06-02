@@ -6,12 +6,26 @@
     <string name="bottom_navigation_finished">Finalizadas</string>
     <string name="bottom_navigation_tools">Ferramentas</string>
 
-    <string name="main_fab_add">Adicionar</string>
+    <string name="in_transit_no_parcels">Ainda não há\nencomendas\nadicionadas!</string>
+    <string name="in_transit_add">Adicionar</string>
 
-    <string name="add_parcel_dialog_title">Adicionar encomenda</string>
-    <string name="add_parcel_dialog_name">Nome</string>
-    <string name="add_parcel_dialog_tracking_code">Código de rastreamento</string>
-    <string name="add_parcel_dialog_add">Adicionar</string>
-    <string name="add_parcel_dialog_cancel">Cancelar</string>
+    <string name="parcel_added">Encomenda adicionada!</string>
+    <string name="parcel_unknown">Situação desconhecida</string>
+
+    <string name="parcels_failure">Não foi possível atualizar as encomendas!</string>
+    <string name="parcels_failure_no_internet">Não há conexão com a internet neste momento!</string>
+    <string name="parcels_updated">Encomendas atualizadas!</string>
+
+    <string name="dialog_add_parcel_title">Adicionar encomenda</string>
+    <string name="dialog_add_parcel_tracking_code">Código de rastreamento</string>
+    <string name="dialog_add_parcel_empty_tracking_code">O código de rastreamento é obrigatório</string>
+    <string name="dialog_add_parcel_add">Adicionar</string>
+
+    <string name="dialog_edit_parcel_title">Editar encomenda</string>
+    <string name="dialog_edit_parcel_delete">Excluir</string>
+    <string name="dialog_edit_parcel_save">Salvar</string>
+
+    <string name="dialog_parcel_name">Nome</string>
+    <string name="dialog_parcel_cancel">Cancelar</string>
 
 </resources>

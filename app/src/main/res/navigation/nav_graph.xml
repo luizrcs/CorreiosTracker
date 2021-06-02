@@ -9,19 +9,19 @@
 
     <fragment
             android:id="@+id/fragment_in_transit"
-            android:name="br.com.luizrcs.correiostracker.fragment.InTransitFragment"
+            android:name="br.com.luizrcs.correiostracker.ui.fragment.InTransitFragment"
             android:label="fragment_in_transit"
             tools:layout="@layout/fragment_in_transit"/>
 
     <fragment
             android:id="@+id/fragment_finished"
-            android:name="br.com.luizrcs.correiostracker.fragment.FinishedFragment"
+            android:name="br.com.luizrcs.correiostracker.ui.fragment.FinishedFragment"
             android:label="fragment_finished"
             tools:layout="@layout/fragment_finished"/>
 
     <fragment
             android:id="@+id/fragment_tools"
-            android:name="br.com.luizrcs.correiostracker.fragment.ToolsFragment"
+            android:name="br.com.luizrcs.correiostracker.ui.fragment.ToolsFragment"
             android:label="fragment_tools"
             tools:layout="@layout/fragment_tools"/>
 

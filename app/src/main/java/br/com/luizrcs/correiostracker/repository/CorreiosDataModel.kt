@@ -1,60 +1,50 @@
 package br.com.luizrcs.correiostracker.repository
 
-import com.google.gson.annotations.SerializedName as Json
+import com.google.gson.annotations.*
 
 data class TrackingResponse(
-	@Json("versao") val version: Double,
-	@Json("quantidade") val quantity: Int,
-	@Json("pesquisa") val queryType: String,
-	@Json("resultado") val resultType: String,
-	@Json("objeto") val objects: List<Object>
+	@SerializedName("objeto") val parcels: List<Parcel>
 )
 
-data class Object(
-	@Json("numero") val trackingCode: String,
-	@Json("sigla") val serviceCode: String,
-	@Json("nome") val serviceName: String,
-	@Json("categoria") val serviceType: String,
-	@Json("evento") val events: List<Evento>
+data class Parcel(
+	val name: String,
+	@SerializedName("numero") val trackingCode: String,
+	@SerializedName("nome") val serviceName: String? = null,
+	@SerializedName("categoria") val serviceType: String = "",
+	@SerializedName("evento") var parcelEvents: List<ParcelEvent>? = null
 ) {
 	
 	val countryCode get() = trackingCode.takeLast(2)
 }
 
-data class Evento(
-	@Json("tipo") val type: String,
-	@Json("status") val status: Int,
-	@Json("criacao") val createdAt: Long,
-	@Json("data") val date: String,
-	@Json("hora") val time: String,
-	@Json("descricao") val description: String,
-	@Json("detalhe") val details: String,
-	@Json("recebedor") val receiver: Any,
-	@Json("cepDestino") val cep: Int,
-	@Json("unidade") val postOffice: PostOffice,
-	@Json("dataPostagem") val postingDate: String,
-	@Json("diasUteis") val businessDays: Int,
-	@Json("prazoGuarda") val storageDays: Int
+data class ParcelEvent(
+	@SerializedName("tipo") val type: String,
+	@SerializedName("status") val status: Int,
+	@SerializedName("criacao") val createdAt: String,
+	@SerializedName("data") val date: String,
+	@SerializedName("hora") val time: String,
+	@SerializedName("descricao") val description: String,
+	@SerializedName("detalhe") val details: String?,
+	@SerializedName("cepDestino") val cep: Int,
+	@SerializedName("unidade") val fromOffice: PostOffice,
+	@SerializedName("destino") val toOffice: List<PostOffice>?
 )
 
 data class PostOffice(
-	@Json("codigo") val code: Int,
-	@Json("sto") val sto: Int,
-	@Json("local") val name: String,
-	@Json("tipounidade") val type: String,
-	@Json("endereco") val address: Address,
-	@Json("cidade") val city: String,
-	@Json("uf") val state: String
+	@SerializedName("codigo") val code: Int,
+	@SerializedName("local") val name: String,
+	@SerializedName("tipounidade") val type: String,
+	@SerializedName("endereco") val address: Address
 )
 
 data class Address(
-	@Json("codigo") val code: Int,
-	@Json("cep") val cep: Int,
-	@Json("logradouro") val street: String,
-	@Json("numero") val number: Int,
-	@Json("bairro") val neighbourhood: String,
-	@Json("localidade") val city: String,
-	@Json("uf") val uf: String,
-	@Json("latitude") val latitude: Double,
-	@Json("longitude") val longitude: Double
+	@SerializedName("codigo") val code: Int,
+	@SerializedName("cep") val cep: Int,
+	@SerializedName("logradouro") val street: String,
+	@SerializedName("numero") val number: Int,
+	@SerializedName("bairro") val neighbourhood: String,
+	@SerializedName("localidade") val city: String,
+	@SerializedName("uf") val state: String,
+	@SerializedName("latitude") val latitude: Double,
+	@SerializedName("longitude") val longitude: Double
 )
