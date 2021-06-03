@@ -3,12 +3,10 @@ package br.com.luizrcs.correiostracker.ui.recyclerview
 import android.view.*
 import androidx.recyclerview.widget.*
 import br.com.luizrcs.correiostracker.databinding.*
-import br.com.luizrcs.correiostracker.repository.*
 import br.com.luizrcs.correiostracker.ui.viewmodel.*
 
 class InTransitAdapter(
-	private val viewModel: InTransitViewModel,
-	private val correiosRepository: CorreiosRepository
+	private val viewModel: InTransitViewModel
 ): RecyclerView.Adapter<ParcelItemViewHolder>() {
 	
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParcelItemViewHolder {
@@ -19,8 +17,8 @@ class InTransitAdapter(
 	}
 	
 	override fun onBindViewHolder(holder: ParcelItemViewHolder, position: Int) {
-		holder.bind(correiosRepository.parcels[position], viewModel)
+		holder.bind(position, viewModel)
 	}
 	
-	override fun getItemCount() = correiosRepository.parcels.size
+	override fun getItemCount() = viewModel.parcels.value?.size ?: 0
 }

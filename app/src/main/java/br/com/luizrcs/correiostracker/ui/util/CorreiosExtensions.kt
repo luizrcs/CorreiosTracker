@@ -13,12 +13,18 @@ fun String.capitalizeWord() =
 	mapIndexed { index, char -> if (index == 0) char.uppercase() else char.lowercase() }
 		.joinToString("")
 
+fun String.formatEventDescription() = substringAfter("Objeto ")
+	.replaceFirstChar { if (it.isLowerCase()) it.uppercase() else it.toString() }
+
 fun String.formatPostOffice() = split(' ')
-	.mapIndexed { index, string ->
-		if (index == 0 && string.length <= 3) string.uppercase()
-		else string.capitalizeWord()
+	.run {
+		mapIndexed { index, string ->
+			if (string.length <= 3) {
+				if (index == 0 || index == lastIndex) string.uppercase()
+				else string.lowercase()
+			} else string.capitalizeWord()
+		}.joinToString(" ")
 	}
-	.joinToString(" ")
 
 fun String.formatTrackingCode(): String {
 	val serviceCode = substring(0 .. 1)

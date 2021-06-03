@@ -16,6 +16,7 @@ class InTransitViewModel @Inject constructor(
 	val parcels = MutableLiveData<List<Parcel>>()
 	
 	init {
+		loadParcelsFromRepository()
 		refreshParcels()
 	}
 	
@@ -24,17 +25,21 @@ class InTransitViewModel @Inject constructor(
 	
 	fun editParcel(name: String, trackingCode: String) {
 		correiosRepository.editParcel(name, trackingCode)
-		parcels.value = correiosRepository.parcels
+		loadParcelsFromRepository()
 	}
 	
 	fun refreshParcels() = changeParcels { correiosRepository.refreshParcels() }
+	
+	private fun loadParcelsFromRepository() {
+		parcels.value = correiosRepository.parcels
+	}
 	
 	private inline fun changeParcels(crossinline block: suspend () -> Unit) {
 		viewModelScope.launch {
 			try {
 				failure.value = false
 				block()
-				parcels.value = correiosRepository.parcels
+				loadParcelsFromRepository()
 			} catch (e: Exception) {
 				failure.value = true
 			}

@@ -23,8 +23,6 @@ import javax.inject.*
 @AndroidEntryPoint
 class InTransitFragment: Fragment() {
 	
-	@Inject lateinit var correiosRepository: CorreiosRepository
-	
 	private var _binding: FragmentInTransitBinding? = null
 	private val binding get() = _binding!!
 	
@@ -60,7 +58,7 @@ class InTransitFragment: Fragment() {
 		}
 		
 		binding.recyclerViewInTransit.apply {
-			adapter = InTransitAdapter(viewModel, correiosRepository)
+			adapter = InTransitAdapter(viewModel)
 			layoutManager = LinearLayoutManager(context).apply { orientation = VERTICAL }
 		}
 		

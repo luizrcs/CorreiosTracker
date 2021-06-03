@@ -28,13 +28,6 @@ android {
 	}
 	
 	buildTypes {
-		/*all {
-			val localProperties = gradleLocalProperties(rootDir)
-			buildConfigField("String", "correiosUsername", localProperties.getProperty("correios.username"))
-			buildConfigField("String", "correiosPassword", localProperties.getProperty("correios.password"))
-			buildConfigField("String", "correiosToken", localProperties.getProperty("correios.token"))
-		}*/
-		
 		getByName("release") {
 			isMinifyEnabled = false
 			proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")

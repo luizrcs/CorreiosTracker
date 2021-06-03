@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginHorizontal="@dimen/padding">
+
+    <View
+            android:id="@+id/timeline_to"
+
+            android:layout_width="8dp"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.5"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@id/status_icon_container"
+            app:layout_constraintEnd_toEndOf="@id/status_icon_container"
+
+            android:background="@color/gray"/>
+
+    <View
+            android:id="@+id/timeline_from"
+
+            android:layout_width="8dp"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.5"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/status_icon_container"
+            app:layout_constraintEnd_toEndOf="@id/status_icon_container"
+
+            android:background="@color/gray"/>
+
+    <RelativeLayout
+            android:id="@+id/status_icon_container"
+
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+            android:background="@drawable/circle"
+            android:backgroundTint="@color/gray">
+
+        <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/status_icon"
+
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+
+                android:layout_centerInParent="true"
+
+                android:tint="@color/white"
+                app:srcCompat="@drawable/outline_local_shipping_24" />
+
+    </RelativeLayout>
+
+    <TextView
+            android:id="@+id/status"
+            android:text="An extra long status text to test ellipsis"
+
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/status_icon_container"
+            app:layout_constraintEnd_toStartOf="@id/date_time"
+
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="16sp"
+
+            android:ellipsize="marquee"
+            android:singleLine="true" />
+
+    <TextView
+            android:id="@+id/post_office"
+            android:text="Post office with a gigantic name to test ellipsis"
+
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="@dimen/padding"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintTop_toBottomOf="@id/status"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/status_icon_container"
+            app:layout_constraintEnd_toStartOf="@id/date_time"
+
+            android:ellipsize="marquee"
+            android:singleLine="true" />
+
+    <LinearLayout
+            android:id="@+id/date_time"
+
+            android:orientation="vertical"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            android:gravity="end">
+
+        <TextView
+                android:id="@+id/date"
+                android:text="01/01"
+
+                android:layout_marginTop="4dp"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        <TextView
+                android:id="@+id/time"
+                android:text="00:00"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

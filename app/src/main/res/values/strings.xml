@@ -22,6 +22,8 @@
     <string name="dialog_add_parcel_add">Adicionar</string>
 
     <string name="dialog_edit_parcel_title">Editar encomenda</string>
+    <string name="dialog_edit_code_copied">Código copiado!</string>
+    <string name="dialog_edit_parcel_saved">Encomenda salva!</string>
     <string name="dialog_edit_parcel_delete">Excluir</string>
     <string name="dialog_edit_parcel_save">Salvar</string>
 
