@@ -25,16 +25,21 @@ class ParcelDetailsItemViewHolder(private val itemBinding: ParcelDetailsItemBind
 		}
 		
 		itemBinding.statusIcon.setImageResource(statusStyle.iconId)
-		itemBinding.statusIconContainer.setBackgroundColorFilter(statusStyle.colorId)
+		itemBinding.statusIconContainer.setBackgroundColorFilter(color)
 		
 		itemBinding.status.apply {
 			text = event.description.formatEventDescription()
 			setTextColor(color)
 		}
 		
+		itemBinding.details.apply {
+			text = event.details
+			visibility = if (event.details != null) VISIBLE else GONE
+		}
+		
 		itemBinding.postOffice.apply {
-			text = event.toOffice?.firstOrNull()?.name?.formatPostOffice()
-				?: event.fromOffice.name.formatPostOffice()
+			text = event.toOffice?.firstOrNull()?.formatPostOffice()
+				?: event.fromOffice.formatPostOffice()
 			visibility = VISIBLE
 		}
 		

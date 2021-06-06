@@ -16,10 +16,25 @@
 
             tools:layout="@layout/fragment_in_transit">
 
+        <!--<action
+                android:id="@+id/in_transit_to_parcel_details"
+
+                app:destination="@id/fragment_parcel_details"
+
+                app:enterAnim="@anim/zoom_out_inside"
+                app:exitAnim="@anim/zoom_out_outside"
+                app:popEnterAnim="@anim/zoom_in_outside"
+                app:popExitAnim="@anim/zoom_in_inside">-->
+
         <action
                 android:id="@+id/in_transit_to_parcel_details"
 
-                app:destination="@id/fragment_parcel_details">
+                app:destination="@id/fragment_parcel_details"
+
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim">
 
             <argument
                     android:name="index"

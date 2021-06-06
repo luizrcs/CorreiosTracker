@@ -3,6 +3,7 @@ package br.com.luizrcs.correiostracker.ui.fragment
 import android.os.*
 import android.text.*
 import android.view.*
+import android.view.animation.*
 import android.widget.*
 import androidx.core.content.res.*
 import androidx.core.widget.*
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView.*
 import br.com.luizrcs.correiostracker.R
 import br.com.luizrcs.correiostracker.databinding.*
 import br.com.luizrcs.correiostracker.repository.*
+import br.com.luizrcs.correiostracker.ui.activity.*
 import br.com.luizrcs.correiostracker.ui.recyclerview.*
 import br.com.luizrcs.correiostracker.ui.util.*
 import br.com.luizrcs.correiostracker.ui.viewmodel.*
@@ -21,7 +23,7 @@ import dagger.hilt.android.*
 import javax.inject.*
 
 @AndroidEntryPoint
-class InTransitFragment: Fragment() {
+class InTransitFragment: CustomFragment() {
 	
 	private var _binding: FragmentInTransitBinding? = null
 	private val binding get() = _binding!!

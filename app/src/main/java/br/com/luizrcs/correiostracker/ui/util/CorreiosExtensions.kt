@@ -5,13 +5,24 @@ import android.os.Build.VERSION_CODES.*
 import android.view.*
 import android.widget.*
 import androidx.annotation.*
-import androidx.core.content.*
+import br.com.luizrcs.correiostracker.repository.*
 import coil.*
 import java.util.*
+
+fun PostOffice.formatPostOffice() = name.formatPostOffice() +
+		when {
+			address.city != null  ->
+				if (address.city.lowercase() in name.lowercase()) ", ${address.state!!.uppercase()}"
+				else ", ${address.city.capitalizeWords()} - ${address.state!!.uppercase()}"
+			address.state != null -> ", ${address.state.uppercase()}"
+			else                  -> ""
+		}
 
 fun String.capitalizeWord() =
 	mapIndexed { index, char -> if (index == 0) char.uppercase() else char.lowercase() }
 		.joinToString("")
+
+fun String.capitalizeWords() = split(" ").joinToString(" ") { it.capitalizeWord() }
 
 fun String.formatEventDescription() = substringAfter("Objeto ")
 	.replaceFirstChar { if (it.isLowerCase()) it.uppercase() else it.toString() }
@@ -55,8 +66,8 @@ fun ImageView.setFlag(countryCode: String) = apply {
 	load(flagResource) { crossfade(true) }
 }
 
-fun View.setBackgroundColorFilter(@ColorRes colorId: Int) =
+fun View.setBackgroundColorFilter(@ColorInt color: Int) =
 	if (versionIsAtLeast(Q))
-		background?.colorFilter = BlendModeColorFilter(ContextCompat.getColor(context, colorId), BlendMode.SRC_ATOP)
+		background?.colorFilter = BlendModeColorFilter(color, BlendMode.SRC_ATOP)
 	else
-		background?.setColorFilter(ContextCompat.getColor(context, colorId), PorterDuff.Mode.SRC_ATOP)
+		background?.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)

@@ -6,7 +6,7 @@ import androidx.fragment.app.*
 import br.com.luizrcs.correiostracker.databinding.*
 import br.com.luizrcs.correiostracker.ui.viewmodel.*
 
-class FinishedFragment: Fragment() {
+class FinishedFragment: CustomFragment() {
 	
 	private var _binding: FragmentFinishedBinding? = null
 	private val binding get() = _binding!!

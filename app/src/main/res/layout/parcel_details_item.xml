@@ -19,7 +19,7 @@
             app:layout_constraintStart_toStartOf="@id/status_icon_container"
             app:layout_constraintEnd_toEndOf="@id/status_icon_container"
 
-            android:background="@color/gray"/>
+            android:background="@color/gray" />
 
     <View
             android:id="@+id/timeline_from"
@@ -32,7 +32,7 @@
             app:layout_constraintStart_toStartOf="@id/status_icon_container"
             app:layout_constraintEnd_toEndOf="@id/status_icon_container"
 
-            android:background="@color/gray"/>
+            android:background="@color/gray" />
 
     <RelativeLayout
             android:id="@+id/status_icon_container"
@@ -64,9 +64,8 @@
             android:id="@+id/status"
             android:text="An extra long status text to test ellipsis"
 
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="@dimen/padding"
+            android:layout_marginHorizontal="@dimen/padding"
 
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -77,29 +76,59 @@
 
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textSize="16sp"
-
-            android:ellipsize="marquee"
-            android:singleLine="true" />
+            android:justificationMode="inter_word" />
 
     <TextView
-            android:id="@+id/post_office"
-            android:text="Post office with a gigantic name to test ellipsis"
+            android:id="@+id/details"
+            android:text="Details with a lot of information to prove we can"
 
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="@dimen/margin"
             android:layout_marginBottom="@dimen/padding"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginHorizontal="@dimen/padding"
 
             android:layout_width="0dp"
             android:layout_height="wrap_content"
 
             app:layout_constraintTop_toBottomOf="@id/status"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/status_icon_container"
+            app:layout_constraintEnd_toStartOf="@id/date_time"
+
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:justificationMode="inter_word" />
+
+    <TextView
+            android:id="@+id/post_office"
+            android:text="Post office with a gigantic name to test ellipsis"
+
+            android:layout_marginTop="@dimen/margin"
+            android:layout_marginBottom="@dimen/padding"
+            android:layout_marginStart="4dp"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintTop_toBottomOf="@id/details"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/post_office_icon"
             app:layout_constraintEnd_toStartOf="@id/date_time"
 
             android:ellipsize="marquee"
             android:singleLine="true" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/post_office_icon"
+
+            android:layout_marginStart="14dp"
+
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+
+            app:layout_constraintTop_toTopOf="@id/post_office"
+            app:layout_constraintBottom_toBottomOf="@id/post_office"
+            app:layout_constraintStart_toEndOf="@id/status_icon_container"
+
+            app:srcCompat="@drawable/outline_place_24"
+            app:tint="@color/red"/>
 
     <LinearLayout
             android:id="@+id/date_time"

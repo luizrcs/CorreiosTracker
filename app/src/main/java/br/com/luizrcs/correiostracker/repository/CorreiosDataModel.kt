@@ -39,12 +39,12 @@ data class PostOffice(
 
 data class Address(
 	@SerializedName("codigo") val code: Int,
-	@SerializedName("cep") val cep: Int,
-	@SerializedName("logradouro") val street: String,
-	@SerializedName("numero") val number: Int,
-	@SerializedName("bairro") val neighbourhood: String,
-	@SerializedName("localidade") val city: String,
-	@SerializedName("uf") val state: String,
 	@SerializedName("latitude") val latitude: Double,
-	@SerializedName("longitude") val longitude: Double
+	@SerializedName("longitude") val longitude: Double,
+	@SerializedName("cep") val cep: Int?,
+	@SerializedName("logradouro") val street: String?,
+	@SerializedName("numero") val number: Int?,
+	@SerializedName("bairro") val neighbourhood: String?,
+	@SerializedName("localidade") val city: String?,
+	@SerializedName("uf") val state: String?
 )

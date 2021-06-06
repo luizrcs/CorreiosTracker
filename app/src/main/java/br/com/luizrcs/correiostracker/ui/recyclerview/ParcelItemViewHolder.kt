@@ -5,13 +5,11 @@ import android.view.*
 import android.view.View.*
 import android.widget.*
 import androidx.core.content.*
-import androidx.core.content.ContextCompat.*
 import androidx.core.content.res.*
 import androidx.navigation.*
 import androidx.recyclerview.widget.*
 import br.com.luizrcs.correiostracker.R
 import br.com.luizrcs.correiostracker.databinding.*
-import br.com.luizrcs.correiostracker.repository.*
 import br.com.luizrcs.correiostracker.ui.fragment.*
 import br.com.luizrcs.correiostracker.ui.util.*
 import br.com.luizrcs.correiostracker.ui.viewmodel.*
@@ -26,16 +24,19 @@ class ParcelItemViewHolder(private val itemBinding: ParcelItemBinding):
 		val valid = event != null
 		
 		val statusStyle = statusStyle(event?.type, event?.status)
+		val color = ContextCompat.getColor(itemBinding.root.context, statusStyle.colorId)
 		
 		itemBinding.name.text = parcel.name
 		
 		itemBinding.statusIcon.setImageResource(statusStyle.iconId)
-		itemBinding.statusIconContainer.setBackgroundColorFilter(statusStyle.colorId)
+		itemBinding.statusIconContainer.setBackgroundColorFilter(color)
 		
 		itemBinding.status.apply {
-			text = event?.description ?: context.getString(R.string.parcel_unknown)
-			setTextColor(ContextCompat.getColor(context, statusStyle.colorId))
+			text = event?.description?.formatEventDescription() ?: context.getString(R.string.parcel_unknown)
+			setTextColor(color)
 		}
+		
+		itemBinding.postOfficeIcon.visibility = if (valid) VISIBLE else GONE
 		
 		itemBinding.postOffice.apply {
 			text = event?.toOffice?.firstOrNull()?.name?.formatPostOffice()
@@ -78,7 +79,7 @@ class ParcelItemViewHolder(private val itemBinding: ParcelItemBinding):
 				dialogBinding.code.setText(parcel.trackingCode)
 				
 				dialogBinding.copyCode.setOnClickListener {
-					val clipboardManager = getSystemService(context, ClipboardManager::class.java)
+					val clipboardManager = ContextCompat.getSystemService(context, ClipboardManager::class.java)
 					val clipData = ClipData.newPlainText("trackingCode", parcel.trackingCode)
 					clipboardManager?.setPrimaryClip(clipData)
 					
