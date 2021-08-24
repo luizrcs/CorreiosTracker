@@ -72,7 +72,7 @@
 
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/status_icon_container"
-            app:layout_constraintEnd_toStartOf="@id/date_time"
+            app:layout_constraintEnd_toEndOf="parent"
 
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textSize="16sp"
@@ -91,29 +91,56 @@
 
             app:layout_constraintTop_toBottomOf="@id/status"
             app:layout_constraintStart_toEndOf="@id/status_icon_container"
-            app:layout_constraintEnd_toStartOf="@id/date_time"
+            app:layout_constraintEnd_toEndOf="parent"
 
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:justificationMode="inter_word" />
 
-    <TextView
-            android:id="@+id/post_office"
-            android:text="Post office with a gigantic name to test ellipsis"
+    <LinearLayout
+            android:id="@+id/date_time"
 
             android:layout_marginTop="@dimen/margin"
-            android:layout_marginBottom="@dimen/padding"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="14dp"
 
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
             app:layout_constraintTop_toBottomOf="@id/details"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/post_office_icon"
-            app:layout_constraintEnd_toStartOf="@id/date_time"
+            app:layout_constraintStart_toEndOf="@id/status_icon_container"
 
-            android:ellipsize="marquee"
-            android:singleLine="true" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/date_time_icon"
+
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+
+                app:srcCompat="@drawable/outline_event_24"
+                app:tint="@color/blue"/>
+
+        <TextView
+                android:id="@+id/date"
+
+                android:text="01/01"
+
+                android:layout_marginStart="4dp"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        <TextView
+                android:id="@+id/time"
+
+                android:text="00:00"
+
+                android:layout_marginStart="4dp"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/post_office_icon"
@@ -130,36 +157,23 @@
             app:srcCompat="@drawable/outline_place_24"
             app:tint="@color/red"/>
 
-    <LinearLayout
-            android:id="@+id/date_time"
+    <TextView
+            android:id="@+id/post_office"
+            android:text="Post office with a gigantic name to test ellipsis"
 
-            android:orientation="vertical"
+            android:layout_marginTop="@dimen/margin"
+            android:layout_marginBottom="@dimen/padding"
+            android:layout_marginStart="4dp"
 
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
 
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/date_time"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/post_office_icon"
             app:layout_constraintEnd_toEndOf="parent"
 
-            android:gravity="end">
-
-        <TextView
-                android:id="@+id/date"
-                android:text="01/01"
-
-                android:layout_marginTop="4dp"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        <TextView
-                android:id="@+id/time"
-                android:text="00:00"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-    </LinearLayout>
+            android:ellipsize="marquee"
+            android:singleLine="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

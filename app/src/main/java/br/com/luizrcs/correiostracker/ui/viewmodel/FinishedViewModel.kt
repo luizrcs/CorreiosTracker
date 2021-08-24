@@ -7,7 +7,7 @@ import kotlinx.coroutines.*
 import javax.inject.*
 
 @HiltViewModel
-class InTransitViewModel @Inject constructor(
+class FinishedViewModel @Inject constructor(
 	savedStateHandle: SavedStateHandle,
 	private val correiosRepository: CorreiosRepository
 ): ParcelsViewModel() {
@@ -16,9 +16,6 @@ class InTransitViewModel @Inject constructor(
 		loadParcelsFromRepository()
 		refreshParcels()
 	}
-	
-	fun addParcel(name: String, trackingCode: String) =
-		changeParcels { correiosRepository.addParcel(name, trackingCode) }
 	
 	override fun editParcel(name: String, trackingCode: String) {
 		correiosRepository.editParcel(name, trackingCode)
@@ -31,7 +28,7 @@ class InTransitViewModel @Inject constructor(
 		parcels.value = correiosRepository.parcels
 			.filter {
 				val event = it.parcelEvents?.firstOrNull()
-				event == null || event.type !in finishedTypes
+				event != null && event.type in finishedTypes
 			}
 	}
 }

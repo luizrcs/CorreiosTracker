@@ -54,12 +54,12 @@ class InTransitFragment: CustomFragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		
-		binding.swipeRefreshInTransit.setOnRefreshListener {
+		binding.swipeRefresh.setOnRefreshListener {
 			shouldAnnounce = true
 			viewModel.refreshParcels()
 		}
 		
-		binding.recyclerViewInTransit.apply {
+		binding.recyclerView.apply {
 			adapter = InTransitAdapter(viewModel)
 			layoutManager = LinearLayoutManager(context).apply { orientation = VERTICAL }
 		}
@@ -93,15 +93,15 @@ class InTransitFragment: CustomFragment() {
 		}
 		
 		viewModel.failure.observe(viewLifecycleOwner) {
-			binding.swipeRefreshInTransit.isRefreshing = false
+			binding.swipeRefresh.isRefreshing = false
 			
 			if (it) Toast.makeText(context, R.string.parcels_failure, Toast.LENGTH_SHORT).show()
 		}
 		
 		viewModel.parcels.observe(viewLifecycleOwner) {
-			binding.swipeRefreshInTransit.visibility = if (it.isEmpty()) GONE else VISIBLE
-			binding.noParcelsInTransit.visibility = if (it.isEmpty()) VISIBLE else GONE
-			binding.recyclerViewInTransit.adapter?.notifyDataSetChanged()
+			binding.swipeRefresh.visibility = if (it.isEmpty()) GONE else VISIBLE
+			binding.noParcels.visibility = if (it.isEmpty()) VISIBLE else GONE
+			binding.recyclerView.adapter?.notifyDataSetChanged()
 			
 			if (shouldAnnounce) {
 				shouldAnnounce = false

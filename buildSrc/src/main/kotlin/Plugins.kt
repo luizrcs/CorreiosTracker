@@ -1,4 +1,3 @@
-import org.gradle.kotlin.dsl.*
 import org.gradle.plugin.use.*
 
 inline val PluginDependenciesSpec.`android-application` get() = id("com.android.application")

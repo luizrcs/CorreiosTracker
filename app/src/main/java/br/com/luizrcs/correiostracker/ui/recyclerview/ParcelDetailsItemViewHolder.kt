@@ -43,7 +43,7 @@ class ParcelDetailsItemViewHolder(private val itemBinding: ParcelDetailsItemBind
 			visibility = VISIBLE
 		}
 		
-		itemBinding.date.text = event.date.substringBeforeLast('/')
+		itemBinding.date.text = event.date.formatDate()
 		itemBinding.time.text = event.time
 	}
 }

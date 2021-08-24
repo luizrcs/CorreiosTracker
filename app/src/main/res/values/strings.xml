@@ -9,6 +9,8 @@
     <string name="in_transit_no_parcels">Ainda não há\nencomendas\nadicionadas!</string>
     <string name="in_transit_add">Adicionar</string>
 
+    <string name="finished_no_parcels">Ainda não há\nencomendas\nfinalizadas!</string>
+
     <string name="parcel_added">Encomenda adicionada!</string>
     <string name="parcel_unknown">Situação desconhecida</string>
 

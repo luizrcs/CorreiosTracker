@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -7,69 +7,85 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh_in_transit"
+    <include
+            android:id="@+id/toolbar_include"
 
+            layout="@layout/toolbar"/>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
 
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_in_transit"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_include"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            android:layout_marginVertical="@dimen/border_radius_negative">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh"
 
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="match_parent">
 
-                android:paddingVertical="24dp"
-                android:clipToPadding="false"
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
 
-                tools:listitem="@layout/parcel_item" />
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                    android:paddingVertical="24dp"
+                    android:clipToPadding="false"
 
-    <LinearLayout
-            android:id="@+id/no_parcels_in_transit"
+                    tools:listitem="@layout/parcel_item" />
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-            android:layout_gravity="center"
-
-            android:orientation="vertical"
-            android:gravity="center"
-
-            android:visibility="gone">
-
-        <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-
-                app:srcCompat="@drawable/outline_list_alt_24"
-                app:tint="@color/gray"/>
-
-        <com.google.android.material.textview.MaterialTextView
-                android:text="@string/in_transit_no_parcels"
+        <LinearLayout
+                android:id="@+id/no_parcels"
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:textAlignment="center"
-                android:textSize="20sp"
-                android:textColor="@color/gray"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
+                android:layout_gravity="center"
 
-    </LinearLayout>
+                android:orientation="vertical"
+                android:gravity="center"
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/fab"
+                android:visibility="gone">
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
 
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="32dp"
+                    app:srcCompat="@drawable/outline_list_alt_24"
+                    app:tint="@color/gray"/>
 
-            app:icon="@drawable/outline_add_24"
-            android:text="@string/in_transit_add"/>
+            <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/in_transit_no_parcels"
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textColor="@color/gray"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/fab"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="32dp"
+
+                app:icon="@drawable/outline_add_24"
+                android:text="@string/in_transit_add"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

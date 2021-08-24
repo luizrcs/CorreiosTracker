@@ -8,6 +8,7 @@ import androidx.annotation.*
 import br.com.luizrcs.correiostracker.repository.*
 import coil.*
 import java.util.*
+import java.util.Calendar.*
 
 fun PostOffice.formatPostOffice() = name.formatPostOffice() +
 		when {
@@ -17,6 +18,10 @@ fun PostOffice.formatPostOffice() = name.formatPostOffice() +
 			address.state != null -> ", ${address.state.uppercase()}"
 			else                  -> ""
 		}
+
+fun String.formatDate() =
+	if (getInstance().get(YEAR).toString() != substringAfterLast('/')) this
+	else substringBeforeLast('/')
 
 fun String.capitalizeWord() =
 	mapIndexed { index, char -> if (index == 0) char.uppercase() else char.lowercase() }

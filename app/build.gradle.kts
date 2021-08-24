@@ -10,14 +10,14 @@ plugins {
 }
 
 android {
-	buildToolsVersion = "30.0.3"
-	compileSdk = 30
+	buildToolsVersion = "31.0.0"
+	compileSdk = 31
 	
 	defaultConfig {
 		applicationId = "br.com.luizrcs.correiostracker"
 		
 		minSdk = 21
-		targetSdk = 30
+		targetSdk = 31
 		
 		versionCode = 1
 		versionName = "1.0.0"
@@ -41,6 +41,10 @@ android {
 	
 	kotlinOptions {
 		freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+	}
+	
+	lint {
+		disable += "DialogFragmentCallbacksDetector"
 	}
 }
 
