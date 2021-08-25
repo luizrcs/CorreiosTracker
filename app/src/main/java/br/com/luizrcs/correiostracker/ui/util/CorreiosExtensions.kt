@@ -1,3 +1,7 @@
+@file:OptIn(
+	ExperimentalTime::class
+)
+
 package br.com.luizrcs.correiostracker.ui.util
 
 import android.graphics.*
@@ -7,8 +11,14 @@ import android.widget.*
 import androidx.annotation.*
 import br.com.luizrcs.correiostracker.repository.*
 import coil.*
+import org.joda.time.*
+import java.text.*
 import java.util.*
 import java.util.Calendar.*
+import kotlin.OptIn
+import kotlin.time.*
+
+private val dateFormat = SimpleDateFormat("dd/MM/yyyy")
 
 fun PostOffice.formatPostOffice() = name.formatPostOffice() +
 		when {
@@ -18,6 +28,12 @@ fun PostOffice.formatPostOffice() = name.formatPostOffice() +
 			address.state != null -> ", ${address.state.uppercase()}"
 			else                  -> ""
 		}
+
+fun Parcel.daysElapsed() = parcelEvents?.let {
+	val start = DateTime(dateFormat.parse(it.last().date))
+	val end = DateTime()
+	Days.daysBetween(start, end).days
+}
 
 fun String.formatDate() =
 	if (getInstance().get(YEAR).toString() != substringAfterLast('/')) this

@@ -11,6 +11,20 @@
 
     <string name="finished_no_parcels">Ainda não há\nencomendas\nfinalizadas!</string>
 
+    <plurals name="parcel_collapsing_details_date">
+        <item quantity="zero">Registrado hoje</item>
+        <item quantity="one">Registrado ontem</item>
+        <item quantity="other">Registrado há %d dias</item>
+    </plurals>
+
+    <plurals name="parcel_details_date">
+        <item quantity="zero">Hoje</item>
+        <item quantity="one">Ontem</item>
+        <item quantity="other">%d dias</item>
+    </plurals>
+
+    <string name="parcel_details_disclaimer">Os eventos abaixo podem ter ocorrido\nem datas diferentes das indicadas</string>
+
     <string name="parcel_added">Encomenda adicionada!</string>
     <string name="parcel_unknown">Situação desconhecida</string>
 
@@ -31,5 +45,8 @@
 
     <string name="dialog_parcel_name">Nome</string>
     <string name="dialog_parcel_cancel">Cancelar</string>
+
+    <string name="button_edit">Editar</string>
+    <string name="button_delete">Excluir</string>
 
 </resources>

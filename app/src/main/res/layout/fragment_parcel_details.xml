@@ -8,20 +8,127 @@
         android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+
             android:layout_width="match_parent"
-            android:layout_height="168dp">
+            android:layout_height="@dimen/parcel_details_toolbar_height">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/toolbar_layout"
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
 
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
 
                 app:title="Encomenda"
+
                 app:collapsedTitleTextAppearance="@style/TextAppearance.CorreiosTracker.Title"
                 app:expandedTitleTextAppearance="@style/TextAppearance.CorreiosTracker.Headline4"
 
-                app:contentScrim="?attr/colorPrimary">
+                app:expandedTitleMarginTop="60dp"
+                app:expandedTitleMarginStart="@dimen/parcel_details_toolbar_margin"
+                app:expandedTitleGravity="top">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    app:layout_collapseMode="parallax">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/collapsing_date_icon"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginBottom="@dimen/margin"
+                        android:layout_marginStart="@dimen/parcel_details_toolbar_margin"
+
+                        app:layout_constraintBottom_toTopOf="@id/collapsing_code_icon"
+                        app:layout_constraintStart_toStartOf="parent"
+
+                        app:srcCompat="@drawable/outline_event_24"
+                        app:tint="@color/white" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/collapsing_code_icon"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginBottom="@dimen/margin"
+                        android:layout_marginStart="@dimen/parcel_details_toolbar_margin"
+
+                        app:layout_constraintBottom_toTopOf="@id/collapsing_category_icon"
+                        app:layout_constraintStart_toStartOf="parent"
+
+                        app:srcCompat="@drawable/outline_qr_code_24"
+                        app:tint="@color/white" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/collapsing_category_icon"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginBottom="@dimen/margin"
+                        android:layout_marginStart="@dimen/parcel_details_toolbar_margin"
+
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+
+                        app:srcCompat="@drawable/br_white"
+                        app:tint="@color/white" />
+
+                <TextView
+                        android:id="@+id/collapsing_date"
+                        android:text="Tempo"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginStart="@dimen/margin"
+
+                        app:layout_constraintTop_toTopOf="@id/collapsing_date_icon"
+                        app:layout_constraintBottom_toBottomOf="@id/collapsing_date_icon"
+                        app:layout_constraintStart_toEndOf="@id/collapsing_date_icon"
+
+                        android:textColor="@color/white" />
+
+                <TextView
+                        android:id="@+id/collapsing_code"
+
+                        android:text="Código"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginStart="@dimen/margin"
+
+                        app:layout_constraintTop_toTopOf="@id/collapsing_code_icon"
+                        app:layout_constraintBottom_toBottomOf="@id/collapsing_code_icon"
+                        app:layout_constraintStart_toEndOf="@id/collapsing_code_icon"
+
+                        android:textColor="@color/white" />
+
+                <TextView
+                        android:id="@+id/collapsing_category"
+
+                        android:text="Categoria"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginStart="@dimen/margin"
+
+                        app:layout_constraintTop_toTopOf="@id/collapsing_category_icon"
+                        app:layout_constraintBottom_toBottomOf="@id/collapsing_category_icon"
+                        app:layout_constraintStart_toEndOf="@id/collapsing_category_icon"
+
+                        android:textColor="@color/white" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/toolbar"
@@ -31,8 +138,10 @@
 
                     app:layout_collapseMode="pin"
 
-                    android:elevation="0dp"
+                    app:menu="@menu/parcel_details"
                     app:titleTextColor="@color/white"
+
+                    android:elevation="0dp"
                     style="@style/Widget.MaterialComponents.Toolbar.Primary" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -47,96 +156,124 @@
 
             android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
-                android:paddingVertical="@dimen/margin"
-                android:paddingHorizontal="@dimen/padding"
 
                 android:elevation="8dp"
                 android:background="@drawable/toolbar_shape"
                 android:backgroundTint="?attr/colorPrimary">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/date_icon"
-
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/date"
-                    app:layout_constraintEnd_toEndOf="@id/date"
-
-                    app:srcCompat="@drawable/outline_event_24"
-                    app:tint="@color/white" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/code_icon"
-
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/code"
-                    app:layout_constraintEnd_toEndOf="@id/code"
-
-                    app:srcCompat="@drawable/outline_qr_code_24"
-                    app:tint="@color/white" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/category_icon"
-
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/category"
-                    app:layout_constraintEnd_toEndOf="@id/category"
-
-                    app:srcCompat="@drawable/br_white"
-                    app:tint="@color/white" />
-
             <TextView
-                    android:id="@+id/date"
-                    android:text="Tempo"
+                    android:id="@+id/disclaimer"
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    app:layout_constraintTop_toBottomOf="@id/date_icon"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_centerInParent="true"
 
-                    android:textColor="@color/white" />
+                    android:text="@string/parcel_details_disclaimer"
 
-            <TextView
-                    android:id="@+id/code"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textStyle="italic"/>
 
-                    android:text="Código"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/details_bar"
 
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
-                    app:layout_constraintTop_toBottomOf="@id/code_icon"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:paddingVertical="@dimen/margin"
+                    android:paddingHorizontal="@dimen/padding"
 
-                    android:textColor="@color/white" />
+                    android:visibility="invisible">
 
-            <TextView
-                    android:id="@+id/category"
+                <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/date_icon"
 
-                    android:text="Categoria"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
 
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
 
-                    app:layout_constraintTop_toBottomOf="@id/category_icon"
-                    app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
 
-                    android:textColor="@color/white" />
+                        app:srcCompat="@drawable/outline_event_24"
+                        app:tint="@color/white" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/code_icon"
+
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/code"
+                        app:layout_constraintEnd_toEndOf="@id/code"
+
+                        app:srcCompat="@drawable/outline_qr_code_24"
+                        app:tint="@color/white" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/category_icon"
+
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+
+                        android:layout_marginEnd="24dp"
+
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+
+                        app:srcCompat="@drawable/br_white"
+                        app:tint="@color/white" />
+
+                <TextView
+                        android:id="@+id/date"
+                        android:text="Tempo"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        app:layout_constraintTop_toBottomOf="@id/date_icon"
+                        app:layout_constraintStart_toStartOf="@id/date_icon"
+                        app:layout_constraintEnd_toEndOf="@id/date_icon"
+
+                        android:textColor="@color/white" />
+
+                <TextView
+                        android:id="@+id/code"
+
+                        android:text="Código"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        app:layout_constraintTop_toBottomOf="@id/code_icon"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+
+                        android:textColor="@color/white" />
+
+                <TextView
+                        android:id="@+id/category"
+
+                        android:text="Categoria"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        app:layout_constraintTop_toBottomOf="@id/category_icon"
+                        app:layout_constraintStart_toStartOf="@id/category_icon"
+                        app:layout_constraintEnd_toEndOf="@id/category_icon"
+
+                        android:textColor="@color/white" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"

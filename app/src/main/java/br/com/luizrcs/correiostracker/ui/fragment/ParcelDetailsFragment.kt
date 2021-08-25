@@ -2,18 +2,18 @@ package br.com.luizrcs.correiostracker.ui.fragment
 
 import android.os.*
 import android.view.*
-import androidx.appcompat.widget.Toolbar.*
-import androidx.appcompat.widget.Toolbar.LayoutParams.*
 import androidx.core.content.res.*
-import androidx.core.view.*
 import androidx.fragment.app.*
 import androidx.navigation.fragment.*
 import androidx.recyclerview.widget.*
 import br.com.luizrcs.correiostracker.R
 import br.com.luizrcs.correiostracker.databinding.*
 import br.com.luizrcs.correiostracker.ui.recyclerview.*
+import br.com.luizrcs.correiostracker.ui.util.*
 import br.com.luizrcs.correiostracker.ui.viewmodel.*
+import com.google.android.material.appbar.AppBarLayout.*
 import dagger.hilt.android.*
+import kotlin.math.*
 
 @AndroidEntryPoint
 class ParcelDetailsFragment: Fragment() {
@@ -22,6 +22,8 @@ class ParcelDetailsFragment: Fragment() {
 	private val binding get() = _binding!!
 	
 	val viewModel by viewModels<ParcelDetailsViewModel>()
+	
+	private var hideDetailsToolbar = false
 	
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -49,6 +51,69 @@ class ParcelDetailsFragment: Fragment() {
 		binding.recyclerView.apply {
 			adapter = ParcelDetailsAdapter(parcel)
 			layoutManager = LinearLayoutManager(context).apply { orientation = RecyclerView.VERTICAL }
+		}
+		
+		binding.appBar.addOnOffsetChangedListener(OnOffsetChangedListener { appBarLayout, verticalOffset ->
+			val percentage = abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange.toFloat()
+			
+			if (percentage == 1f && hideDetailsToolbar) {
+				hideDetailsToolbar = false
+				binding.disclaimer.run {
+					animate()
+						.setDuration(200)
+						.alpha(0.0f)
+						.withEndAction { visibility = View.INVISIBLE }
+						.start()
+				}
+				binding.detailsBar.run {
+					animate()
+						.setDuration(200)
+						.alpha(1.0f)
+						.withStartAction { visibility = View.VISIBLE }
+						.start()
+				}
+			} else if (percentage < 1f && !hideDetailsToolbar) {
+				hideDetailsToolbar = true
+				binding.disclaimer.run {
+					animate()
+						.setDuration(200)
+						.alpha(1.0f)
+						.withEndAction { visibility = View.VISIBLE }
+						.start()
+				}
+				binding.detailsBar.run {
+					animate()
+						.setDuration(200)
+						.alpha(0.0f)
+						.withEndAction { visibility = View.INVISIBLE }
+						.start()
+				}
+			}
+		})
+		
+		binding.toolbarLayout.title = parcel.name
+		
+		val days = parcel.daysElapsed() ?: 0
+		
+		binding.collapsingDate.text = resources.getQuantityString(R.plurals.parcel_collapsing_details_date, days, days)
+		binding.collapsingCode.text = parcel.trackingCode
+		binding.collapsingCategory.text = parcel.serviceType.split(" ")
+			.let { split ->
+				split.mapIndexed { index, s ->
+					if (index == split.lastIndex && s.length <= 8) s.uppercase()
+					else s.capitalizeWord()
+				}
+			}
+			.joinToString(" ")
+		
+		binding.date.text = resources.getQuantityString(R.plurals.parcel_details_date, days, days)
+		binding.code.text = parcel.trackingCode
+		binding.category.text = parcel.serviceType.substringAfterLast(' ')
+			.let { if (it.length <= 8) it.uppercase() else it.capitalizeWord() }
+		
+		if (parcel.countryCode != "BR") {
+			binding.collapsingCategoryIcon.setImageResource(R.drawable.outline_public_24)
+			binding.categoryIcon.setImageResource(R.drawable.outline_public_24)
 		}
 	}
 	

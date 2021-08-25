@@ -6,9 +6,9 @@ object Versions {
 	const val collectionKtx = "1.2.0-alpha01"
 	const val constraintLayout = "2.1.0"
 	const val coreKtx = "1.7.0-alpha01"
-	const val fragmentKtx = "1.4.0-alpha07"
+	const val fragmentKtx = "1.4.0-alpha01"
 	const val lifecycleKtx = "2.4.0-alpha03"
-	const val navigationKtx = "2.4.0-alpha07"
+	const val navigationKtx = "2.4.0-alpha01"
 	const val paletteKtx = "1.0.0"
 	const val recyclerView = "1.2.0"
 	const val swipeRefreshLayout = "1.2.0-alpha01"
@@ -20,6 +20,8 @@ object Versions {
 	
 	const val kotson = "2.5.0"
 	const val gson = "2.8.8"
+	
+	const val jodaTime = "2.10.10"
 	
 	const val okHttp = "4.9.1"
 	const val retrofit = "2.9.0"

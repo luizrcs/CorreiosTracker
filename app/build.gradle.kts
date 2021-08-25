@@ -11,13 +11,13 @@ plugins {
 
 android {
 	buildToolsVersion = "31.0.0"
-	compileSdk = 31
+	compileSdk = 30
 	
 	defaultConfig {
 		applicationId = "br.com.luizrcs.correiostracker"
 		
 		minSdk = 21
-		targetSdk = 31
+		targetSdk = 30
 		
 		versionCode = 1
 		versionName = "1.0.0"
@@ -78,6 +78,8 @@ dependencies {
 	
 	implementation("com.github.salomonbrys.kotson", "kotson", Versions.kotson)
 	implementation("com.google.code.gson", "gson", Versions.gson)
+	
+	implementation("joda-time", "joda-time", Versions.jodaTime)
 	
 	okHttp("logging-interceptor", Versions.okHttp)
 	retrofit("converter-gson", Versions.retrofit)
