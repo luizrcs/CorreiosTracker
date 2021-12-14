@@ -4,17 +4,17 @@
             android:interpolator="@android:anim/decelerate_interpolator"
             android:fromAlpha="1.0"
             android:toAlpha="0.0"
-            android:duration="@android:integer/config_mediumAnimTime"/>
+            android:duration="@android:integer/config_mediumAnimTime" />
     <scale
             android:fromXScale="100%p"
             android:toXScale="1000%p"
             android:fromYScale="100%p"
             android:toYScale="1000%p"
-            android:duration="@android:integer/config_mediumAnimTime"/>
+            android:duration="@android:integer/config_mediumAnimTime" />
     <translate
             android:fromXDelta="0"
             android:toXDelta="-500%p"
             android:fromYDelta="0"
             android:toYDelta="-500%p"
-            android:duration="@android:integer/config_mediumAnimTime"/>
+            android:duration="@android:integer/config_mediumAnimTime" />
 </set>

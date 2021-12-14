@@ -13,7 +13,7 @@ import javax.inject.*
 class CorreiosRepository @Inject constructor(
 	filesDir: File,
 	private val gson: Gson,
-	private val webService: CorreiosWebService
+	private val webService: CorreiosWebService,
 ) {
 	
 	private val parcelsFile = File(filesDir, "parcels.json")
@@ -22,6 +22,8 @@ class CorreiosRepository @Inject constructor(
 	val parcels get() = _parcels.sortedByDescending { it.parcelEvents?.first()?.createdAt?.toDate() }
 	
 	private val xmlMediaType = "application/xml".toMediaType()
+	
+	private var lastRefresh = 0L
 	
 	suspend fun addParcel(name: String, trackingCode: String) {
 		_parcels += Parcel(name, trackingCode)
@@ -34,14 +36,22 @@ class CorreiosRepository @Inject constructor(
 		_parcels[index] = parcel.copy(name = name)
 	}
 	
-	private suspend fun _refreshParcels(): Map<String, Parcel> {
-		val trackingCodes = _parcels.map { it.trackingCode }
-		val requestBody = buildXml(trackingCodes).toRequestBody(xmlMediaType)
-		return webService.track(requestBody).parcels.associateBy { it.trackingCode }
+	private suspend fun _refreshParcels(): Map<String, Parcel>? {
+		val now = System.currentTimeMillis()
+		
+		return if (now - lastRefresh > 5000L) {
+			val trackingCodes = _parcels.map { it.trackingCode }
+			val requestBody = buildXml(trackingCodes).toRequestBody(xmlMediaType)
+			val newParcels = webService.track(requestBody).parcels
+			
+			lastRefresh = now
+			
+			newParcels.associateBy { it.trackingCode }
+		} else null
 	}
 	
 	suspend fun refreshParcels() {
-		val newParcels = withContext(IO) { _refreshParcels() }
+		val newParcels = withContext(IO) { _refreshParcels() } ?: return
 		
 		_parcels = _parcels
 			.map { oldParcel ->

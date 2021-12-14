@@ -1,6 +1,5 @@
 package br.com.luizrcs.correiostracker.repository
 
-import com.google.gson.annotations.*
 import okhttp3.*
 import retrofit2.http.*
 

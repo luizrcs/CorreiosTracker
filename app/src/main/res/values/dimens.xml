@@ -12,6 +12,6 @@
     <dimen name="padding_negative">-16dp</dimen>
 
     <dimen name="parcel_details_toolbar_height">216dp</dimen>
-    <dimen name="parcel_details_toolbar_margin">24dp</dimen>
+    <dimen name="parcel_details_toolbar_margin">32dp</dimen>
 
 </resources>

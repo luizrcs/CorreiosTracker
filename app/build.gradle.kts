@@ -5,25 +5,26 @@ plugins {
 	`kotlin-android`
 	kapt
 	
-	id("androidx.navigation.safeargs.kotlin")
+	// id("androidx.navigation.safeargs.kotlin")
 	id("dagger.hilt.android.plugin")
 }
 
 android {
 	buildToolsVersion = "31.0.0"
-	compileSdk = 30
+	compileSdk = 31
 	
 	defaultConfig {
 		applicationId = "br.com.luizrcs.correiostracker"
 		
 		minSdk = 21
-		targetSdk = 30
+		targetSdk = 31
 		
 		versionCode = 1
 		versionName = "1.0.0"
 	}
 	
 	buildFeatures {
+		compose = true
 		viewBinding = true
 	}
 	
@@ -40,11 +41,14 @@ android {
 	}
 	
 	kotlinOptions {
+		apiVersion = "1.6"
+		languageVersion = "1.6"
+		
 		freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
 	}
 	
-	lint {
-		disable += "DialogFragmentCallbacksDetector"
+	composeOptions {
+		kotlinCompilerExtensionVersion = "1.1.0-alpha06"
 	}
 }
 
@@ -60,7 +64,6 @@ dependencies {
 	androidxKtx("collection", Versions.collectionKtx)
 	androidx("constraintlayout", Versions.constraintLayout)
 	androidxKtx("core", Versions.coreKtx)
-	androidxKtx("fragment", Versions.fragmentKtx)
 	androidxKtx("lifecycle", "livedata", Versions.lifecycleKtx)
 	androidxKtx("lifecycle", "runtime", Versions.lifecycleKtx)
 	androidxKtx("lifecycle", "viewmodel", Versions.lifecycleKtx)
@@ -70,7 +73,12 @@ dependencies {
 	androidxKtx("palette", Versions.paletteKtx)
 	androidx("recyclerview", Versions.recyclerView)
 	androidx("swiperefreshlayout", Versions.swipeRefreshLayout)
-	androidxKtx("work", "runtime", Versions.workRuntimeKtx)
+	
+	compose("animation")
+	compose("material")
+	compose("ui", name = "tooling")
+	androidx("activity", "compose", Versions.activityCompose)
+	androidx("lifecycle", "viewmodel-compose", Versions.lifecycleViewModelCompose)
 	
 	implementation("com.google.android.material", "material", Versions.material)
 	

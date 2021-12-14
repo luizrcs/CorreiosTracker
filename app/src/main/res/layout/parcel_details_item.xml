@@ -118,7 +118,7 @@
                 android:layout_height="16dp"
 
                 app:srcCompat="@drawable/outline_event_24"
-                app:tint="@color/blue"/>
+                app:tint="@color/blue" />
 
         <TextView
                 android:id="@+id/date"
@@ -155,7 +155,7 @@
             app:layout_constraintStart_toEndOf="@id/status_icon_container"
 
             app:srcCompat="@drawable/outline_place_24"
-            app:tint="@color/red"/>
+            app:tint="@color/red" />
 
     <TextView
             android:id="@+id/post_office"

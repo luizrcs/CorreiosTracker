@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.CorreiosTracker.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">?attr/colorSecondaryVariant</item>
+        <item name="rippleColor">?attr/colorSecondaryLight</item>
+    </style>
+
+    <style name="Widget.CorreiosTracker.TextInputLayout.FilledBox" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxBackgroundColor">?attr/colorSecondaryVariant</item>
+        <item name="boxStrokeColor">?attr/colorSecondaryVariant</item>
+        <item name="counterTextColor">?attr/colorSecondaryVariant</item>
+    </style>
+
+    <style name="TextAppearance.CorreiosTracker.Title" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextAppearance.CorreiosTracker.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+</resources>

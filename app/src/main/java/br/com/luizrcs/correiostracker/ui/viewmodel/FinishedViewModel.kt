@@ -3,13 +3,12 @@ package br.com.luizrcs.correiostracker.ui.viewmodel
 import androidx.lifecycle.*
 import br.com.luizrcs.correiostracker.repository.*
 import dagger.hilt.android.lifecycle.*
-import kotlinx.coroutines.*
 import javax.inject.*
 
 @HiltViewModel
 class FinishedViewModel @Inject constructor(
 	savedStateHandle: SavedStateHandle,
-	private val correiosRepository: CorreiosRepository
+	private val correiosRepository: CorreiosRepository,
 ): ParcelsViewModel() {
 	
 	init {
@@ -25,7 +24,8 @@ class FinishedViewModel @Inject constructor(
 	override fun refreshParcels() = changeParcels { correiosRepository.refreshParcels() }
 	
 	override fun loadParcelsFromRepository() {
-		parcels.value = correiosRepository.parcels
+		parcels = correiosRepository.parcels
+		filteredParcels.value = parcels
 			.filter {
 				val event = it.parcelEvents?.firstOrNull()
 				event != null && event.type in finishedTypes

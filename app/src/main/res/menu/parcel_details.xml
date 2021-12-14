@@ -3,15 +3,21 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-            android:id="@+id/edit"
-            android:icon="@drawable/outline_edit_24"
+            android:id="@+id/delete"
+            android:icon="@drawable/outline_delete_24"
             android:title="@string/button_delete"
             app:showAsAction="ifRoom" />
 
     <item
-            android:id="@+id/delete"
-            android:icon="@drawable/outline_delete_24"
-            android:title="@string/button_delete"
+            android:id="@+id/edit"
+            android:icon="@drawable/outline_edit_24"
+            android:title="@string/button_edit"
+            app:showAsAction="ifRoom" />
+
+    <item
+            android:id="@+id/share"
+            android:icon="@drawable/outline_share_24"
+            android:title="@string/button_share"
             app:showAsAction="ifRoom" />
 
 </menu>

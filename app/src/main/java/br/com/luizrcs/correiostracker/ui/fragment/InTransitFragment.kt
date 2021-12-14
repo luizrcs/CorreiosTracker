@@ -3,9 +3,8 @@ package br.com.luizrcs.correiostracker.ui.fragment
 import android.os.*
 import android.text.*
 import android.view.*
-import android.view.animation.*
 import android.widget.*
-import androidx.core.content.res.*
+import androidx.core.content.res.ResourcesCompat.*
 import androidx.core.widget.*
 import androidx.fragment.app.*
 import androidx.lifecycle.*
@@ -13,17 +12,15 @@ import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.RecyclerView.*
 import br.com.luizrcs.correiostracker.R
 import br.com.luizrcs.correiostracker.databinding.*
-import br.com.luizrcs.correiostracker.repository.*
 import br.com.luizrcs.correiostracker.ui.activity.*
 import br.com.luizrcs.correiostracker.ui.recyclerview.*
 import br.com.luizrcs.correiostracker.ui.util.*
 import br.com.luizrcs.correiostracker.ui.viewmodel.*
 import com.google.android.material.dialog.*
 import dagger.hilt.android.*
-import javax.inject.*
 
 @AndroidEntryPoint
-class InTransitFragment: CustomFragment() {
+class InTransitFragment: AppScreenFragment() {
 	
 	private var _binding: FragmentInTransitBinding? = null
 	private val binding get() = _binding!!
@@ -54,54 +51,63 @@ class InTransitFragment: CustomFragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		
-		binding.swipeRefresh.setOnRefreshListener {
+		with(activity as MainActivity) {
+			binding.fab.run {
+				showAnimated()
+				
+				setOnClickListener {
+					val dialogBinding = DialogAddParcelBinding.inflate(layoutInflater)
+					
+					val dialog = MaterialAlertDialogBuilder(requireContext())
+						.setView(dialogBinding.root)
+						.setBackground(getDrawable(resources, R.drawable.dialog_shape, null))
+						.show()
+					
+					dialogBinding.code.apply {
+						filters = arrayOf(trackingCodeInputFilter)
+						addTextChangedListener { dialogBinding.codeLayout.error = null }
+					}
+					
+					dialogBinding.cancel.setOnClickListener { dialog.dismiss() }
+					dialogBinding.confirm.setOnClickListener {
+						if (dialogBinding.code.text?.isNotBlank() == true) {
+							val code = dialogBinding.code.text.toString()
+							val name = dialogBinding.name.text
+								?.let { if (it.isNotBlank()) it.toString().trim() else code.formatTrackingCode() }
+								?: code.formatTrackingCode()
+							viewModel.addParcel(name, code)
+							dialog.dismiss()
+							
+							Toast.makeText(context, R.string.parcel_added, Toast.LENGTH_SHORT).show()
+						} else dialogBinding.codeLayout.error = getString(R.string.dialog_add_parcel_empty_tracking_code)
+					}
+				}
+			}
+		}
+		
+		binding.parcelListing.swipeRefresh.setOnRefreshListener {
 			shouldAnnounce = true
 			viewModel.refreshParcels()
 		}
 		
-		binding.recyclerView.apply {
+		binding.parcelListing.recyclerView.apply {
 			adapter = InTransitAdapter(viewModel)
 			layoutManager = LinearLayoutManager(context).apply { orientation = VERTICAL }
 		}
 		
-		binding.fab.setOnClickListener {
-			val dialogBinding = DialogAddParcelBinding.inflate(layoutInflater)
-			
-			val dialog = MaterialAlertDialogBuilder(requireContext())
-				.setView(dialogBinding.root)
-				.setBackground(ResourcesCompat.getDrawable(resources, R.drawable.dialog_shape, null))
-				.show()
-			
-			dialogBinding.code.apply {
-				filters = arrayOf(trackingCodeInputFilter)
-				addTextChangedListener { dialogBinding.codeLayout.error = null }
-			}
-			
-			dialogBinding.cancel.setOnClickListener { dialog.dismiss() }
-			dialogBinding.confirm.setOnClickListener {
-				if (dialogBinding.code.text?.isNotBlank() == true) {
-					val code = dialogBinding.code.text.toString()
-					val name = dialogBinding.name.text
-						?.let { if (it.isNotBlank()) it.toString().trim() else code.formatTrackingCode() }
-						?: code.formatTrackingCode()
-					viewModel.addParcel(name, code)
-					dialog.dismiss()
-					
-					Toast.makeText(context, R.string.parcel_added, Toast.LENGTH_SHORT).show()
-				} else dialogBinding.codeLayout.error = getString(R.string.dialog_add_parcel_empty_tracking_code)
-			}
-		}
-		
-		viewModel.failure.observe(viewLifecycleOwner) {
-			binding.swipeRefresh.isRefreshing = false
+		viewModel.changeFailed.observe(viewLifecycleOwner) {
+			binding.parcelListing.swipeRefresh.isRefreshing = false
 			
 			if (it) Toast.makeText(context, R.string.parcels_failure, Toast.LENGTH_SHORT).show()
 		}
 		
-		viewModel.parcels.observe(viewLifecycleOwner) {
-			binding.swipeRefresh.visibility = if (it.isEmpty()) GONE else VISIBLE
-			binding.noParcels.visibility = if (it.isEmpty()) VISIBLE else GONE
-			binding.recyclerView.adapter?.notifyDataSetChanged()
+		viewModel.filteredParcels.observe(viewLifecycleOwner) {
+			val isEmpty = it.isEmpty()
+			binding.parcelListing.swipeRefresh.visibility = if (isEmpty) GONE else VISIBLE
+			binding.noParcelsIcon.visibility = if (isEmpty) VISIBLE else GONE
+			binding.noParcelsText.visibility = if (isEmpty) VISIBLE else GONE
+			
+			binding.parcelListing.recyclerView.adapter?.notifyDataSetChanged()
 			
 			if (shouldAnnounce) {
 				shouldAnnounce = false
@@ -117,6 +123,10 @@ class InTransitFragment: CustomFragment() {
 	
 	override fun onDestroyView() {
 		super.onDestroyView()
+		
+		with(activity as MainActivity) {
+			binding.fab.setOnClickListener(null)
+		}
 		
 		_binding = null
 	}

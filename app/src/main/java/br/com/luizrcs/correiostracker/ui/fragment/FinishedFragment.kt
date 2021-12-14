@@ -3,22 +3,18 @@ package br.com.luizrcs.correiostracker.ui.fragment
 import android.os.*
 import android.view.*
 import android.widget.*
-import androidx.core.content.res.*
-import androidx.core.widget.*
 import androidx.fragment.app.*
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.*
-import br.com.luizrcs.correiostracker.*
 import br.com.luizrcs.correiostracker.R
 import br.com.luizrcs.correiostracker.databinding.*
+import br.com.luizrcs.correiostracker.ui.activity.*
 import br.com.luizrcs.correiostracker.ui.recyclerview.*
-import br.com.luizrcs.correiostracker.ui.util.*
 import br.com.luizrcs.correiostracker.ui.viewmodel.*
-import com.google.android.material.dialog.*
 import dagger.hilt.android.*
 
 @AndroidEntryPoint
-class FinishedFragment: CustomFragment() {
+class FinishedFragment: AppScreenFragment() {
 	
 	private var _binding: FragmentFinishedBinding? = null
 	private val binding get() = _binding!!
@@ -36,26 +32,33 @@ class FinishedFragment: CustomFragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		
-		binding.swipeRefresh.setOnRefreshListener {
+		with(activity as MainActivity) {
+			binding.fab.hideAnimated()
+		}
+		
+		binding.parcelListing.swipeRefresh.setOnRefreshListener {
 			shouldAnnounce = true
 			viewModel.refreshParcels()
 		}
 		
-		binding.recyclerView.apply {
+		binding.parcelListing.recyclerView.apply {
 			adapter = FinishedAdapter(viewModel)
 			layoutManager = LinearLayoutManager(context).apply { orientation = RecyclerView.VERTICAL }
 		}
 		
-		viewModel.failure.observe(viewLifecycleOwner) {
-			binding.swipeRefresh.isRefreshing = false
+		viewModel.changeFailed.observe(viewLifecycleOwner) {
+			binding.parcelListing.swipeRefresh.isRefreshing = false
 			
 			if (it) Toast.makeText(context, R.string.parcels_failure, Toast.LENGTH_SHORT).show()
 		}
 		
-		viewModel.parcels.observe(viewLifecycleOwner) {
-			binding.swipeRefresh.visibility = if (it.isEmpty()) RecyclerView.GONE else RecyclerView.VISIBLE
-			binding.noParcels.visibility = if (it.isEmpty()) RecyclerView.VISIBLE else RecyclerView.GONE
-			binding.recyclerView.adapter?.notifyDataSetChanged()
+		viewModel.filteredParcels.observe(viewLifecycleOwner) {
+			val isEmpty = it.isEmpty()
+			binding.parcelListing.swipeRefresh.visibility = if (isEmpty) RecyclerView.GONE else RecyclerView.VISIBLE
+			binding.noParcelsIcon.visibility = if (isEmpty) RecyclerView.VISIBLE else RecyclerView.GONE
+			binding.noParcelsText.visibility = if (isEmpty) RecyclerView.VISIBLE else RecyclerView.GONE
+			
+			binding.parcelListing.recyclerView.adapter?.notifyDataSetChanged()
 			
 			if (shouldAnnounce) {
 				shouldAnnounce = false

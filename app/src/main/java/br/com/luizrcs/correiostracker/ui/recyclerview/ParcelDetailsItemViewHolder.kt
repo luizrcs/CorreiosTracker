@@ -11,7 +11,7 @@ class ParcelDetailsItemViewHolder(private val itemBinding: ParcelDetailsItemBind
 	RecyclerView.ViewHolder(itemBinding.root) {
 	
 	fun bind(index: Int, lastIndex: Int, event: ParcelEvent) {
-		val statusStyle = statusStyle(event.type, event.status)
+		val statusStyle = event.statusStyle()
 		val color = ContextCompat.getColor(itemBinding.root.context, statusStyle.colorId)
 		
 		itemBinding.timelineTo.apply {

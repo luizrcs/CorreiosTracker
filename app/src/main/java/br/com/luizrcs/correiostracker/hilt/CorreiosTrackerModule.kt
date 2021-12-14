@@ -44,7 +44,7 @@ class CorreiosTrackerModule {
 	fun provideCorreiosRepository(
 		@ApplicationContext context: Context,
 		gson: Gson,
-		correiosWebService: CorreiosWebService
+		correiosWebService: CorreiosWebService,
 	) = CorreiosRepository(context.filesDir, gson, correiosWebService)
 	
 	companion object {

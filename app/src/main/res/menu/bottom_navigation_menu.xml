@@ -5,16 +5,16 @@
             android:id="@+id/fragment_in_transit"
             android:enabled="true"
             android:icon="@drawable/outline_local_shipping_24"
-            android:title="@string/bottom_navigation_in_transit"/>
+            android:title="@string/bottom_navigation_in_transit" />
     <item
             android:id="@+id/fragment_finished"
             android:enabled="true"
             android:icon="@drawable/outline_check_circle_outline_24"
-            android:title="@string/bottom_navigation_finished"/>
+            android:title="@string/bottom_navigation_finished" />
     <item
             android:id="@+id/fragment_tools"
             android:enabled="true"
             android:icon="@drawable/outline_handyman_24"
-            android:title="@string/bottom_navigation_tools"/>
+            android:title="@string/bottom_navigation_tools" />
 
 </menu>

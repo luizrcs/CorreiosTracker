@@ -119,7 +119,7 @@
                 app:layout_constraintStart_toEndOf="@id/status_icon_container"
 
                 app:srcCompat="@drawable/outline_place_24"
-                app:tint="@color/red"/>
+                app:tint="@color/red" />
 
         <LinearLayout
                 android:id="@+id/origin"

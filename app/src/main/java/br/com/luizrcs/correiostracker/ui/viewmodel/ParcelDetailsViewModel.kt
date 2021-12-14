@@ -8,7 +8,7 @@ import javax.inject.*
 @HiltViewModel
 class ParcelDetailsViewModel @Inject constructor(
 	savedStateHandle: SavedStateHandle,
-	private val correiosRepository: CorreiosRepository
+	private val correiosRepository: CorreiosRepository,
 ): ViewModel() {
 	
 	val parcels = MutableLiveData<List<Parcel>>()

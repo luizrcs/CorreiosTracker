@@ -46,7 +46,8 @@
     <string name="dialog_parcel_name">Nome</string>
     <string name="dialog_parcel_cancel">Cancelar</string>
 
-    <string name="button_edit">Editar</string>
     <string name="button_delete">Excluir</string>
+    <string name="button_edit">Editar</string>
+    <string name="button_share">Compartilhar</string>
 
 </resources>

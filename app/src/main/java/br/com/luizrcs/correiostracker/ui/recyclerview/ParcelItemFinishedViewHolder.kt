@@ -7,7 +7,6 @@ import android.widget.*
 import androidx.core.content.*
 import androidx.core.content.res.*
 import androidx.navigation.*
-import androidx.recyclerview.widget.*
 import br.com.luizrcs.correiostracker.R
 import br.com.luizrcs.correiostracker.databinding.*
 import br.com.luizrcs.correiostracker.ui.fragment.*
@@ -18,12 +17,12 @@ import com.google.android.material.dialog.*
 class ParcelItemFinishedViewHolder(itemBinding: ParcelItemBinding):
 	ParcelItemViewHolder<FinishedViewModel>(itemBinding) {
 	
-	override fun bind(index: Int, viewModel: FinishedViewModel) {
-		val parcel = viewModel.parcels.value?.get(index) ?: return
+	override fun bind(filteredIndex: Int, viewModel: FinishedViewModel) {
+		val parcel = viewModel.filteredParcels.value?.get(filteredIndex) ?: return
 		val event = parcel.parcelEvents?.firstOrNull()
 		val valid = event != null
 		
-		val statusStyle = statusStyle(event?.type, event?.status)
+		val statusStyle = event.statusStyle()
 		val color = ContextCompat.getColor(itemBinding.root.context, statusStyle.colorId)
 		
 		itemBinding.name.text = parcel.name
@@ -103,6 +102,7 @@ class ParcelItemFinishedViewHolder(itemBinding: ParcelItemBinding):
 			
 			if (valid) {
 				setOnClickListener {
+					val index = viewModel.parcels.indexOf(parcel)
 					val action = FinishedFragmentDirections.finishedToParcelDetails(index)
 					findNavController().navigate(action)
 				}
