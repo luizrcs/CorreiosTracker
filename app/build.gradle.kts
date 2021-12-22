@@ -5,7 +5,7 @@ plugins {
 	`kotlin-android`
 	kapt
 	
-	// id("androidx.navigation.safeargs.kotlin")
+	id("androidx.navigation.safeargs.kotlin")
 	id("dagger.hilt.android.plugin")
 }
 
@@ -41,14 +41,17 @@ android {
 	}
 	
 	kotlinOptions {
-		apiVersion = "1.6"
-		languageVersion = "1.6"
+		apiVersion = "1.7 (EXPERIMENTAL)"
+		languageVersion = "1.7 (EXPERIMENTAL)"
 		
-		freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+		freeCompilerArgs += listOf(
+			"-Xopt-in=kotlin.RequiresOptIn",
+			"-P",
+			"plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=true")
 	}
 	
 	composeOptions {
-		kotlinCompilerExtensionVersion = "1.1.0-alpha06"
+		kotlinCompilerExtensionVersion = "1.1.0-rc02"
 	}
 }
 
