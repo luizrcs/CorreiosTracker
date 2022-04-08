@@ -3,12 +3,11 @@ package br.com.luizrcs.correiostracker.repository
 import br.com.luizrcs.correiostracker.ui.util.*
 import com.github.salomonbrys.kotson.*
 import com.google.gson.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.IO
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.*
 import javax.inject.*
+import kotlin.math.*
 
 class CorreiosRepository @Inject constructor(
 	filesDir: File,
@@ -30,28 +29,18 @@ class CorreiosRepository @Inject constructor(
 		refreshParcels()
 	}
 	
+	fun removeParcel(trackingCode: String) {
+		_parcels.removeAll { it.trackingCode == trackingCode }
+	}
+	
 	fun editParcel(name: String, trackingCode: String) {
 		val index = _parcels.indexOfFirst { it.trackingCode == trackingCode }
 		val parcel = _parcels[index]
 		_parcels[index] = parcel.copy(name = name)
 	}
 	
-	private suspend fun _refreshParcels(): Map<String, Parcel>? {
-		val now = System.currentTimeMillis()
-		
-		return if (now - lastRefresh > 5000L) {
-			val trackingCodes = _parcels.map { it.trackingCode }
-			val requestBody = buildXml(trackingCodes).toRequestBody(xmlMediaType)
-			val newParcels = webService.track(requestBody).parcels
-			
-			lastRefresh = now
-			
-			newParcels.associateBy { it.trackingCode }
-		} else null
-	}
-	
 	suspend fun refreshParcels() {
-		val newParcels = withContext(IO) { _refreshParcels() } ?: return
+		val newParcels = _refreshParcels() ?: return
 		
 		_parcels = _parcels
 			.map { oldParcel ->
@@ -62,14 +51,29 @@ class CorreiosRepository @Inject constructor(
 					else {
 						val oldParcelEvents = oldParcel.parcelEvents!!
 						val newParcelEvents = newParcel.parcelEvents!!
-						val deltaParcelEvents = newParcelEvents.size - oldParcelEvents.size
+						val deltaParcelEvents = max(newParcelEvents.size - oldParcelEvents.size, 0)
 						oldParcel.apply { parcelEvents = newParcelEvents.take(deltaParcelEvents) + oldParcelEvents }
 					}
 				}
 			}
 			.toMutableList()
 		
-		withContext(IO) { saveParcels() }
+		saveParcels()
+	}
+	
+	private suspend fun _refreshParcels(): Map<String, Parcel>? {
+		val now = System.currentTimeMillis()
+		
+		return if (now - lastRefresh < 5000L) null
+		else {
+			val trackingCodes = _parcels.map { it.trackingCode }
+			val requestBody = buildXml(trackingCodes).toRequestBody(xmlMediaType)
+			val newParcels = webService.track(requestBody).parcels
+			
+			lastRefresh = now
+			
+			newParcels.associateBy { it.trackingCode }
+		}
 	}
 	
 	private fun loadParcels() =

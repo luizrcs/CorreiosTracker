@@ -26,6 +26,8 @@
     <string name="parcel_details_disclaimer">Os eventos abaixo podem ter ocorrido\nem datas diferentes das indicadas</string>
 
     <string name="parcel_added">Encomenda adicionada!</string>
+    <string name="parcel_add_fail">Não foi possível adicionar esta encomenda!</string>
+    <string name="parcel_already_exists">Esta encomenda já existe!</string>
     <string name="parcel_unknown">Situação desconhecida</string>
 
     <string name="parcels_failure">Não foi possível atualizar as encomendas!</string>
@@ -39,6 +41,7 @@
 
     <string name="dialog_edit_parcel_title">Editar encomenda</string>
     <string name="dialog_edit_code_copied">Código copiado!</string>
+    <string name="dialog_edit_parcel_deleted">Encomenda excluída!</string>
     <string name="dialog_edit_parcel_saved">Encomenda salva!</string>
     <string name="dialog_edit_parcel_delete">Excluir</string>
     <string name="dialog_edit_parcel_save">Salvar</string>

@@ -8,27 +8,11 @@ import javax.inject.*
 @HiltViewModel
 class FinishedViewModel @Inject constructor(
 	savedStateHandle: SavedStateHandle,
-	private val correiosRepository: CorreiosRepository,
-): ParcelsViewModel() {
+	correiosRepository: CorreiosRepository,
+): ParcelsViewModel(correiosRepository, true) {
 	
 	init {
 		loadParcelsFromRepository()
 		refreshParcels()
-	}
-	
-	override fun editParcel(name: String, trackingCode: String) {
-		correiosRepository.editParcel(name, trackingCode)
-		loadParcelsFromRepository()
-	}
-	
-	override fun refreshParcels() = changeParcels { correiosRepository.refreshParcels() }
-	
-	override fun loadParcelsFromRepository() {
-		parcels = correiosRepository.parcels
-		filteredParcels.value = parcels
-			.filter {
-				val event = it.parcelEvents?.firstOrNull()
-				event != null && event.type in finishedTypes
-			}
 	}
 }

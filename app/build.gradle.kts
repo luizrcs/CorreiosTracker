@@ -41,8 +41,8 @@ android {
 	}
 	
 	kotlinOptions {
-		apiVersion = "1.7 (EXPERIMENTAL)"
-		languageVersion = "1.7 (EXPERIMENTAL)"
+		apiVersion = "1.6"
+		languageVersion = "1.6"
 		
 		freeCompilerArgs += listOf(
 			"-Xopt-in=kotlin.RequiresOptIn",

@@ -74,6 +74,15 @@ class ParcelItemInTransitViewHolder(itemBinding: ParcelItemBinding):
 					.setBackground(ResourcesCompat.getDrawable(resources, R.drawable.dialog_shape, null))
 					.show()
 				
+				dialogBinding.delete.setOnClickListener {
+					val code = parcel.trackingCode
+					viewModel.removeParcel(code)
+					
+					dialog.dismiss()
+					
+					Toast.makeText(context, R.string.dialog_edit_parcel_deleted, Toast.LENGTH_SHORT).show()
+				}
+				
 				dialogBinding.name.setText(parcel.name)
 				dialogBinding.code.setText(parcel.trackingCode)
 				
@@ -92,6 +101,7 @@ class ParcelItemInTransitViewHolder(itemBinding: ParcelItemBinding):
 						?.let { if (it.isNotBlank()) it.toString().trim() else code.formatTrackingCode() }
 						?: code.formatTrackingCode()
 					viewModel.editParcel(name, code)
+					
 					dialog.dismiss()
 					
 					Toast.makeText(context, R.string.dialog_edit_parcel_saved, Toast.LENGTH_SHORT).show()

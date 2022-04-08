@@ -2,6 +2,7 @@ package br.com.luizrcs.correiostracker.ui.fragment
 
 import android.os.*
 import android.text.*
+import android.util.*
 import android.view.*
 import android.widget.*
 import androidx.core.content.res.ResourcesCompat.*
@@ -18,6 +19,7 @@ import br.com.luizrcs.correiostracker.ui.util.*
 import br.com.luizrcs.correiostracker.ui.viewmodel.*
 import com.google.android.material.dialog.*
 import dagger.hilt.android.*
+import java.util.concurrent.*
 
 @AndroidEntryPoint
 class InTransitFragment: AppScreenFragment() {
@@ -75,19 +77,30 @@ class InTransitFragment: AppScreenFragment() {
 							val name = dialogBinding.name.text
 								?.let { if (it.isNotBlank()) it.toString().trim() else code.formatTrackingCode() }
 								?: code.formatTrackingCode()
-							viewModel.addParcel(name, code)
-							dialog.dismiss()
 							
-							Toast.makeText(context, R.string.parcel_added, Toast.LENGTH_SHORT).show()
+							viewModel.addParcel(name, code).invokeOnCompletion {
+								Toast.makeText(
+									context, when (it) {
+										null                     -> R.string.parcel_added
+										is CancellationException -> R.string.parcel_already_exists
+										else                     -> R.string.parcel_add_fail
+									},
+									Toast.LENGTH_SHORT
+								).show()
+							}
+							
+							dialog.dismiss()
 						} else dialogBinding.codeLayout.error = getString(R.string.dialog_add_parcel_empty_tracking_code)
 					}
 				}
 			}
 		}
 		
-		binding.parcelListing.swipeRefresh.setOnRefreshListener {
-			shouldAnnounce = true
-			viewModel.refreshParcels()
+		binding.parcelListing.swipeRefresh.apply {
+			setOnRefreshListener {
+				shouldAnnounce = true
+				viewModel.refreshParcels().invokeOnCompletion { isRefreshing = false }
+			}
 		}
 		
 		binding.parcelListing.recyclerView.apply {

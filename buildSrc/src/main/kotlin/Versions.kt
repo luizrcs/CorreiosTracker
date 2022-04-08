@@ -1,5 +1,5 @@
 object Versions {
-	const val kotlin = "1.6.0"
+	const val kotlin = "1.6.10"
 	
 	const val appCompat = "1.4.0-alpha03"
 	const val cardView = "1.0.0"

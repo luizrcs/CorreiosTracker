@@ -10,6 +10,7 @@ import android.view.*
 import android.widget.*
 import androidx.annotation.*
 import br.com.luizrcs.correiostracker.repository.*
+import br.com.luizrcs.correiostracker.ui.util.extensions.*
 import coil.*
 import org.joda.time.*
 import java.text.*
