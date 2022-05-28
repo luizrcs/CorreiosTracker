@@ -24,11 +24,14 @@
                 app:title="Encomenda"
 
                 app:collapsedTitleTextAppearance="@style/TextAppearance.CorreiosTracker.Title"
-                app:expandedTitleTextAppearance="@style/TextAppearance.CorreiosTracker.Headline4"
+                app:collapsedTitleTextColor="@color/white"
 
+                app:expandedTitleGravity="top"
                 app:expandedTitleMarginTop="60dp"
                 app:expandedTitleMarginStart="@dimen/parcel_details_toolbar_margin"
-                app:expandedTitleGravity="top">
+
+                app:expandedTitleTextAppearance="@style/TextAppearance.CorreiosTracker.Headline4"
+                app:expandedTitleTextColor="@color/white">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

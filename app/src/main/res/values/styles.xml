@@ -12,12 +12,34 @@
         <item name="counterTextColor">?attr/colorSecondaryVariant</item>
     </style>
 
-    <style name="TextAppearance.CorreiosTracker.Title" parent="TextAppearance.AppCompat.Title">
-        <item name="android:textColor">@color/white</item>
+    <style name="Widget.CorreiosTracker.ExtendedFloatingActionButton" parent="Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.CorreiosTracker.ExtendedFloatingActionButton</item>
+    </style>
+
+    <style name="Widget.CorreiosTracker.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.CorreiosTracker.BottomNavigationView</item>
+        <item name="itemRippleColor">@color/blue_100</item>
+    </style>
+
+    <style name="TextAppearance.CorreiosTracker.Title" parent="TextAppearance.Material3.ActionBar.Title">
+        <item name="collapsedTitleTextColor">@color/white</item>
     </style>
 
     <style name="TextAppearance.CorreiosTracker.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
-        <item name="android:textColor">@color/white</item>
+        <item name="expandedTitleTextColor">@color/white</item>
+    </style>
+
+    <style name="ThemeOverlay.CorreiosTracker.ExtendedFloatingActionButton" parent="">
+        <item name="colorContainer">@color/amber_500</item>
+        <item name="colorOnContainer">@color/white</item>
+    </style>
+
+    <style name="ThemeOverlay.CorreiosTracker.BottomNavigationView" parent="">
+        <item name="colorSurface">@color/blue_500</item>
+        <item name="colorOnSurfaceVariant">@color/blue_100</item>
+        <item name="colorSecondaryContainer">@color/white</item>
+        <item name="colorOnSecondaryContainer">@color/blue_500</item>
+        <item name="colorOnSurface">@color/white</item>
     </style>
 
 </resources>

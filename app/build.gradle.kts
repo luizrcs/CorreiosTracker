@@ -10,14 +10,14 @@ plugins {
 }
 
 android {
-	buildToolsVersion = "31.0.0"
-	compileSdk = 31
+	buildToolsVersion = "32.0.0"
+	compileSdk = 32
 	
 	defaultConfig {
 		applicationId = "br.com.luizrcs.correiostracker"
 		
 		minSdk = 21
-		targetSdk = 31
+		targetSdk = 32
 		
 		versionCode = 1
 		versionName = "1.0.0"
@@ -41,17 +41,18 @@ android {
 	}
 	
 	kotlinOptions {
-		apiVersion = "1.6"
-		languageVersion = "1.6"
+		apiVersion = "1.7"
+		languageVersion = "1.7"
 		
 		freeCompilerArgs += listOf(
 			"-Xopt-in=kotlin.RequiresOptIn",
 			"-P",
-			"plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=true")
+			"plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=true"
+		)
 	}
 	
 	composeOptions {
-		kotlinCompilerExtensionVersion = "1.1.0-rc02"
+		kotlinCompilerExtensionVersion = "1.2.0-beta02"
 	}
 }
 
