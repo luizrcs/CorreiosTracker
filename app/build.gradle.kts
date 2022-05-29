@@ -65,16 +65,16 @@ dependencies {
 	
 	androidx("appcompat", Versions.appCompat)
 	androidx("cardview", Versions.cardView)
-	androidxKtx("collection", Versions.collectionKtx)
+	androidxKtx("collection", Versions.collection)
 	androidx("constraintlayout", Versions.constraintLayout)
 	androidxKtx("core", Versions.coreKtx)
-	androidxKtx("lifecycle", "livedata", Versions.lifecycleKtx)
-	androidxKtx("lifecycle", "runtime", Versions.lifecycleKtx)
-	androidxKtx("lifecycle", "viewmodel", Versions.lifecycleKtx)
-	androidxKtx("navigation", "fragment", Versions.navigationKtx)
-	androidxKtx("navigation", "runtime", Versions.navigationKtx)
-	androidxKtx("navigation", "ui", Versions.navigationKtx)
-	androidxKtx("palette", Versions.paletteKtx)
+	androidxKtx("lifecycle", "livedata", Versions.lifecycle)
+	androidxKtx("lifecycle", "runtime", Versions.lifecycle)
+	androidxKtx("lifecycle", "viewmodel", Versions.lifecycle)
+	androidxKtx("navigation", "fragment", Versions.navigation)
+	androidxKtx("navigation", "runtime", Versions.navigation)
+	androidxKtx("navigation", "ui", Versions.navigation)
+	androidxKtx("palette", Versions.palette)
 	androidx("recyclerview", Versions.recyclerView)
 	androidx("swiperefreshlayout", Versions.swipeRefreshLayout)
 	
@@ -84,6 +84,7 @@ dependencies {
 	compose("ui", name = "tooling")
 	androidx("activity", "compose", Versions.activityCompose)
 	androidx("lifecycle", "viewmodel-compose", Versions.lifecycleViewModelCompose)
+	androidx("navigation", "compose", Versions.navigation)
 	
 	implementation("com.google.android.material", "material", Versions.material)
 	

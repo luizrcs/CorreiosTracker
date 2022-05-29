@@ -2,12 +2,12 @@
 
     <string name="app_name">Correios Tracker</string>
 
-    <string name="bottom_navigation_in_transit">Em trânsito</string>
-    <string name="bottom_navigation_finished">Finalizadas</string>
-    <string name="bottom_navigation_tools">Ferramentas</string>
+    <string name="mainNavigationBarItemInTransit">Em trânsito</string>
+    <string name="mainNavigationBarItemFinished">Finalizadas</string>
+    <string name="mainNavigationBarItemTools">Ferramentas</string>
 
     <string name="in_transit_no_parcels">Ainda não há\nencomendas\nadicionadas!</string>
-    <string name="in_transit_add">Adicionar</string>
+    <string name="inTransitAdd">Adicionar</string>
 
     <string name="finished_no_parcels">Ainda não há\nencomendas\nfinalizadas!</string>
 
