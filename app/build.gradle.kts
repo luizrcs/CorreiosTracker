@@ -79,7 +79,8 @@ dependencies {
 	androidx("swiperefreshlayout", Versions.swipeRefreshLayout)
 	
 	compose("animation")
-	compose("material")
+	compose("material", name = "icons-extended")
+	compose("material3", version = Versions.material3Compose)
 	compose("ui", name = "tooling")
 	androidx("activity", "compose", Versions.activityCompose)
 	androidx("lifecycle", "viewmodel-compose", Versions.lifecycleViewModelCompose)
