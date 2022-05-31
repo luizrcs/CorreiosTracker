@@ -11,6 +11,16 @@
 
     <string name="finished_no_parcels">Ainda não há\nencomendas\nfinalizadas!</string>
 
+    <string name="dialogAddParcelTitle">Adicionar encomenda</string>
+    <string name="dialogAddParcelName">Nome</string>
+    <string name="dialogAddParcelCode">Código de rastreamento</string>
+    <string name="dialog_add_parcel_empty_tracking_code">O código de rastreamento é obrigatório</string>
+    <string name="dialogAddParcelAdd">Adicionar</string>
+    <string name="dialogAddParcelCancel">Cancelar</string>
+
+    <string name="dialog_parcel_name">Nome</string>
+    <string name="dialog_parcel_cancel">Cancelar</string>
+
     <plurals name="parcel_collapsing_details_date">
         <item quantity="zero">Registrado hoje</item>
         <item quantity="one">Registrado ontem</item>
@@ -34,20 +44,12 @@
     <string name="parcels_failure_no_internet">Não há conexão com a internet neste momento!</string>
     <string name="parcels_updated">Encomendas atualizadas!</string>
 
-    <string name="dialog_add_parcel_title">Adicionar encomenda</string>
-    <string name="dialog_add_parcel_tracking_code">Código de rastreamento</string>
-    <string name="dialog_add_parcel_empty_tracking_code">O código de rastreamento é obrigatório</string>
-    <string name="dialog_add_parcel_add">Adicionar</string>
-
     <string name="dialog_edit_parcel_title">Editar encomenda</string>
     <string name="dialog_edit_code_copied">Código copiado!</string>
     <string name="dialog_edit_parcel_deleted">Encomenda excluída!</string>
     <string name="dialog_edit_parcel_saved">Encomenda salva!</string>
     <string name="dialog_edit_parcel_delete">Excluir</string>
     <string name="dialog_edit_parcel_save">Salvar</string>
-
-    <string name="dialog_parcel_name">Nome</string>
-    <string name="dialog_parcel_cancel">Cancelar</string>
 
     <string name="button_delete">Excluir</string>
     <string name="button_edit">Editar</string>

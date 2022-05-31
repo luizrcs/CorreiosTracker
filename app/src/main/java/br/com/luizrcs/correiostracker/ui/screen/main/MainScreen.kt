@@ -7,6 +7,7 @@ package br.com.luizrcs.correiostracker.ui.screen
 import android.annotation.*
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.*
 import androidx.compose.material.icons.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
@@ -17,6 +18,7 @@ import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.*
 import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
+import androidx.compose.ui.window.*
 import androidx.navigation.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
@@ -80,6 +82,8 @@ val mainScreens = listOf(
 fun MainScreen() {
 	val navController = rememberNavController()
 	
+	var openDialog by remember { mutableStateOf(true) }
+	
 	Scaffold(
 		topBar = { MainTopAppBar() },
 		floatingActionButton = {
@@ -104,6 +108,11 @@ fun MainScreen() {
 			}
 		}
 	}
+	
+	AddParcelDialog(
+		openDialog = openDialog,
+		onDismissRequest = { openDialog = false },
+	)
 }
 
 @Composable
@@ -167,6 +176,77 @@ fun MainNavigationBar(
 				selected = isActive,
 				onClick = setActive,
 			)
+		}
+	}
+}
+
+@Composable
+fun AddParcelDialog(openDialog: Boolean, onDismissRequest: () -> Unit) {
+	if (openDialog) {
+		Dialog(
+			onDismissRequest = onDismissRequest,
+			properties = DialogProperties(
+				dismissOnBackPress = true,
+				dismissOnClickOutside = true,
+			),
+		) {
+			Surface(
+				shape = RoundedCornerShape(16.dp),
+				shadowElevation = 4.dp,
+			) {
+				Column(
+					modifier = Modifier.padding(16.dp),
+				) {
+					var name by remember { mutableStateOf("") }
+					var code by remember { mutableStateOf("") }
+					
+					Text(
+						text = stringResource(R.string.dialogAddParcelTitle),
+						fontSize = 20.sp,
+						style = CorreiosTrackerTypography.titleLarge,
+					)
+					
+					Spacer(modifier = Modifier.height(8.dp))
+					
+					TextField(
+						value = name,
+						onValueChange = { name = it },
+						label = { Text(stringResource(R.string.dialogAddParcelName)) },
+						leadingIcon = { Icon(Icons.Outlined.Edit, null) },
+						colors = TextFieldDefaults.textFieldColors(
+							containerColor = correiosTrackerColorScheme().surface,
+						),
+					)
+					Spacer(modifier = Modifier.height(8.dp))
+					TextField(
+						value = code,
+						onValueChange = { code = it },
+						label = { Text(stringResource(R.string.dialogAddParcelCode)) },
+						leadingIcon = { Icon(Icons.Outlined.QrCode, null) },
+						colors = TextFieldDefaults.textFieldColors(
+							containerColor = correiosTrackerColorScheme().surface,
+						),
+					)
+					
+					Spacer(modifier = Modifier.height(8.dp))
+					
+					Row(
+						modifier = Modifier.align(Alignment.End),
+					) {
+						TextButton(
+							onClick = {},
+						) {
+							Text(stringResource(R.string.dialogAddParcelCancel))
+						}
+						Spacer(modifier = Modifier.width(8.dp))
+						Button(
+							onClick = {},
+						) {
+							Text(stringResource(R.string.dialogAddParcelAdd))
+						}
+					}
+				}
+			}
 		}
 	}
 }

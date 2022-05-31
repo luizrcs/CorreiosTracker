@@ -71,7 +71,7 @@ fun CorreiosTrackerTheme(
 ) {
 	return MaterialTheme(
 		colorScheme = correiosTrackerColorScheme(),
-		typography = AppTypography,
+		typography = CorreiosTrackerTypography,
 		content = content
 	)
 }

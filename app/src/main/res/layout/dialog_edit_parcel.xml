@@ -91,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:hint="@string/dialog_add_parcel_tracking_code"
+                android:hint="@string/dialogAddParcelCode"
                 android:enabled="false"
                 android:inputType="none" />
 
