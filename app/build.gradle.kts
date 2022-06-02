@@ -13,6 +13,8 @@ android {
 	buildToolsVersion = "32.0.0"
 	compileSdk = 32
 	
+	namespace = "br.com.luizrcs.correiostracker"
+	
 	defaultConfig {
 		applicationId = "br.com.luizrcs.correiostracker"
 		

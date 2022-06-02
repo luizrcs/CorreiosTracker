@@ -7,10 +7,14 @@ import androidx.navigation.*
 
 open class NavigationBarScreen(
 	route: String,
-	content: @Composable (NavController) -> Unit,
+	// content: @Composable (NavController) -> Unit,
 	val navigationBarItemDescriptor: NavigationBarItemDescriptor,
-): Screen(route, content) {
-	operator fun component3() = navigationBarItemDescriptor
+): Screen(
+	route,
+	// content,
+) {
+	// operator fun component3() = navigationBarItemDescriptor
+	operator fun component2() = navigationBarItemDescriptor
 }
 
 data class NavigationBarItemDescriptor(

@@ -5,8 +5,8 @@ import androidx.navigation.*
 
 open class Screen(
 	val route: String,
-	val content: @Composable (NavController) -> Unit,
+	// val content: @Composable (NavController) -> Unit,
 ) {
 	operator fun component1() = route
-	operator fun component2() = content
+	// operator fun component2() = content
 }

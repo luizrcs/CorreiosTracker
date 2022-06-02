@@ -6,7 +6,7 @@ import androidx.activity.*
 import androidx.activity.compose.*
 import androidx.core.view.*
 import br.com.luizrcs.correiostracker.databinding.*
-import br.com.luizrcs.correiostracker.ui.screen.*
+import br.com.luizrcs.correiostracker.ui.screen.main.*
 import br.com.luizrcs.correiostracker.ui.theme.*
 import com.google.android.material.appbar.*
 import com.google.android.material.bottomnavigation.*
@@ -15,7 +15,6 @@ import dagger.hilt.android.*
 
 @AndroidEntryPoint
 class MainActivity: ComponentActivity() {
-	
 	private lateinit var _binding: ActivityMainBinding
 	val binding by ::_binding
 	

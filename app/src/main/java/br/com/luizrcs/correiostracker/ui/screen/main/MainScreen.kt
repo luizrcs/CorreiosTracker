@@ -2,9 +2,10 @@
 	ExperimentalMaterial3Api::class,
 )
 
-package br.com.luizrcs.correiostracker.ui.screen
+package br.com.luizrcs.correiostracker.ui.screen.main
 
 import android.annotation.*
+import android.content.res.*
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*
@@ -23,17 +24,17 @@ import androidx.navigation.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
 import br.com.luizrcs.correiostracker.R
-import br.com.luizrcs.correiostracker.ui.screen.main.*
+import br.com.luizrcs.correiostracker.ui.screen.*
 import br.com.luizrcs.correiostracker.ui.theme.*
 import br.com.luizrcs.correiostracker.ui.util.extensions.*
 
 sealed class MainScreen(
 	route: String,
-	content: @Composable (NavController) -> Unit,
+	// content: @Composable (NavController) -> Unit,
 	navigationBarItemDescriptor: NavigationBarItemDescriptor,
 ): NavigationBarScreen(
 	route,
-	content,
+	// content,
 	navigationBarItemDescriptor
 ) {
 	object InTransit: MainScreen(
@@ -43,7 +44,7 @@ sealed class MainScreen(
 			iconInactive = Icons.Outlined.LocalShipping,
 			label = R.string.mainNavigationBarItemInTransit
 		),
-		content = { navController -> InTransitScreen(navController = navController) }
+		// content = { navController -> InTransitScreen(navController = navController) }
 	)
 	
 	object Finished: MainScreen(
@@ -53,9 +54,7 @@ sealed class MainScreen(
 			iconInactive = Icons.Outlined.CheckCircle,
 			label = R.string.mainNavigationBarItemFinished
 		),
-		content = {
-			Text(text = stringResource(id = R.string.mainNavigationBarItemFinished))
-		}
+		// content = {}
 	)
 	
 	object Tools: MainScreen(
@@ -65,9 +64,7 @@ sealed class MainScreen(
 			iconInactive = Icons.Outlined.Handyman,
 			label = R.string.mainNavigationBarItemTools
 		),
-		content = {
-			Text(text = stringResource(id = R.string.mainNavigationBarItemTools))
-		}
+		// content = {}
 	)
 }
 
@@ -82,19 +79,18 @@ val mainScreens = listOf(
 fun MainScreen() {
 	val navController = rememberNavController()
 	
-	var openDialog by remember { mutableStateOf(true) }
+	var openDialog by remember { mutableStateOf(false) }
 	
 	Scaffold(
 		topBar = { MainTopAppBar() },
 		floatingActionButton = {
 			MainExtendedFloatingActionButton(
 				navController = navController,
+				onClick = { openDialog = true }
 			)
 		},
 		bottomBar = {
-			MainNavigationBar(
-				navController = navController,
-			)
+			MainNavigationBar(navController = navController)
 		},
 	) { innerPadding ->
 		NavHost(
@@ -102,10 +98,16 @@ fun MainScreen() {
 			startDestination = mainScreens.first().route,
 			modifier = Modifier.padding(innerPadding),
 		) {
-			mainScreens.forEach { screen ->
+			// Disabled while the error "androidx.compose.runtime.internal.ComposableLambdaImpl cannot be cast to class" persists
+			/* mainScreens.forEach { screen ->
 				val (route, content) = screen
 				composable(route) { content(navController) }
-			}
+			} */
+			
+			// Alternative declaration
+			composable(MainScreen.InTransit.route) { InTransitScreen(navController = navController) }
+			composable(MainScreen.Finished.route) {}
+			composable(MainScreen.Tools.route) {}
 		}
 	}
 	
@@ -117,18 +119,15 @@ fun MainScreen() {
 
 @Composable
 fun MainTopAppBar() {
-	Surface(
-		tonalElevation = 3.dp,
-	) {
-		CenterAlignedTopAppBar(
-			title = { Text("Correios Tracker") },
-		)
+	Surface(tonalElevation = 3.dp) {
+		CenterAlignedTopAppBar(title = { Text("Correios Tracker") })
 	}
 }
 
 @Composable
 fun MainExtendedFloatingActionButton(
 	navController: NavController,
+	onClick: () -> Unit,
 ) {
 	val navBackStackEntry by navController.currentBackStackEntryAsState()
 	val isInTransitScreen = navBackStackEntry?.isInHierarchy(MainScreen.InTransit.route) == true
@@ -145,7 +144,7 @@ fun MainExtendedFloatingActionButton(
 		ExtendedFloatingActionButton(
 			text = { Text(text = stringResource(id = R.string.inTransitAdd)) },
 			icon = { Icon(Icons.Filled.Add, null) },
-			onClick = {},
+			onClick = onClick,
 		)
 	}
 }
@@ -158,7 +157,8 @@ fun MainNavigationBar(
 		val navBackStackEntry by navController.currentBackStackEntryAsState()
 		
 		mainScreens.forEach { screen ->
-			val (route, _, itemDescriptor) = screen
+			// val (route, _, itemDescriptor) = screen
+			val (route, itemDescriptor) = screen
 			val (iconActive, iconInactive, label) = itemDescriptor
 			
 			val isActive = navBackStackEntry?.isInHierarchy(screen.route) == true
@@ -194,9 +194,7 @@ fun AddParcelDialog(openDialog: Boolean, onDismissRequest: () -> Unit) {
 				shape = RoundedCornerShape(16.dp),
 				shadowElevation = 4.dp,
 			) {
-				Column(
-					modifier = Modifier.padding(16.dp),
-				) {
+				Column(modifier = Modifier.padding(16.dp)) {
 					var name by remember { mutableStateOf("") }
 					var code by remember { mutableStateOf("") }
 					
@@ -230,20 +228,10 @@ fun AddParcelDialog(openDialog: Boolean, onDismissRequest: () -> Unit) {
 					
 					Spacer(modifier = Modifier.height(8.dp))
 					
-					Row(
-						modifier = Modifier.align(Alignment.End),
-					) {
-						TextButton(
-							onClick = {},
-						) {
-							Text(stringResource(R.string.dialogAddParcelCancel))
-						}
+					Row(modifier = Modifier.align(Alignment.End)) {
+						TextButton(onClick = {}) { Text(stringResource(R.string.dialogAddParcelCancel)) }
 						Spacer(modifier = Modifier.width(8.dp))
-						Button(
-							onClick = {},
-						) {
-							Text(stringResource(R.string.dialogAddParcelAdd))
-						}
+						Button(onClick = {}) { Text(stringResource(R.string.dialogAddParcelAdd)) }
 					}
 				}
 			}
@@ -251,10 +239,45 @@ fun AddParcelDialog(openDialog: Boolean, onDismissRequest: () -> Unit) {
 	}
 }
 
-@Preview
+@Preview(
+	name = "Light Mode",
+	apiLevel = 32,
+	showSystemUi = true,
+	uiMode = Configuration.UI_MODE_NIGHT_NO,
+	device = Devices.PIXEL_4,
+)
+@Preview(
+	name = "Dark Mode",
+	apiLevel = 32,
+	showSystemUi = true,
+	uiMode = Configuration.UI_MODE_NIGHT_YES,
+	device = Devices.PIXEL_4,
+)
 @Composable
 fun PreviewMainScreen() {
 	CorreiosTrackerTheme {
 		MainScreen()
+	}
+}
+
+@Preview(
+	name = "Light Mode",
+	showBackground = true,
+	backgroundColor = 0xffffffff,
+	uiMode = Configuration.UI_MODE_NIGHT_NO,
+)
+@Preview(
+	name = "Dark Mode",
+	showBackground = true,
+	backgroundColor = 0xff000000,
+	uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
+@Composable
+fun PreviewAddParcelDialog() {
+	CorreiosTrackerTheme {
+		AddParcelDialog(
+			openDialog = true,
+			onDismissRequest = {},
+		)
 	}
 }

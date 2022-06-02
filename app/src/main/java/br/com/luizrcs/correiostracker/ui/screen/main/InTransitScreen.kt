@@ -1,5 +1,6 @@
 package br.com.luizrcs.correiostracker.ui.screen.main
 
+import android.content.res.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.*
 import androidx.compose.material.icons.outlined.*
@@ -39,16 +40,25 @@ fun InTransitScreen(navController: NavController) {
 	}
 }
 
-@Preview
+@Preview(
+	name = "Light Mode",
+	showBackground = true,
+	backgroundColor = 0xffffffff,
+	uiMode = Configuration.UI_MODE_NIGHT_NO,
+)
+@Preview(
+	name = "Dark Mode",
+	showBackground = true,
+	backgroundColor = 0xff000000,
+	uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
 @Composable
 fun PreviewInTransitScreen() {
 	val navController = rememberNavController()
 	
 	CorreiosTrackerTheme {
-		Surface {
-			InTransitScreen(
-				navController = navController,
-			)
-		}
+		InTransitScreen(
+			navController = navController,
+		)
 	}
 }
