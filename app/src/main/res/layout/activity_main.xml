@@ -45,7 +45,7 @@
             android:layout_marginBottom="96dp"
 
             app:icon="@drawable/outline_add_24"
-            android:text="@string/inTransitAdd"
+            android:text="@string/mainExtendedFloatingActionButtonAdd"
 
             style="@style/Widget.CorreiosTracker.ExtendedFloatingActionButton" />
 

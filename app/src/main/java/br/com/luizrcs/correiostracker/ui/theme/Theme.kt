@@ -1,8 +1,11 @@
 package br.com.luizrcs.correiostracker.ui.theme
 
+import android.os.Build.VERSION.*
+import android.os.Build.VERSION_CODES.*
 import androidx.compose.foundation.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.*
 
 private val LightThemeColors = lightColorScheme(
 	primary = md_theme_light_primary,
@@ -67,10 +70,17 @@ fun correiosTrackerColorScheme() = if (!isSystemInDarkTheme()) LightThemeColors 
 
 @Composable
 fun CorreiosTrackerTheme(
-	content: @Composable () -> Unit
+	content: @Composable () -> Unit,
 ) {
+	val useDynamicColors = false
+	val colorScheme = if (useDynamicColors && SDK_INT >= S) {
+		val context = LocalContext.current
+		if (!isSystemInDarkTheme()) dynamicLightColorScheme(context)
+		else dynamicDarkColorScheme(context)
+	} else correiosTrackerColorScheme()
+	
 	return MaterialTheme(
-		colorScheme = correiosTrackerColorScheme(),
+		colorScheme = colorScheme,
 		typography = CorreiosTrackerTypography,
 		content = content
 	)

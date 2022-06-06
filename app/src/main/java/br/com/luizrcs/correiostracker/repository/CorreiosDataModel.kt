@@ -13,7 +13,6 @@ data class Parcel(
 	@SerializedName("categoria") val serviceType: String = "",
 	@SerializedName("evento") var parcelEvents: List<ParcelEvent>? = null,
 ) {
-	
 	val countryCode get() = trackingCode.takeLast(2)
 }
 

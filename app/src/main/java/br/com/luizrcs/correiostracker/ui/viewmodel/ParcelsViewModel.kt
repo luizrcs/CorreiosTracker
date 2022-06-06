@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers.IO
 abstract class ParcelsViewModel(val correiosRepository: CorreiosRepository, private val onlyFinished: Boolean): ViewModel() {
 	
 	lateinit var parcels: List<Parcel>
-	val filteredParcels = MutableLiveData<List<Parcel>>()
+	val filteredParcels = MutableLiveData<List<Parcel>>(listOf())
 	
 	val changeFailed = MutableLiveData(false)
 	

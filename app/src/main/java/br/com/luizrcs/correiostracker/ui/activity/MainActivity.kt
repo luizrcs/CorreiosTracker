@@ -5,9 +5,9 @@ import android.view.*
 import androidx.activity.*
 import androidx.activity.compose.*
 import androidx.core.view.*
-import br.com.luizrcs.correiostracker.databinding.*
 import br.com.luizrcs.correiostracker.ui.screen.main.*
 import br.com.luizrcs.correiostracker.ui.theme.*
+import br.com.luizrcs.correiostracker.ui.viewmodel.*
 import com.google.android.material.appbar.*
 import com.google.android.material.bottomnavigation.*
 import com.google.android.material.floatingactionbutton.*
@@ -15,15 +15,15 @@ import dagger.hilt.android.*
 
 @AndroidEntryPoint
 class MainActivity: ComponentActivity() {
-	private lateinit var _binding: ActivityMainBinding
-	val binding by ::_binding
+	
+	val viewModel by viewModels<MainViewModel>()
 	
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		
 		setContent {
 			CorreiosTrackerTheme {
-				MainScreen()
+				MainScreen(viewModel)
 			}
 		}
 	}

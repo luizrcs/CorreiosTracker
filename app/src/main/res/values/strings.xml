@@ -5,11 +5,10 @@
     <string name="mainNavigationBarItemInTransit">Em trânsito</string>
     <string name="mainNavigationBarItemFinished">Finalizadas</string>
     <string name="mainNavigationBarItemTools">Ferramentas</string>
+    <string name="mainExtendedFloatingActionButtonAdd">Adicionar</string>
 
-    <string name="in_transit_no_parcels">Ainda não há\nencomendas\nadicionadas!</string>
-    <string name="inTransitAdd">Adicionar</string>
-
-    <string name="finished_no_parcels">Ainda não há\nencomendas\nfinalizadas!</string>
+    <string name="inTransitNoParcels">Ainda não há\nencomendas\nadicionadas!</string>
+    <string name="finishedNoParcels">Ainda não há\nencomendas\nfinalizadas!</string>
 
     <string name="dialogAddParcelTitle">Adicionar encomenda</string>
     <string name="dialogAddParcelName">Nome</string>

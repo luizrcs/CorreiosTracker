@@ -32,10 +32,6 @@ class FinishedFragment: AppScreenFragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		
-		with(activity as MainActivity) {
-			binding.fab.hideAnimated()
-		}
-		
 		binding.parcelListing.swipeRefresh.setOnRefreshListener {
 			shouldAnnounce = true
 			viewModel.refreshParcels()

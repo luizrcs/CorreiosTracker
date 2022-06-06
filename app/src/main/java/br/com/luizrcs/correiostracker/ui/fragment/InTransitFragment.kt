@@ -2,24 +2,17 @@ package br.com.luizrcs.correiostracker.ui.fragment
 
 import android.os.*
 import android.text.*
-import android.util.*
 import android.view.*
 import android.widget.*
-import androidx.core.content.res.ResourcesCompat.*
-import androidx.core.widget.*
 import androidx.fragment.app.*
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.RecyclerView.*
 import br.com.luizrcs.correiostracker.R
 import br.com.luizrcs.correiostracker.databinding.*
-import br.com.luizrcs.correiostracker.ui.activity.*
 import br.com.luizrcs.correiostracker.ui.recyclerview.*
-import br.com.luizrcs.correiostracker.ui.util.*
 import br.com.luizrcs.correiostracker.ui.viewmodel.*
-import com.google.android.material.dialog.*
 import dagger.hilt.android.*
-import java.util.concurrent.*
 
 @AndroidEntryPoint
 class InTransitFragment: AppScreenFragment() {
@@ -52,49 +45,6 @@ class InTransitFragment: AppScreenFragment() {
 	
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
-		
-		with(activity as MainActivity) {
-			binding.fab.run {
-				showAnimated()
-				
-				setOnClickListener {
-					val dialogBinding = DialogAddParcelBinding.inflate(layoutInflater)
-					
-					val dialog = MaterialAlertDialogBuilder(requireContext())
-						.setView(dialogBinding.root)
-						.setBackground(getDrawable(resources, R.drawable.dialog_shape, null))
-						.show()
-					
-					dialogBinding.code.apply {
-						filters = arrayOf(trackingCodeInputFilter)
-						addTextChangedListener { dialogBinding.codeLayout.error = null }
-					}
-					
-					dialogBinding.cancel.setOnClickListener { dialog.dismiss() }
-					dialogBinding.confirm.setOnClickListener {
-						if (dialogBinding.code.text?.isNotBlank() == true) {
-							val code = dialogBinding.code.text.toString()
-							val name = dialogBinding.name.text
-								?.let { if (it.isNotBlank()) it.toString().trim() else code.formatTrackingCode() }
-								?: code.formatTrackingCode()
-							
-							viewModel.addParcel(name, code).invokeOnCompletion {
-								Toast.makeText(
-									context, when (it) {
-										null                     -> R.string.parcel_added
-										is CancellationException -> R.string.parcel_already_exists
-										else                     -> R.string.parcel_add_fail
-									},
-									Toast.LENGTH_SHORT
-								).show()
-							}
-							
-							dialog.dismiss()
-						} else dialogBinding.codeLayout.error = getString(R.string.dialog_add_parcel_empty_tracking_code)
-					}
-				}
-			}
-		}
 		
 		binding.parcelListing.swipeRefresh.apply {
 			setOnRefreshListener {
@@ -136,10 +86,6 @@ class InTransitFragment: AppScreenFragment() {
 	
 	override fun onDestroyView() {
 		super.onDestroyView()
-		
-		with(activity as MainActivity) {
-			binding.fab.setOnClickListener(null)
-		}
 		
 		_binding = null
 	}

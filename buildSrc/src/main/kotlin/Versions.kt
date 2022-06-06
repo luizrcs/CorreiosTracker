@@ -14,7 +14,7 @@ object Versions {
 	
 	const val material = "1.7.0-alpha01"
 	
-	const val compose = "1.2.0-beta02"
+	const val compose = "1.2.0-beta03"
 	const val material3Compose = "1.0.0-alpha12"
 	const val activityCompose = "1.6.0-alpha03"
 	const val lifecycleViewModelCompose = "2.5.0-rc01"

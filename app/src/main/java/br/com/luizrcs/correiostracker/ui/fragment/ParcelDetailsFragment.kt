@@ -45,12 +45,6 @@ class ParcelDetailsFragment: Fragment() {
 		
 		var color = 0
 		
-		with(activity as MainActivity) {
-			binding.toolbar.hideAnimated { animateStatusBarColor(window.statusBarColor, color) }
-			binding.fab.hideAnimated()
-			binding.bottomNavigation.hideAnimated { animateNavigationBarColor(window.statusBarColor, color) }
-		}
-		
 		val index = requireArguments().getInt("index")
 		val parcel = viewModel.parcels.value!![index]
 		

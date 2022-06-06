@@ -1,7 +1,3 @@
-@file:OptIn(
-	ExperimentalMaterial3Api::class,
-)
-
 package br.com.luizrcs.correiostracker.ui.screen.main
 
 import android.annotation.*
@@ -14,7 +10,9 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.*
 import androidx.compose.ui.*
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.*
 import androidx.compose.ui.tooling.preview.*
@@ -24,9 +22,11 @@ import androidx.navigation.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
 import br.com.luizrcs.correiostracker.R
+import br.com.luizrcs.correiostracker.repository.*
 import br.com.luizrcs.correiostracker.ui.screen.*
 import br.com.luizrcs.correiostracker.ui.theme.*
 import br.com.luizrcs.correiostracker.ui.util.extensions.*
+import br.com.luizrcs.correiostracker.ui.viewmodel.*
 
 sealed class MainScreen(
 	route: String,
@@ -54,7 +54,7 @@ sealed class MainScreen(
 			iconInactive = Icons.Outlined.CheckCircle,
 			label = R.string.mainNavigationBarItemFinished
 		),
-		// content = {}
+		// content = { navController -> FinishedScreen(navController = navController) }
 	)
 	
 	object Tools: MainScreen(
@@ -64,7 +64,7 @@ sealed class MainScreen(
 			iconInactive = Icons.Outlined.Handyman,
 			label = R.string.mainNavigationBarItemTools
 		),
-		// content = {}
+		// content = { navController -> ToolsScreen(navController = navController) }
 	)
 }
 
@@ -76,17 +76,37 @@ val mainScreens = listOf(
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreen() {
+fun MainScreen(viewModel: MainViewModel) {
 	val navController = rememberNavController()
 	
+	val parcels by viewModel.filteredParcels.observeAsState(listOf())
 	var openDialog by remember { mutableStateOf(false) }
 	
+	MainScaffold(
+		navController = navController,
+		parcels = parcels,
+		onMainExtendedFabClick = { openDialog = true },
+	)
+	
+	AddParcelDialog(
+		openDialog = openDialog,
+		onDismissRequest = { openDialog = false },
+	)
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MainScaffold(
+	navController: NavHostController,
+	parcels: List<Parcel>,
+	onMainExtendedFabClick: () -> Unit,
+) {
 	Scaffold(
 		topBar = { MainTopAppBar() },
 		floatingActionButton = {
 			MainExtendedFloatingActionButton(
 				navController = navController,
-				onClick = { openDialog = true }
+				onClick = onMainExtendedFabClick,
 			)
 		},
 		bottomBar = {
@@ -105,16 +125,23 @@ fun MainScreen() {
 			} */
 			
 			// Alternative declaration
-			composable(MainScreen.InTransit.route) { InTransitScreen(navController = navController) }
-			composable(MainScreen.Finished.route) {}
+			composable(MainScreen.InTransit.route) {
+				InTransitScreen(
+					navController = navController,
+					parcels = parcels,
+				)
+			}
+			
+			composable(MainScreen.Finished.route) {
+				FinishedScreen(
+					navController = navController,
+					parcels = parcels,
+				)
+			}
+			
 			composable(MainScreen.Tools.route) {}
 		}
 	}
-	
-	AddParcelDialog(
-		openDialog = openDialog,
-		onDismissRequest = { openDialog = false },
-	)
 }
 
 @Composable
@@ -142,9 +169,11 @@ fun MainExtendedFloatingActionButton(
 		exit = slideOutHorizontally(targetOffsetX = offsetX),
 	) {
 		ExtendedFloatingActionButton(
-			text = { Text(text = stringResource(id = R.string.inTransitAdd)) },
+			text = { Text(text = stringResource(id = R.string.mainExtendedFloatingActionButtonAdd)) },
 			icon = { Icon(Icons.Filled.Add, null) },
 			onClick = onClick,
+			// containerColor = correiosTrackerColorScheme().primary,
+			// contentColor = correiosTrackerColorScheme().onPrimary,
 		)
 	}
 }
@@ -212,7 +241,7 @@ fun AddParcelDialog(openDialog: Boolean, onDismissRequest: () -> Unit) {
 						label = { Text(stringResource(R.string.dialogAddParcelName)) },
 						leadingIcon = { Icon(Icons.Outlined.Edit, null) },
 						colors = TextFieldDefaults.textFieldColors(
-							containerColor = correiosTrackerColorScheme().surface,
+							containerColor = Color.Transparent,
 						),
 					)
 					Spacer(modifier = Modifier.height(8.dp))
@@ -222,14 +251,14 @@ fun AddParcelDialog(openDialog: Boolean, onDismissRequest: () -> Unit) {
 						label = { Text(stringResource(R.string.dialogAddParcelCode)) },
 						leadingIcon = { Icon(Icons.Outlined.QrCode, null) },
 						colors = TextFieldDefaults.textFieldColors(
-							containerColor = correiosTrackerColorScheme().surface,
+							containerColor = Color.Transparent,
 						),
 					)
 					
 					Spacer(modifier = Modifier.height(8.dp))
 					
 					Row(modifier = Modifier.align(Alignment.End)) {
-						TextButton(onClick = {}) { Text(stringResource(R.string.dialogAddParcelCancel)) }
+						TextButton(onClick = onDismissRequest) { Text(stringResource(R.string.dialogAddParcelCancel)) }
 						Spacer(modifier = Modifier.width(8.dp))
 						Button(onClick = {}) { Text(stringResource(R.string.dialogAddParcelAdd)) }
 					}
@@ -255,8 +284,14 @@ fun AddParcelDialog(openDialog: Boolean, onDismissRequest: () -> Unit) {
 )
 @Composable
 fun PreviewMainScreen() {
+	val navController = rememberNavController()
+	
 	CorreiosTrackerTheme {
-		MainScreen()
+		MainScaffold(
+			navController = navController,
+			parcels = listOf(),
+			onMainExtendedFabClick = {},
+		)
 	}
 }
 
