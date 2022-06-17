@@ -85,7 +85,9 @@ dependencies {
 	compose("material3", version = Versions.material3Compose)
 	compose("runtime", name = "livedata")
 	compose("ui", name = "tooling")
+	accompanist("swiperefresh")
 	androidx("activity", "compose", Versions.activityCompose)
+	androidx("constraintlayout", "compose", Versions.constraintLayoutCompose)
 	androidx("lifecycle", "viewmodel-compose", Versions.lifecycleViewModelCompose)
 	androidx("navigation", "compose", Versions.navigation)
 	

@@ -19,6 +19,8 @@ fun InTransitScreen(
 	navController: NavController,
 	parcels: List<Parcel>,
 ) {
+	val parcels = generateTestParcels()
+	
 	if (parcels.isEmpty()) {
 		NoParcels(
 			icon = Icons.Outlined.ListAlt,
@@ -29,34 +31,6 @@ fun InTransitScreen(
 			navController = navController,
 			parcels = parcels,
 		)
-	}
-}
-
-@Composable
-fun ParcelList(
-	navController: NavController,
-	parcels: List<Parcel>,
-) {
-	Column {
-		parcels.forEach { parcel ->
-			Parcel(
-				navController = navController,
-				parcel = parcel,
-			)
-		}
-	}
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun Parcel(
-	navController: NavController,
-	parcel: Parcel,
-) {
-	Card {
-		Row {
-		
-		}
 	}
 }
 

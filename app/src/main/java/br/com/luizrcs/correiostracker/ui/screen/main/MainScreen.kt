@@ -223,7 +223,10 @@ fun AddParcelDialog(openDialog: Boolean, onDismissRequest: () -> Unit) {
 				shape = RoundedCornerShape(16.dp),
 				shadowElevation = 4.dp,
 			) {
-				Column(modifier = Modifier.padding(16.dp)) {
+				Column(
+					modifier = Modifier.padding(16.dp),
+					verticalArrangement = Arrangement.spacedBy(8.dp)
+				) {
 					var name by remember { mutableStateOf("") }
 					var code by remember { mutableStateOf("") }
 					
@@ -232,8 +235,6 @@ fun AddParcelDialog(openDialog: Boolean, onDismissRequest: () -> Unit) {
 						fontSize = 20.sp,
 						style = CorreiosTrackerTypography.titleLarge,
 					)
-					
-					Spacer(modifier = Modifier.height(8.dp))
 					
 					TextField(
 						value = name,
@@ -244,7 +245,6 @@ fun AddParcelDialog(openDialog: Boolean, onDismissRequest: () -> Unit) {
 							containerColor = Color.Transparent,
 						),
 					)
-					Spacer(modifier = Modifier.height(8.dp))
 					TextField(
 						value = code,
 						onValueChange = { code = it },
@@ -254,8 +254,6 @@ fun AddParcelDialog(openDialog: Boolean, onDismissRequest: () -> Unit) {
 							containerColor = Color.Transparent,
 						),
 					)
-					
-					Spacer(modifier = Modifier.height(8.dp))
 					
 					Row(modifier = Modifier.align(Alignment.End)) {
 						TextButton(onClick = onDismissRequest) { Text(stringResource(R.string.dialogAddParcelCancel)) }
