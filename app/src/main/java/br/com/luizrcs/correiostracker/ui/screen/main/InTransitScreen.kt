@@ -47,12 +47,17 @@ fun ParcelList(
 	}
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Parcel(
 	navController: NavController,
 	parcel: Parcel,
 ) {
-	Text(text = parcel.name)
+	Card {
+		Row {
+		
+		}
+	}
 }
 
 @Preview(
