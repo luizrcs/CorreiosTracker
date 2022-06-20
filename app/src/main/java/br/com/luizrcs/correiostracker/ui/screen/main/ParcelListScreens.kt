@@ -27,6 +27,7 @@ import br.com.luizrcs.correiostracker.R
 import br.com.luizrcs.correiostracker.repository.*
 import br.com.luizrcs.correiostracker.ui.theme.*
 import br.com.luizrcs.correiostracker.ui.util.*
+import br.com.luizrcs.correiostracker.ui.util.extensions.*
 import com.google.accompanist.swiperefresh.*
 import kotlin.OptIn
 
@@ -44,7 +45,6 @@ fun NoParcels(
 		
 		Icon(
 			imageVector = icon,
-			contentDescription = null,
 			modifier = Modifier.size(120.dp),
 			tint = outlineColor,
 		)
@@ -94,10 +94,25 @@ fun Parcel(
 ) {
 	val (name, code, _, type) = parcel
 	
-	ElevatedCard(
-		colors = CardDefaults.elevatedCardColors(
-			// containerColor = Color.White,
+	val useDynamicColors = useDynamicColors()
+	val colorScheme = correiosTrackerColorScheme()
+	
+	val cardColors =
+		if (useDynamicColors) CardDefaults.cardColors()
+		else CardDefaults.cardColors(
+			containerColor = colorScheme.surfaceVariant,
+			contentColor = colorScheme.onSurfaceVariant,
+		)
+	
+	Card(
+		onClick = {},
+		modifier = Modifier.shadow(
+			elevation = 1.dp,
+			shape = RoundedCornerShape(12.dp),
+			clip = false,
 		),
+		enabled = true,
+		colors = cardColors,
 	) {
 		ConstraintLayout(
 			modifier = Modifier
@@ -126,7 +141,6 @@ fun Parcel(
 			) {
 				Icon(
 					imageVector = Icons.Outlined.LocalShipping,
-					contentDescription = null,
 					modifier = Modifier.size(28.dp),
 					tint = Color.White,
 				)
@@ -184,7 +198,6 @@ fun Parcel(
 			) {
 				Icon(
 					imageVector = Icons.Outlined.Place,
-					contentDescription = null,
 					modifier = Modifier.size(16.dp),
 					tint = Color.Red,
 				)
@@ -210,16 +223,13 @@ fun Parcel(
 					modifier = Modifier
 						.border(
 							width = 1.dp,
-							color = correiosTrackerColorScheme().onSurface,
+							color = colorScheme.onSurfaceVariant,
 							shape = RoundedCornerShape(4.dp),
 						)
 						.padding(4.dp, 1.dp, 4.dp, 2.dp)
 				)
-				Image(
-					painter = painterResource(id = R.drawable.br),
-					contentDescription = null,
-					modifier = Modifier.size(24.dp),
-				)
+				
+				Image(painterResource(id = R.drawable.br), Modifier.size(24.dp))
 			}
 			
 			Column(

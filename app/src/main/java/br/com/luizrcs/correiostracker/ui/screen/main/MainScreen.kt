@@ -3,6 +3,7 @@ package br.com.luizrcs.correiostracker.ui.screen.main
 import android.annotation.*
 import android.content.res.*
 import androidx.compose.animation.*
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*
 import androidx.compose.material.icons.*
@@ -101,6 +102,8 @@ fun MainScaffold(
 	parcels: List<Parcel>,
 	onMainExtendedFabClick: () -> Unit,
 ) {
+	val colorScheme = correiosTrackerColorScheme()
+	
 	Scaffold(
 		topBar = { MainTopAppBar() },
 		floatingActionButton = {
@@ -109,9 +112,8 @@ fun MainScaffold(
 				onClick = onMainExtendedFabClick,
 			)
 		},
-		bottomBar = {
-			MainNavigationBar(navController = navController)
-		},
+		bottomBar = { MainNavigationBar(navController = navController) },
+		containerColor = colorScheme.background,
 	) { innerPadding ->
 		NavHost(
 			navController = navController,
@@ -146,8 +148,26 @@ fun MainScaffold(
 
 @Composable
 fun MainTopAppBar() {
-	Surface(tonalElevation = 3.dp) {
-		CenterAlignedTopAppBar(title = { Text("Correios Tracker") })
+	val useDynamicColors = useDynamicColors()
+	val colorScheme = correiosTrackerColorScheme()
+	
+	Surface(
+		tonalElevation = if (useDynamicColors) 3.dp else 0.dp,
+	) {
+		val topAppBarColors =
+			if (useDynamicColors) TopAppBarDefaults.centerAlignedTopAppBarColors()
+			else TopAppBarDefaults.centerAlignedTopAppBarColors(
+				containerColor = colorScheme.secondaryContainer,
+				scrolledContainerColor = colorScheme.secondaryContainer,
+				navigationIconContentColor = colorScheme.onSecondaryContainer,
+				titleContentColor = colorScheme.onSecondaryContainer,
+				actionIconContentColor = colorScheme.onSecondaryContainer,
+			)
+		
+		CenterAlignedTopAppBar(
+			title = { Text("Correios Tracker") },
+			colors = topAppBarColors,
+		)
 	}
 }
 
@@ -170,7 +190,7 @@ fun MainExtendedFloatingActionButton(
 	) {
 		ExtendedFloatingActionButton(
 			text = { Text(text = stringResource(id = R.string.mainExtendedFloatingActionButtonAdd)) },
-			icon = { Icon(Icons.Filled.Add, null) },
+			icon = { Icon(Icons.Filled.Add) },
 			onClick = onClick,
 			// containerColor = correiosTrackerColorScheme().primary,
 			// contentColor = correiosTrackerColorScheme().onPrimary,
@@ -182,7 +202,17 @@ fun MainExtendedFloatingActionButton(
 fun MainNavigationBar(
 	navController: NavController,
 ) {
-	NavigationBar {
+	val useDynamicColors = useDynamicColors()
+	val colorScheme = correiosTrackerColorScheme()
+	
+	val containerColor = if (useDynamicColors) colorScheme.surface else colorScheme.secondaryContainer
+	val contentColor = if (useDynamicColors) colorScheme.onSurface else colorScheme.onSecondaryContainer
+	
+	NavigationBar(
+		containerColor = containerColor,
+		contentColor = contentColor,
+		tonalElevation = if (useDynamicColors) 3.dp else 0.dp,
+	) {
 		val navBackStackEntry by navController.currentBackStackEntryAsState()
 		
 		mainScreens.forEach { screen ->
@@ -199,11 +229,22 @@ fun MainNavigationBar(
 				}
 			}
 			
+			val navigationBarItemColors =
+				if (useDynamicColors) NavigationBarItemDefaults.colors()
+				else NavigationBarItemDefaults.colors(
+					indicatorColor = contentColor,
+					selectedIconColor = containerColor,
+					selectedTextColor = contentColor,
+					unselectedIconColor = colorScheme.onTertiaryContainer,
+					unselectedTextColor = colorScheme.onTertiaryContainer,
+				)
+			
 			NavigationBarItem(
-				icon = { Icon(if (isActive) iconActive else iconInactive, null) },
+				icon = { Icon(if (isActive) iconActive else iconInactive) },
 				label = { Text(stringResource(label)) },
 				selected = isActive,
 				onClick = setActive,
+				colors = navigationBarItemColors,
 			)
 		}
 	}
@@ -212,6 +253,9 @@ fun MainNavigationBar(
 @Composable
 fun AddParcelDialog(openDialog: Boolean, onDismissRequest: () -> Unit) {
 	if (openDialog) {
+		val useDynamicColors = useDynamicColors()
+		val colorScheme = correiosTrackerColorScheme()
+		
 		Dialog(
 			onDismissRequest = onDismissRequest,
 			properties = DialogProperties(
@@ -236,23 +280,30 @@ fun AddParcelDialog(openDialog: Boolean, onDismissRequest: () -> Unit) {
 						style = CorreiosTrackerTypography.titleLarge,
 					)
 					
+					val textFieldColors = if (useDynamicColors) TextFieldDefaults.textFieldColors(
+						containerColor = Color.Transparent,
+					) else TextFieldDefaults.textFieldColors(
+						containerColor = Color.Transparent,
+						cursorColor = colorScheme.onSurface,
+						focusedLeadingIconColor = colorScheme.onSurface,
+						focusedLabelColor = colorScheme.onSurface,
+						unfocusedLeadingIconColor = colorScheme.onSurfaceVariant,
+						unfocusedLabelColor = colorScheme.onSurfaceVariant,
+					)
+					
 					TextField(
 						value = name,
 						onValueChange = { name = it },
 						label = { Text(stringResource(R.string.dialogAddParcelName)) },
-						leadingIcon = { Icon(Icons.Outlined.Edit, null) },
-						colors = TextFieldDefaults.textFieldColors(
-							containerColor = Color.Transparent,
-						),
+						leadingIcon = { Icon(Icons.Outlined.Edit) },
+						colors = textFieldColors,
 					)
 					TextField(
 						value = code,
 						onValueChange = { code = it },
 						label = { Text(stringResource(R.string.dialogAddParcelCode)) },
-						leadingIcon = { Icon(Icons.Outlined.QrCode, null) },
-						colors = TextFieldDefaults.textFieldColors(
-							containerColor = Color.Transparent,
-						),
+						leadingIcon = { Icon(Icons.Outlined.QrCode) },
+						colors = textFieldColors,
 					)
 					
 					Row(modifier = Modifier.align(Alignment.End)) {

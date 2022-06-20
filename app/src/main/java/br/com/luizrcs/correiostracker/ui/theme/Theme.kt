@@ -6,8 +6,9 @@ import androidx.compose.foundation.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.*
+import com.google.android.material.color.*
 
-private val LightThemeColors = lightColorScheme(
+private val LightThemeColorScheme = lightColorScheme(
 	primary = md_theme_light_primary,
 	onPrimary = md_theme_light_onPrimary,
 	primaryContainer = md_theme_light_primaryContainer,
@@ -36,7 +37,7 @@ private val LightThemeColors = lightColorScheme(
 	inversePrimary = md_theme_light_inversePrimary,
 )
 
-private val DarkThemeColors = darkColorScheme(
+private val DarkThemeColorScheme = darkColorScheme(
 	primary = md_theme_dark_primary,
 	onPrimary = md_theme_dark_onPrimary,
 	primaryContainer = md_theme_dark_primaryContainer,
@@ -66,13 +67,16 @@ private val DarkThemeColors = darkColorScheme(
 )
 
 @Composable
-fun correiosTrackerColorScheme(useDynamicColors: Boolean = false) = LocalContext.current.let { context ->
-	if (useDynamicColors && SDK_INT >= S) {
+fun useDynamicColors() = false && SDK_INT >= S && DynamicColors.isDynamicColorAvailable()
+
+@Composable
+fun correiosTrackerColorScheme() = LocalContext.current.let { context ->
+	if (useDynamicColors()) {
 		if (!isSystemInDarkTheme()) dynamicLightColorScheme(context)
 		else dynamicDarkColorScheme(context)
 	} else {
-		if (!isSystemInDarkTheme()) LightThemeColors
-		else DarkThemeColors
+		if (!isSystemInDarkTheme()) LightThemeColorScheme
+		else DarkThemeColorScheme
 	}
 }
 
