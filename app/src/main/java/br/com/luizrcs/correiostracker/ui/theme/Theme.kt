@@ -66,22 +66,21 @@ private val DarkThemeColors = darkColorScheme(
 )
 
 @Composable
-fun correiosTrackerColorScheme() = if (!isSystemInDarkTheme()) LightThemeColors else DarkThemeColors
+fun correiosTrackerColorScheme(useDynamicColors: Boolean = false) = LocalContext.current.let { context ->
+	if (useDynamicColors && SDK_INT >= S) {
+		if (!isSystemInDarkTheme()) dynamicLightColorScheme(context)
+		else dynamicDarkColorScheme(context)
+	} else {
+		if (!isSystemInDarkTheme()) LightThemeColors
+		else DarkThemeColors
+	}
+}
 
 @Composable
 fun CorreiosTrackerTheme(
 	content: @Composable () -> Unit,
-) {
-	val useDynamicColors = false
-	val colorScheme = if (useDynamicColors && SDK_INT >= S) {
-		val context = LocalContext.current
-		if (!isSystemInDarkTheme()) dynamicLightColorScheme(context)
-		else dynamicDarkColorScheme(context)
-	} else correiosTrackerColorScheme()
-	
-	return MaterialTheme(
-		colorScheme = colorScheme,
-		typography = CorreiosTrackerTypography,
-		content = content
-	)
-}
+) = MaterialTheme(
+	colorScheme = correiosTrackerColorScheme(),
+	typography = CorreiosTrackerTypography,
+	content = content
+)

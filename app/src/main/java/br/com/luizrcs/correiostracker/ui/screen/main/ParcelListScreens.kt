@@ -158,7 +158,6 @@ fun Parcel(
 				overflow = TextOverflow.Ellipsis,
 				maxLines = 1,
 				modifier = Modifier.constrainAs(statusRef) {
-					top.linkTo(nameRef.bottom, margin = 4.dp)
 					linkTo(
 						start = nameRef.start,
 						end = dateTimeRef.start,
@@ -166,12 +165,12 @@ fun Parcel(
 						bias = 0f,
 					)
 					width = Dimension.fillToConstraints
+					top.linkTo(nameRef.bottom, margin = 4.dp)
 				},
 			)
 			
 			Row(
 				modifier = Modifier.constrainAs(locationRef) {
-					top.linkTo(statusRef.bottom, margin = 4.dp)
 					linkTo(
 						start = nameRef.start,
 						end = dateTimeRef.start,
@@ -179,6 +178,7 @@ fun Parcel(
 						bias = 0f,
 					)
 					width = Dimension.fillToConstraints
+					top.linkTo(statusRef.bottom, margin = 4.dp)
 				},
 				verticalAlignment = Alignment.CenterVertically,
 			) {
@@ -224,8 +224,8 @@ fun Parcel(
 			
 			Column(
 				modifier = Modifier.constrainAs(dateTimeRef) {
-					bottom.linkTo(parent.bottom)
 					end.linkTo(parent.end)
+					bottom.linkTo(parent.bottom)
 				},
 				horizontalAlignment = Alignment.End,
 			) {
