@@ -6,6 +6,7 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*
+import androidx.compose.foundation.text.*
 import androidx.compose.material.icons.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
@@ -16,9 +17,12 @@ import androidx.compose.ui.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.*
+import androidx.compose.ui.text.input.*
+import androidx.compose.ui.text.style.*
 import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.window.*
+import androidx.constraintlayout.compose.*
 import androidx.navigation.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
@@ -278,17 +282,22 @@ fun ParcelDialog(
 				shape = RoundedCornerShape(16.dp),
 				shadowElevation = 4.dp,
 			) {
-				Column(
+				ConstraintLayout(
 					modifier = Modifier.padding(16.dp),
-					verticalArrangement = Arrangement.spacedBy(8.dp)
 				) {
+					val (titleRef, nameRef, codeRef, copyRef, cancelRef, doneRef) = createRefs()
+					
+					val focusManager = LocalFocusManager.current
+					
 					var name by remember { mutableStateOf("") }
 					var code by remember { mutableStateOf("") }
 					
+					// Title
 					Text(
 						text = stringResource(if (editParcel) R.string.dialogParcelTitleEdit else R.string.dialogParcelTitleAdd),
 						fontSize = 20.sp,
 						style = CorreiosTrackerTypography.titleLarge,
+						modifier = Modifier.constrainAs(titleRef) {},
 					)
 					
 					val contentColor = if (!darkTheme) colorScheme.secondary else colorScheme.onSurface
@@ -304,28 +313,87 @@ fun ParcelDialog(
 						unfocusedLabelColor = colorScheme.onSurfaceVariant,
 					)
 					
+					val keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
+					
+					// Name field
 					TextField(
 						value = name,
 						onValueChange = { name = it },
 						label = { Text(stringResource(R.string.dialogParcelName)) },
 						leadingIcon = { Icon(Icons.Outlined.Edit) },
+						keyboardOptions = KeyboardOptions(imeAction = if (editParcel) ImeAction.Done else ImeAction.Next),
+						keyboardActions = keyboardActions,
+						singleLine = true,
 						colors = textFieldColors,
+						modifier = Modifier.constrainAs(nameRef) {
+							top.linkTo(titleRef.bottom, margin = 8.dp)
+						},
 					)
+					
+					val iconSize = 24.dp
+					
+					// Code field
 					TextField(
 						value = code,
 						onValueChange = { code = it },
 						enabled = !editParcel,
-						label = { Text(stringResource(R.string.dialogParcelCode)) },
+						label = {
+							Text(
+								text = stringResource(R.string.dialogParcelCode),
+								overflow = TextOverflow.Ellipsis,
+								maxLines = 1,
+							)
+						},
 						leadingIcon = { Icon(Icons.Outlined.QrCode) },
+						keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+						keyboardActions = keyboardActions,
+						singleLine = true,
 						colors = textFieldColors,
+						modifier = Modifier
+							.padding(end = if (editParcel) 24.dp + iconSize else 0.dp)
+							.constrainAs(codeRef) {
+								end.linkTo(nameRef.end)
+								top.linkTo(nameRef.bottom, margin = 8.dp)
+							},
 					)
 					
-					Row(modifier = Modifier.align(Alignment.End)) {
-						TextButton(onClick = onDismissRequest) { Text(stringResource(R.string.dialogParcelCancel)) }
-						Spacer(modifier = Modifier.width(8.dp))
-						Button(onClick = {}) {
-							Text(stringResource(if (editParcel) R.string.dialogParcelSave else R.string.dialogParcelAdd))
+					// Copy button
+					if (editParcel) {
+						IconButton(
+							onClick = {},
+							modifier = Modifier.constrainAs(copyRef) {
+								end.linkTo(parent.end)
+								top.linkTo(codeRef.top)
+								bottom.linkTo(codeRef.bottom)
+							},
+						) {
+							Icon(
+								imageVector = Icons.Outlined.ContentCopy,
+								modifier = Modifier.size(iconSize),
+							)
 						}
+					}
+					
+					// Cancel button
+					TextButton(
+						onClick = onDismissRequest,
+						modifier = Modifier.constrainAs(cancelRef) {
+							top.linkTo(doneRef.top)
+							end.linkTo(doneRef.start, margin = 8.dp)
+						},
+					) {
+						Text(stringResource(R.string.dialogParcelCancel))
+					}
+					
+					// Done button
+					Button(
+						onClick = {},
+						modifier = Modifier.constrainAs(doneRef) {
+							top.linkTo(codeRef.bottom, margin = 16.dp)
+							end.linkTo(parent.end)
+						},
+					) {
+						Text(stringResource(if (editParcel) R.string.dialogParcelSave else R.string.dialogParcelAdd))
 					}
 				}
 			}
@@ -373,6 +441,28 @@ fun PreviewMainScreen() {
 )
 @Composable
 fun PreviewAddParcelDialog() {
+	CorreiosTrackerTheme {
+		ParcelDialog(
+			editParcel = false,
+			openDialog = true,
+		)
+	}
+}
+
+@Preview(
+	name = "Light Mode",
+	showBackground = true,
+	backgroundColor = 0xffffffff,
+	uiMode = Configuration.UI_MODE_NIGHT_NO,
+)
+@Preview(
+	name = "Dark Mode",
+	showBackground = true,
+	backgroundColor = 0xff000000,
+	uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
+@Composable
+fun PreviewEditParcelDialog() {
 	CorreiosTrackerTheme {
 		ParcelDialog(
 			editParcel = true,
