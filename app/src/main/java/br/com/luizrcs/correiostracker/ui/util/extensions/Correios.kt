@@ -1,25 +1,12 @@
-@file:OptIn(
-	ExperimentalTime::class
-)
+package br.com.luizrcs.correiostracker.ui.util.extensions
 
-package br.com.luizrcs.correiostracker.ui.util
-
-import android.graphics.*
-import android.os.Build.VERSION_CODES.*
-import android.view.*
-import android.widget.*
-import androidx.annotation.*
+import android.content.*
 import br.com.luizrcs.correiostracker.repository.*
-import br.com.luizrcs.correiostracker.ui.util.extensions.*
-import coil.*
 import org.joda.time.*
 import java.text.*
 import java.util.*
-import java.util.Calendar.*
-import kotlin.OptIn
-import kotlin.time.*
 
-private val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.US)
 
 fun PostOffice.formatPostOffice() = name.formatPostOffice() +
 		when {
@@ -37,7 +24,7 @@ fun Parcel.daysElapsed() = parcelEvents?.let {
 }
 
 fun String.formatDate() =
-	if (getInstance().get(YEAR).toString() != substringAfterLast('/')) this
+	if (Calendar.getInstance().get(Calendar.YEAR).toString() != substringAfterLast('/')) this
 	else substringBeforeLast('/')
 
 fun String.capitalizeWord() =
@@ -58,6 +45,10 @@ fun String.formatPostOffice() = split(' ')
 			} else string.capitalizeWord()
 		}.joinToString(" ")
 	}
+
+fun String.formatCategory() = substringAfterLast(' ').uppercase()
+
+fun String.flagResource(context: Context) = context.resources.getIdentifier(lowercase(), "drawable", context.packageName)
 
 fun String.formatTrackingCode(): String {
 	val serviceCode = substring(0 .. 1)
@@ -82,14 +73,3 @@ fun String.toDate(): Date {
 	
 	return calendar.time
 }
-
-fun ImageView.setFlag(countryCode: String) = apply {
-	val flagResource = context.resources.getIdentifier(countryCode.lowercase(), "drawable", context.packageName)
-	load(flagResource) { crossfade(true) }
-}
-
-fun View.setBackgroundColorFilter(@ColorInt color: Int) =
-	if (versionIsAtLeast(Q))
-		background?.colorFilter = BlendModeColorFilter(color, BlendMode.SRC_ATOP)
-	else
-		background?.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)

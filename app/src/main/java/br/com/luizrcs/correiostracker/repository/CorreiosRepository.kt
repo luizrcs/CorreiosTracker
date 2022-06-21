@@ -1,6 +1,6 @@
 package br.com.luizrcs.correiostracker.repository
 
-import br.com.luizrcs.correiostracker.ui.util.*
+import br.com.luizrcs.correiostracker.ui.util.extensions.*
 import com.github.salomonbrys.kotson.*
 import com.google.gson.*
 import okhttp3.MediaType.Companion.toMediaType

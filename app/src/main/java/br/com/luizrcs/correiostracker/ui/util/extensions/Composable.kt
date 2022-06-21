@@ -5,9 +5,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.drawscope.*
 import androidx.compose.ui.graphics.painter.*
 import androidx.compose.ui.graphics.vector.*
 import androidx.compose.ui.layout.*
+import coil.compose.*
 
 @Composable
 @NonRestartableComposable
@@ -71,4 +73,29 @@ fun Image(
 	contentScale = contentScale,
 	alpha = alpha,
 	colorFilter = colorFilter
+)
+
+@Composable
+@NonRestartableComposable
+fun AsyncImage(
+	model: Any?,
+	modifier: Modifier = Modifier,
+	transform: (AsyncImagePainter.State) -> AsyncImagePainter.State = AsyncImagePainter.DefaultTransform,
+	onState: ((AsyncImagePainter.State) -> Unit)? = null,
+	alignment: Alignment = Alignment.Center,
+	contentScale: ContentScale = ContentScale.Fit,
+	alpha: Float = DefaultAlpha,
+	colorFilter: ColorFilter? = null,
+	filterQuality: FilterQuality = DrawScope.DefaultFilterQuality,
+) = AsyncImage(
+	model = model,
+	contentDescription = null,
+	modifier = modifier,
+	transform = transform,
+	onState = onState,
+	alignment = alignment,
+	contentScale = contentScale,
+	alpha = alpha,
+	colorFilter = colorFilter,
+	filterQuality = filterQuality
 )

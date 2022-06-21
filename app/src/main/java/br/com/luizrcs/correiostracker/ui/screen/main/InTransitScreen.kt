@@ -1,10 +1,8 @@
 package br.com.luizrcs.correiostracker.ui.screen.main
 
 import android.content.res.*
-import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.*
 import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.*
 import androidx.navigation.*
@@ -18,6 +16,7 @@ import br.com.luizrcs.correiostracker.ui.util.*
 fun InTransitScreen(
 	navController: NavController,
 	parcels: List<Parcel>,
+	onParcelLongPress: (Parcel) -> Unit = {},
 ) {
 	val parcels = generateTestParcels()
 	
@@ -30,6 +29,7 @@ fun InTransitScreen(
 		ParcelList(
 			navController = navController,
 			parcels = parcels,
+			onParcelLongPress = onParcelLongPress,
 		)
 	}
 }

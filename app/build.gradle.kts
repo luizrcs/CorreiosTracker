@@ -93,7 +93,8 @@ dependencies {
 	
 	implementation("com.google.android.material", "material", Versions.material)
 	
-	implementation("io.coil-kt", "coil", Versions.coil)
+	coil()
+	coil("compose")
 	
 	implementation("com.github.salomonbrys.kotson", "kotson", Versions.kotson)
 	implementation("com.google.code.gson", "gson", Versions.gson)

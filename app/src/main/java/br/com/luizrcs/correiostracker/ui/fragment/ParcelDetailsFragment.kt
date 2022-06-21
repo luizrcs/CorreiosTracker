@@ -2,14 +2,12 @@ package br.com.luizrcs.correiostracker.ui.fragment
 
 import android.os.*
 import android.view.*
-import androidx.core.content.*
 import androidx.core.content.res.*
 import androidx.fragment.app.*
 import androidx.navigation.fragment.*
 import androidx.recyclerview.widget.*
 import br.com.luizrcs.correiostracker.R
 import br.com.luizrcs.correiostracker.databinding.*
-import br.com.luizrcs.correiostracker.ui.activity.*
 import br.com.luizrcs.correiostracker.ui.recyclerview.*
 import br.com.luizrcs.correiostracker.ui.util.*
 import br.com.luizrcs.correiostracker.ui.util.extensions.*
@@ -43,7 +41,7 @@ class ParcelDetailsFragment: Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		
-		var color = 0
+		// var color = 0
 		
 		val index = requireArguments().getInt("index")
 		val parcel = viewModel.parcels.value!![index]
@@ -98,11 +96,11 @@ class ParcelDetailsFragment: Fragment() {
 		
 		val event = parcel.parcelEvents!!.first()
 		val statusStyle = event.statusStyle()
-		color = ContextCompat.getColor(requireContext(), statusStyle.colorId)
+		// color = ContextCompat.getColor(requireContext(), statusStyle.colorId)
 		
-		binding.appBar.setBackgroundColor(color)
-		binding.toolbar.setBackgroundColor(color)
-		binding.detailsBar.setBackgroundColorFilter(color)
+		// binding.appBar.setBackgroundColor(color)
+		// binding.toolbar.setBackgroundColor(color)
+		// binding.detailsBar.setBackgroundColorFilter(color)
 	}
 	
 	override fun onDestroyView() {

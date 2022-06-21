@@ -15,8 +15,11 @@ fun DependencyHandler.compose(module: String, name: String?, version: String = V
 
 fun DependencyHandler.compose(module: String, version: String = Versions.compose) = compose(module, null, version)
 
-fun DependencyHandler.accompanist(name: String, version: String = Versions.accompanist) =
-	add("implementation", "com.google.accompanist:accompanist-$name:$version")
+fun DependencyHandler.accompanist(module: String, version: String = Versions.accompanist) =
+	add("implementation", "com.google.accompanist:accompanist-$module:$version")
+
+fun DependencyHandler.coil(module: String? = null, version: String = Versions.coil) =
+	add("implementation", "io.coil-kt:coil${module?.let { "-$module" } ?: ""}:$version")
 
 fun DependencyHandler.okHttp(name: String?, version: String = Versions.okHttp) =
 	add("implementation", "com.squareup.okhttp3:${name ?: "okhttp"}:$version")

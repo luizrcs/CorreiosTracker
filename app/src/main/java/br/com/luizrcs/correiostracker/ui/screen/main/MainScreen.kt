@@ -81,17 +81,21 @@ fun MainScreen(viewModel: MainViewModel) {
 	val navController = rememberNavController()
 	
 	val parcels by viewModel.filteredParcels.observeAsState(listOf())
-	var openDialog by remember { mutableStateOf(false) }
+	
+	var parcelDialogEdit by remember { mutableStateOf(false) }
+	var openParcelDialog by remember { mutableStateOf(false) }
 	
 	MainScaffold(
 		navController = navController,
 		parcels = parcels,
-		onMainExtendedFabClick = { openDialog = true },
+		onMainExtendedFabClick = { parcelDialogEdit = false; openParcelDialog = true },
+		onParcelLongPress = { parcelDialogEdit = true; openParcelDialog = true },
 	)
 	
-	AddParcelDialog(
-		openDialog = openDialog,
-		onDismissRequest = { openDialog = false },
+	ParcelDialog(
+		editParcel = parcelDialogEdit,
+		openDialog = openParcelDialog,
+		onDismissRequest = { openParcelDialog = false },
 	)
 }
 
@@ -100,7 +104,8 @@ fun MainScreen(viewModel: MainViewModel) {
 fun MainScaffold(
 	navController: NavHostController,
 	parcels: List<Parcel>,
-	onMainExtendedFabClick: () -> Unit,
+	onMainExtendedFabClick: () -> Unit = {},
+	onParcelLongPress: (Parcel) -> Unit = {},
 ) {
 	val colorScheme = correiosTrackerColorScheme()
 	
@@ -131,6 +136,7 @@ fun MainScaffold(
 				InTransitScreen(
 					navController = navController,
 					parcels = parcels,
+					onParcelLongPress = onParcelLongPress,
 				)
 			}
 			
@@ -251,9 +257,14 @@ fun MainNavigationBar(
 }
 
 @Composable
-fun AddParcelDialog(openDialog: Boolean, onDismissRequest: () -> Unit) {
+fun ParcelDialog(
+	editParcel: Boolean,
+	openDialog: Boolean,
+	onDismissRequest: () -> Unit = {},
+) {
 	if (openDialog) {
 		val useDynamicColors = useDynamicColors()
+		val darkTheme = isSystemInDarkTheme()
 		val colorScheme = correiosTrackerColorScheme()
 		
 		Dialog(
@@ -275,18 +286,20 @@ fun AddParcelDialog(openDialog: Boolean, onDismissRequest: () -> Unit) {
 					var code by remember { mutableStateOf("") }
 					
 					Text(
-						text = stringResource(R.string.dialogAddParcelTitle),
+						text = stringResource(if (editParcel) R.string.dialogParcelTitleEdit else R.string.dialogParcelTitleAdd),
 						fontSize = 20.sp,
 						style = CorreiosTrackerTypography.titleLarge,
 					)
+					
+					val contentColor = if (!darkTheme) colorScheme.secondary else colorScheme.onSurface
 					
 					val textFieldColors = if (useDynamicColors) TextFieldDefaults.textFieldColors(
 						containerColor = Color.Transparent,
 					) else TextFieldDefaults.textFieldColors(
 						containerColor = Color.Transparent,
-						cursorColor = colorScheme.onSurface,
-						focusedLeadingIconColor = colorScheme.onSurface,
-						focusedLabelColor = colorScheme.onSurface,
+						cursorColor = contentColor,
+						focusedLeadingIconColor = contentColor,
+						focusedLabelColor = contentColor,
 						unfocusedLeadingIconColor = colorScheme.onSurfaceVariant,
 						unfocusedLabelColor = colorScheme.onSurfaceVariant,
 					)
@@ -294,22 +307,25 @@ fun AddParcelDialog(openDialog: Boolean, onDismissRequest: () -> Unit) {
 					TextField(
 						value = name,
 						onValueChange = { name = it },
-						label = { Text(stringResource(R.string.dialogAddParcelName)) },
+						label = { Text(stringResource(R.string.dialogParcelName)) },
 						leadingIcon = { Icon(Icons.Outlined.Edit) },
 						colors = textFieldColors,
 					)
 					TextField(
 						value = code,
 						onValueChange = { code = it },
-						label = { Text(stringResource(R.string.dialogAddParcelCode)) },
+						enabled = !editParcel,
+						label = { Text(stringResource(R.string.dialogParcelCode)) },
 						leadingIcon = { Icon(Icons.Outlined.QrCode) },
 						colors = textFieldColors,
 					)
 					
 					Row(modifier = Modifier.align(Alignment.End)) {
-						TextButton(onClick = onDismissRequest) { Text(stringResource(R.string.dialogAddParcelCancel)) }
+						TextButton(onClick = onDismissRequest) { Text(stringResource(R.string.dialogParcelCancel)) }
 						Spacer(modifier = Modifier.width(8.dp))
-						Button(onClick = {}) { Text(stringResource(R.string.dialogAddParcelAdd)) }
+						Button(onClick = {}) {
+							Text(stringResource(if (editParcel) R.string.dialogParcelSave else R.string.dialogParcelAdd))
+						}
 					}
 				}
 			}
@@ -339,7 +355,6 @@ fun PreviewMainScreen() {
 		MainScaffold(
 			navController = navController,
 			parcels = listOf(),
-			onMainExtendedFabClick = {},
 		)
 	}
 }
@@ -359,9 +374,9 @@ fun PreviewMainScreen() {
 @Composable
 fun PreviewAddParcelDialog() {
 	CorreiosTrackerTheme {
-		AddParcelDialog(
+		ParcelDialog(
+			editParcel = true,
 			openDialog = true,
-			onDismissRequest = {},
 		)
 	}
 }

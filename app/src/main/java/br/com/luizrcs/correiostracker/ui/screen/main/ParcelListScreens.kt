@@ -1,3 +1,8 @@
+@file:OptIn(
+	ExperimentalFoundationApi::class,
+	ExperimentalMaterial3Api::class,
+)
+
 package br.com.luizrcs.correiostracker.ui.screen.main
 
 import android.content.res.*
@@ -14,6 +19,7 @@ import androidx.compose.ui.*
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.vector.*
+import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.text.style.*
@@ -28,6 +34,7 @@ import br.com.luizrcs.correiostracker.repository.*
 import br.com.luizrcs.correiostracker.ui.theme.*
 import br.com.luizrcs.correiostracker.ui.util.*
 import br.com.luizrcs.correiostracker.ui.util.extensions.*
+import coil.request.*
 import com.google.accompanist.swiperefresh.*
 import kotlin.OptIn
 
@@ -62,6 +69,7 @@ fun ParcelList(
 	navController: NavController,
 	parcels: List<Parcel>,
 	onRefresh: () -> Unit = {},
+	onParcelLongPress: (Parcel) -> Unit = {},
 ) {
 	val isRefreshing by remember { mutableStateOf(false) }
 	
@@ -80,6 +88,7 @@ fun ParcelList(
 				Parcel(
 					navController = navController,
 					parcel = parcel,
+					onLongPress = onParcelLongPress,
 				)
 			}
 		}
@@ -91,8 +100,16 @@ fun ParcelList(
 fun Parcel(
 	navController: NavController,
 	parcel: Parcel,
+	onLongPress: (Parcel) -> Unit = {},
 ) {
-	val (name, code, _, type) = parcel
+	val (name, code, _, type, events, country) = parcel
+	val category = type.formatCategory()
+	
+	val latestEvent = events?.firstOrNull()
+	val valid = latestEvent != null
+	val status = latestEvent?.description?.formatEventDescription() ?: stringResource(R.string.parcelUnknown)
+	val location = latestEvent?.toOffice?.firstOrNull()?.name?.formatPostOffice() ?: latestEvent?.fromOffice?.name?.formatPostOffice() ?: ""
+	val (statusColor, statusIcon) = latestEvent.statusStyle()
 	
 	val useDynamicColors = useDynamicColors()
 	val colorScheme = correiosTrackerColorScheme()
@@ -105,13 +122,16 @@ fun Parcel(
 		)
 	
 	Card(
-		onClick = {},
-		modifier = Modifier.shadow(
-			elevation = 1.dp,
-			shape = RoundedCornerShape(12.dp),
-			clip = false,
-		),
-		enabled = true,
+		modifier = Modifier
+			.shadow(
+				elevation = 1.dp,
+				shape = RoundedCornerShape(12.dp),
+				clip = false,
+			)
+			.combinedClickable(
+				onClick = {},
+				onLongClick = { onLongPress(parcel) },
+			),
 		colors = cardColors,
 	) {
 		ConstraintLayout(
@@ -128,11 +148,12 @@ fun Parcel(
 				dateTimeRef,
 			) = createRefs()
 			
+			// Status icon
 			Box(
 				modifier = Modifier
 					.size(48.dp)
 					.clip(CircleShape)
-					.background(Color.Gray)
+					.background(statusColor)
 					.constrainAs(iconRef) {
 						top.linkTo(parent.top)
 						bottom.linkTo(parent.bottom)
@@ -140,12 +161,13 @@ fun Parcel(
 				contentAlignment = Alignment.Center,
 			) {
 				Icon(
-					imageVector = Icons.Outlined.LocalShipping,
+					imageVector = statusIcon,
 					modifier = Modifier.size(28.dp),
 					tint = Color.White,
 				)
 			}
 			
+			// Title
 			Text(
 				text = name.repeat(10),
 				style = CorreiosTrackerTypography.titleLarge,
@@ -154,19 +176,26 @@ fun Parcel(
 				overflow = TextOverflow.Ellipsis,
 				maxLines = 1,
 				modifier = Modifier.constrainAs(nameRef) {
-					linkTo(
-						start = iconRef.end,
-						startMargin = 16.dp,
-						end = typeRef.start,
-						endMargin = 16.dp,
-						bias = 0f,
-					)
+					if (valid) {
+						linkTo(
+							start = iconRef.end,
+							startMargin = 16.dp,
+							end = typeRef.start,
+							endMargin = 16.dp,
+							bias = 0f,
+						)
+					} else {
+						start.linkTo(iconRef.end, margin = 16.dp)
+						end.linkTo(parent.end)
+					}
 					width = Dimension.fillToConstraints
 				},
 			)
 			
+			// Status
 			Text(
-				text = parcel.parcelEvents?.first()?.description ?: "Objeto não encontrado",
+				text = status,
+				color = statusColor,
 				style = CorreiosTrackerTypography.bodyLarge,
 				fontWeight = FontWeight.Medium,
 				overflow = TextOverflow.Ellipsis,
@@ -174,8 +203,8 @@ fun Parcel(
 				modifier = Modifier.constrainAs(statusRef) {
 					linkTo(
 						start = nameRef.start,
-						end = dateTimeRef.start,
-						endMargin = 16.dp,
+						end = if (valid) dateTimeRef.start else parent.end,
+						endMargin = if (valid) 16.dp else 0.dp,
 						bias = 0f,
 					)
 					width = Dimension.fillToConstraints
@@ -183,70 +212,85 @@ fun Parcel(
 				},
 			)
 			
-			Row(
-				modifier = Modifier.constrainAs(locationRef) {
-					linkTo(
-						start = nameRef.start,
-						end = dateTimeRef.start,
-						endMargin = 8.dp,
-						bias = 0f,
-					)
-					width = Dimension.fillToConstraints
-					top.linkTo(statusRef.bottom, margin = 4.dp)
-				},
-				verticalAlignment = Alignment.CenterVertically,
-			) {
-				Icon(
-					imageVector = Icons.Outlined.Place,
-					modifier = Modifier.size(16.dp),
-					tint = Color.Red,
-				)
-				Spacer(modifier = Modifier.width(4.dp))
-				Text(
-					text = "Somewhere",
-					style = CorreiosTrackerTypography.bodyMedium,
-					overflow = TextOverflow.Ellipsis,
-					maxLines = 1,
-				)
-			}
-			
-			Row(
-				modifier = Modifier.constrainAs(typeRef) {
-					end.linkTo(parent.end)
-				},
-				horizontalArrangement = Arrangement.spacedBy(16.dp),
-				verticalAlignment = Alignment.CenterVertically,
-			) {
-				Text(
-					text = "CATEGORY",
-					fontSize = 12.sp,
-					modifier = Modifier
-						.border(
-							width = 1.dp,
-							color = colorScheme.onSurfaceVariant,
-							shape = RoundedCornerShape(4.dp),
+			if (valid) {
+				// Location
+				Row(
+					modifier = Modifier.constrainAs(locationRef) {
+						linkTo(
+							start = nameRef.start,
+							end = dateTimeRef.start,
+							endMargin = 8.dp,
+							bias = 0f,
 						)
-						.padding(4.dp, 1.dp, 4.dp, 2.dp)
-				)
+						width = Dimension.fillToConstraints
+						top.linkTo(statusRef.bottom, margin = 4.dp)
+					},
+					verticalAlignment = Alignment.CenterVertically,
+				) {
+					Icon(
+						imageVector = Icons.Outlined.Place,
+						modifier = Modifier.size(16.dp),
+						tint = Color.Red,
+					)
+					Spacer(modifier = Modifier.width(4.dp))
+					Text(
+						text = location,
+						style = CorreiosTrackerTypography.bodyMedium,
+						overflow = TextOverflow.Ellipsis,
+						maxLines = 1,
+					)
+				}
 				
-				Image(painterResource(id = R.drawable.br), Modifier.size(24.dp))
-			}
-			
-			Column(
-				modifier = Modifier.constrainAs(dateTimeRef) {
-					end.linkTo(parent.end)
-					bottom.linkTo(parent.bottom)
-				},
-				horizontalAlignment = Alignment.End,
-			) {
-				Text(
-					text = "01/01",
-					style = CorreiosTrackerTypography.bodyMedium,
-				)
-				Text(
-					text = "00:00",
-					style = CorreiosTrackerTypography.bodyMedium,
-				)
+				// Category
+				Row(
+					modifier = Modifier.constrainAs(typeRef) {
+						end.linkTo(parent.end)
+					},
+					horizontalArrangement = Arrangement.spacedBy(16.dp),
+					verticalAlignment = Alignment.CenterVertically,
+				) {
+					if (country == "BR") {
+						Text(
+							text = category,
+							fontSize = 12.sp,
+							modifier = Modifier
+								.border(
+									width = 1.dp,
+									color = colorScheme.onSurfaceVariant,
+									shape = RoundedCornerShape(4.dp),
+								)
+								.padding(4.dp, 1.dp, 4.dp, 2.dp)
+						)
+					} else {
+						val context = LocalContext.current
+						val flagResource = country.flagResource(context)
+						AsyncImage(
+							model = ImageRequest.Builder(context)
+								.data(flagResource)
+								.crossfade(true)
+								.build(),
+							modifier = Modifier.size(24.dp),
+						)
+					}
+				}
+				
+				// Date/time
+				Column(
+					modifier = Modifier.constrainAs(dateTimeRef) {
+						end.linkTo(parent.end)
+						bottom.linkTo(parent.bottom)
+					},
+					horizontalAlignment = Alignment.End,
+				) {
+					Text(
+						text = latestEvent?.date?.formatDate() ?: "",
+						style = CorreiosTrackerTypography.bodyMedium,
+					)
+					Text(
+						text = latestEvent?.time ?: "",
+						style = CorreiosTrackerTypography.bodyMedium,
+					)
+				}
 			}
 		}
 	}

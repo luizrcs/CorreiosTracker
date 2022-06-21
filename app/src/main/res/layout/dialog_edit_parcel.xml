@@ -13,7 +13,7 @@
     <com.google.android.material.textview.MaterialTextView
             android:id="@+id/title"
 
-            android:text="@string/dialog_edit_parcel_title"
+            android:text="@string/dialogParcelTitleEdit"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:hint="@string/dialogAddParcelCode"
+                android:hint="@string/dialogParcelCode"
                 android:enabled="false"
                 android:inputType="none" />
 
@@ -132,7 +132,7 @@
     <com.google.android.material.button.MaterialButton
             android:id="@+id/confirm"
 
-            android:text="@string/dialog_edit_parcel_save"
+            android:text="@string/dialogParcelSave"
 
             android:layout_marginTop="@dimen/padding"
 

@@ -1,35 +1,35 @@
 package br.com.luizrcs.correiostracker.ui.recyclerview
 
 import android.view.View.*
-import androidx.core.content.*
 import androidx.recyclerview.widget.*
 import br.com.luizrcs.correiostracker.databinding.*
 import br.com.luizrcs.correiostracker.repository.*
 import br.com.luizrcs.correiostracker.ui.util.*
+import br.com.luizrcs.correiostracker.ui.util.extensions.*
 
 class ParcelDetailsItemViewHolder(private val itemBinding: ParcelDetailsItemBinding):
 	RecyclerView.ViewHolder(itemBinding.root) {
 	
 	fun bind(index: Int, lastIndex: Int, event: ParcelEvent) {
 		val statusStyle = event.statusStyle()
-		val color = ContextCompat.getColor(itemBinding.root.context, statusStyle.colorId)
+		// val color = ContextCompat.getColor(itemBinding.root.context, statusStyle.colorId)
 		
 		itemBinding.timelineTo.apply {
-			setBackgroundColor(color)
+			// setBackgroundColor(color)
 			visibility = if (index == 0) GONE else VISIBLE
 		}
 		
 		itemBinding.timelineFrom.apply {
-			setBackgroundColor(color)
+			// setBackgroundColor(color)
 			visibility = if (index == lastIndex) GONE else VISIBLE
 		}
 		
-		itemBinding.statusIcon.setImageResource(statusStyle.iconId)
-		itemBinding.statusIconContainer.setBackgroundColorFilter(color)
+		// itemBinding.statusIcon.setImageResource(statusStyle.iconId)
+		// itemBinding.statusIconContainer.setBackgroundColorFilter(color)
 		
 		itemBinding.status.apply {
 			text = event.description.formatEventDescription()
-			setTextColor(color)
+			// setTextColor(color)
 		}
 		
 		itemBinding.details.apply {

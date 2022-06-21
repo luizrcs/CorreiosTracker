@@ -14,6 +14,8 @@ data class Parcel(
 	@SerializedName("evento") var parcelEvents: List<ParcelEvent>? = null,
 ) {
 	val countryCode get() = trackingCode.takeLast(2)
+	
+	operator fun component6() = countryCode
 }
 
 data class ParcelEvent(

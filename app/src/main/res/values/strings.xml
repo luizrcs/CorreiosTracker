@@ -10,12 +10,19 @@
     <string name="inTransitNoParcels">Ainda não há\nencomendas\nadicionadas!</string>
     <string name="finishedNoParcels">Ainda não há\nencomendas\nfinalizadas!</string>
 
-    <string name="dialogAddParcelTitle">Adicionar encomenda</string>
-    <string name="dialogAddParcelName">Nome</string>
-    <string name="dialogAddParcelCode">Código de rastreamento</string>
-    <string name="dialog_add_parcel_empty_tracking_code">O código de rastreamento é obrigatório</string>
-    <string name="dialogAddParcelAdd">Adicionar</string>
-    <string name="dialogAddParcelCancel">Cancelar</string>
+    <string name="dialogParcelTitleAdd">Adicionar encomenda</string>
+    <string name="dialogParcelTitleEdit">Editar encomenda</string>
+    <string name="dialogParcelName">Nome</string>
+    <string name="dialogParcelCode">Código de rastreamento</string>
+    <string name="dialogParcelEmptyCode">O código de rastreamento é obrigatório</string>
+    <string name="dialogParcelAdd">Adicionar</string>
+    <string name="dialogParcelSave">Salvar</string>
+    <string name="dialogParcelCancel">Cancelar</string>
+
+    <string name="dialog_edit_code_copied">Código copiado!</string>
+    <string name="dialog_edit_parcel_deleted">Encomenda excluída!</string>
+    <string name="dialog_edit_parcel_saved">Encomenda salva!</string>
+    <string name="dialog_edit_parcel_delete">Excluir</string>
 
     <string name="dialog_parcel_name">Nome</string>
     <string name="dialog_parcel_cancel">Cancelar</string>
@@ -37,18 +44,11 @@
     <string name="parcel_added">Encomenda adicionada!</string>
     <string name="parcel_add_fail">Não foi possível adicionar esta encomenda!</string>
     <string name="parcel_already_exists">Esta encomenda já existe!</string>
-    <string name="parcel_unknown">Situação desconhecida</string>
+    <string name="parcelUnknown">Situação desconhecida</string>
 
     <string name="parcels_failure">Não foi possível atualizar as encomendas!</string>
     <string name="parcels_failure_no_internet">Não há conexão com a internet neste momento!</string>
     <string name="parcels_updated">Encomendas atualizadas!</string>
-
-    <string name="dialog_edit_parcel_title">Editar encomenda</string>
-    <string name="dialog_edit_code_copied">Código copiado!</string>
-    <string name="dialog_edit_parcel_deleted">Encomenda excluída!</string>
-    <string name="dialog_edit_parcel_saved">Encomenda salva!</string>
-    <string name="dialog_edit_parcel_delete">Excluir</string>
-    <string name="dialog_edit_parcel_save">Salvar</string>
 
     <string name="button_delete">Excluir</string>
     <string name="button_edit">Editar</string>

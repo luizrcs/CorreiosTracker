@@ -11,6 +11,7 @@ import br.com.luizrcs.correiostracker.R
 import br.com.luizrcs.correiostracker.databinding.*
 import br.com.luizrcs.correiostracker.ui.fragment.*
 import br.com.luizrcs.correiostracker.ui.util.*
+import br.com.luizrcs.correiostracker.ui.util.extensions.*
 import br.com.luizrcs.correiostracker.ui.viewmodel.*
 import com.google.android.material.dialog.*
 
@@ -23,16 +24,16 @@ class ParcelItemInTransitViewHolder(itemBinding: ParcelItemBinding):
 		val valid = event != null
 		
 		val statusStyle = event.statusStyle()
-		val color = ContextCompat.getColor(itemBinding.root.context, statusStyle.colorId)
+		// val color = ContextCompat.getColor(itemBinding.root.context, statusStyle.colorId)
 		
 		itemBinding.name.text = parcel.name
 		
-		itemBinding.statusIcon.setImageResource(statusStyle.iconId)
-		itemBinding.statusIconContainer.setBackgroundColorFilter(color)
+		// itemBinding.statusIcon.setImageResource(statusStyle.iconId)
+		// itemBinding.statusIconContainer.setBackgroundColorFilter(color)
 		
 		itemBinding.status.apply {
-			text = event?.description?.formatEventDescription() ?: context.getString(R.string.parcel_unknown)
-			setTextColor(color)
+			text = event?.description?.formatEventDescription() ?: context.getString(R.string.parcelUnknown)
+			// setTextColor(color)
 		}
 		
 		itemBinding.postOfficeIcon.visibility = if (valid) VISIBLE else GONE
@@ -54,7 +55,7 @@ class ParcelItemInTransitViewHolder(itemBinding: ParcelItemBinding):
 		} else {
 			itemBinding.category.visibility = GONE
 			itemBinding.flagIcon.apply {
-				setFlag(parcel.countryCode)
+				// setFlag(parcel.countryCode)
 				visibility = VISIBLE
 			}
 		}
