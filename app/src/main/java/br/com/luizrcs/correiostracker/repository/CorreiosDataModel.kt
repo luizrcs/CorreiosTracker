@@ -16,6 +16,10 @@ data class Parcel(
 	val countryCode get() = trackingCode.takeLast(2)
 	
 	operator fun component6() = countryCode
+	
+	companion object {
+		val trackingCodeRegex = """^[A-Z]{2}\d{9}[A-Z]{2}$""".toRegex()
+	}
 }
 
 data class ParcelEvent(

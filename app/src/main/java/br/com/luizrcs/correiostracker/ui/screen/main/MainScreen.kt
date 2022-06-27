@@ -17,6 +17,7 @@ import androidx.compose.ui.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.*
+import androidx.compose.ui.text.*
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.tooling.preview.*
@@ -30,6 +31,7 @@ import br.com.luizrcs.correiostracker.R
 import br.com.luizrcs.correiostracker.repository.*
 import br.com.luizrcs.correiostracker.ui.screen.*
 import br.com.luizrcs.correiostracker.ui.theme.*
+import br.com.luizrcs.correiostracker.ui.util.*
 import br.com.luizrcs.correiostracker.ui.util.extensions.*
 import br.com.luizrcs.correiostracker.ui.viewmodel.*
 
@@ -86,18 +88,18 @@ fun MainScreen(viewModel: MainViewModel) {
 	
 	val parcels by viewModel.filteredParcels.observeAsState(listOf())
 	
-	var parcelDialogEdit by remember { mutableStateOf(false) }
+	var selectedParcel by remember { mutableStateOf<Parcel?>(null) }
 	var openParcelDialog by remember { mutableStateOf(false) }
 	
 	MainScaffold(
 		navController = navController,
 		parcels = parcels,
-		onMainExtendedFabClick = { parcelDialogEdit = false; openParcelDialog = true },
-		onParcelLongPress = { parcelDialogEdit = true; openParcelDialog = true },
+		onMainExtendedFabClick = { selectedParcel = null; openParcelDialog = true },
+		onParcelLongPress = { selectedParcel = it; openParcelDialog = true },
 	)
 	
-	ParcelDialog(
-		editParcel = parcelDialogEdit,
+	MainParcelDialog(
+		parcel = selectedParcel,
 		openDialog = openParcelDialog,
 		onDismissRequest = { openParcelDialog = false },
 	)
@@ -261,10 +263,12 @@ fun MainNavigationBar(
 }
 
 @Composable
-fun ParcelDialog(
-	editParcel: Boolean,
+fun MainParcelDialog(
 	openDialog: Boolean,
+	parcel: Parcel? = null,
 	onDismissRequest: () -> Unit = {},
+	onDelete: () -> Unit = {},
+	onDone: (String, String) -> Unit = { _, _ -> },
 ) {
 	if (openDialog) {
 		val useDynamicColors = useDynamicColors()
@@ -285,12 +289,50 @@ fun ParcelDialog(
 				ConstraintLayout(
 					modifier = Modifier.padding(16.dp),
 				) {
-					val (titleRef, nameRef, codeRef, copyRef, cancelRef, doneRef) = createRefs()
+					val (
+						titleRef,
+						deleteRef,
+						nameRef,
+						codeRef,
+						copyRef,
+						cancelRef,
+						doneRef,
+					) = createRefs()
 					
+					val context = LocalContext.current
+					val clipboardManager = LocalClipboardManager.current
 					val focusManager = LocalFocusManager.current
 					
-					var name by remember { mutableStateOf("") }
-					var code by remember { mutableStateOf("") }
+					val editParcel = parcel != null
+					
+					var name by remember { mutableStateOf(parcel?.name ?: "") }
+					var nameValid by remember { mutableStateOf(true) }
+					var nameError by remember { mutableStateOf<String?>(null) }
+					
+					val setNameError = { error: String? -> nameError = error; nameValid = error == null }
+					
+					var code by remember { mutableStateOf(parcel?.trackingCode ?: "") }
+					var codeValid by remember { mutableStateOf(true) }
+					var codeError by remember { mutableStateOf<String?>(null) }
+					
+					val setCodeError = { error: String? -> codeError = error; codeValid = error == null }
+					val codeEmptyError = stringResource(R.string.dialogParcelCodeEmpty)
+					val codeInvalidError = stringResource(R.string.dialogParcelCodeInvalid)
+					
+					val validate = {
+						name = name.trim()
+						code = code.trim()
+						
+						nameValid = true
+						codeValid = true
+						
+						if (!editParcel) {
+							if (code.isEmpty()) setCodeError(codeEmptyError)
+							else if (!code.matches(Parcel.trackingCodeRegex)) setCodeError(codeInvalidError)
+						}
+						
+						nameValid && codeValid
+					}
 					
 					// Title
 					Text(
@@ -299,6 +341,30 @@ fun ParcelDialog(
 						style = CorreiosTrackerTypography.titleLarge,
 						modifier = Modifier.constrainAs(titleRef) {},
 					)
+					
+					val iconSize = 24.dp
+					
+					// Delete button
+					if (editParcel) {
+						IconButton(
+							onClick = onDelete,
+							modifier = Modifier.constrainAs(deleteRef) {
+								linkTo(
+									top = titleRef.top,
+									topMargin = 4.dp,
+									bottom = titleRef.bottom,
+									start = titleRef.end,
+									end = parent.end,
+									horizontalBias = 1f,
+								)
+							},
+						) {
+							Icon(
+								imageVector = Icons.Outlined.Delete,
+								modifier = Modifier.size(iconSize),
+							)
+						}
+					}
 					
 					val contentColor = if (!darkTheme) colorScheme.secondary else colorScheme.onSurface
 					
@@ -313,58 +379,116 @@ fun ParcelDialog(
 						unfocusedLabelColor = colorScheme.onSurfaceVariant,
 					)
 					
-					val keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
+					val keyboardActions = KeyboardActions(
+						onDone = {
+							focusManager.clearFocus()
+							validate()
+						}
+					)
 					
-					// Name field
-					TextField(
-						value = name,
-						onValueChange = { name = it },
-						label = { Text(stringResource(R.string.dialogParcelName)) },
-						leadingIcon = { Icon(Icons.Outlined.Edit) },
-						keyboardOptions = KeyboardOptions(imeAction = if (editParcel) ImeAction.Done else ImeAction.Next),
-						keyboardActions = keyboardActions,
-						singleLine = true,
-						colors = textFieldColors,
+					Column(
 						modifier = Modifier.constrainAs(nameRef) {
 							top.linkTo(titleRef.bottom, margin = 8.dp)
 						},
-					)
+					) {
+						// Name field
+						TextField(
+							value = name,
+							onValueChange = { name = it },
+							label = { Text(stringResource(R.string.dialogParcelName)) },
+							leadingIcon = { Icon(Icons.Outlined.Edit) },
+							keyboardOptions = KeyboardOptions(imeAction = if (editParcel) ImeAction.Done else ImeAction.Next),
+							keyboardActions = keyboardActions,
+							singleLine = true,
+							colors = textFieldColors,
+						)
+						
+						AnimatedVisibility(
+							visible = !nameValid,
+						) {
+							Row(
+								verticalAlignment = Alignment.CenterVertically,
+								modifier = Modifier.padding(top = 4.dp),
+							) {
+								Icon(
+									imageVector = Icons.Outlined.Error,
+									modifier = Modifier.size(16.dp),
+									tint = colorScheme.error,
+								)
+								
+								Text(
+									text = nameError ?: "",
+									color = colorScheme.error,
+									style = CorreiosTrackerTypography.labelMedium,
+									modifier = Modifier.padding(start = 8.dp),
+								)
+							}
+						}
+					}
 					
-					val iconSize = 24.dp
-					
-					// Code field
-					TextField(
-						value = code,
-						onValueChange = { code = it },
-						enabled = !editParcel,
-						label = {
-							Text(
-								text = stringResource(R.string.dialogParcelCode),
-								overflow = TextOverflow.Ellipsis,
-								maxLines = 1,
-							)
+					Column(
+						modifier = Modifier.constrainAs(codeRef) {
+							top.linkTo(nameRef.bottom, margin = 8.dp)
+							end.linkTo(nameRef.end)
 						},
-						leadingIcon = { Icon(Icons.Outlined.QrCode) },
-						keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-						keyboardActions = keyboardActions,
-						singleLine = true,
-						colors = textFieldColors,
-						modifier = Modifier
-							.padding(end = if (editParcel) 24.dp + iconSize else 0.dp)
-							.constrainAs(codeRef) {
-								end.linkTo(nameRef.end)
-								top.linkTo(nameRef.bottom, margin = 8.dp)
+					) {
+						// Code field
+						TextField(
+							value = code,
+							onValueChange = { code = it; codeValid = true },
+							enabled = !editParcel,
+							isError = !codeValid,
+							label = {
+								Text(
+									text = stringResource(R.string.dialogParcelCode),
+									overflow = TextOverflow.Ellipsis,
+									maxLines = 1,
+								)
 							},
-					)
+							leadingIcon = { Icon(Icons.Outlined.QrCode) },
+							keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+							keyboardActions = keyboardActions,
+							singleLine = true,
+							colors = textFieldColors,
+							modifier = Modifier.padding(end = if (editParcel) 24.dp + iconSize else 0.dp),
+						)
+						
+						AnimatedVisibility(
+							visible = !codeValid,
+						) {
+							Row(
+								verticalAlignment = Alignment.CenterVertically,
+								modifier = Modifier.padding(top = 4.dp),
+							) {
+								Icon(
+									imageVector = Icons.Outlined.Error,
+									modifier = Modifier.size(16.dp),
+									tint = colorScheme.error,
+								)
+								
+								Text(
+									text = codeError ?: "",
+									color = colorScheme.error,
+									style = CorreiosTrackerTypography.labelMedium,
+									modifier = Modifier.padding(start = 8.dp),
+								)
+							}
+						}
+					}
 					
 					// Copy button
 					if (editParcel) {
+						val codeCopiedText = stringResource(R.string.dialogParcelCodeCopied)
+						
 						IconButton(
-							onClick = {},
+							onClick = {
+								clipboardManager.setText(AnnotatedString(code))
+								showShortToast(context, codeCopiedText)
+							},
 							modifier = Modifier.constrainAs(copyRef) {
-								end.linkTo(parent.end)
 								top.linkTo(codeRef.top)
 								bottom.linkTo(codeRef.bottom)
+								end.linkTo(parent.end)
 							},
 						) {
 							Icon(
@@ -387,9 +511,10 @@ fun ParcelDialog(
 					
 					// Done button
 					Button(
-						onClick = {},
+						onClick = { if (validate()) onDone(name, code) },
 						modifier = Modifier.constrainAs(doneRef) {
 							top.linkTo(codeRef.bottom, margin = 16.dp)
+							bottom.linkTo(parent.bottom)
 							end.linkTo(parent.end)
 						},
 					) {
@@ -442,8 +567,7 @@ fun PreviewMainScreen() {
 @Composable
 fun PreviewAddParcelDialog() {
 	CorreiosTrackerTheme {
-		ParcelDialog(
-			editParcel = false,
+		MainParcelDialog(
 			openDialog = true,
 		)
 	}
@@ -464,9 +588,9 @@ fun PreviewAddParcelDialog() {
 @Composable
 fun PreviewEditParcelDialog() {
 	CorreiosTrackerTheme {
-		ParcelDialog(
-			editParcel = true,
+		MainParcelDialog(
 			openDialog = true,
+			parcel = generateTestParcels().first(),
 		)
 	}
 }

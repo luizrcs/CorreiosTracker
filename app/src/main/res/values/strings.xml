@@ -14,12 +14,13 @@
     <string name="dialogParcelTitleEdit">Editar encomenda</string>
     <string name="dialogParcelName">Nome</string>
     <string name="dialogParcelCode">Código de rastreamento</string>
-    <string name="dialogParcelEmptyCode">O código de rastreamento é obrigatório</string>
+    <string name="dialogParcelCodeCopied">Código copiado!</string>
+    <string name="dialogParcelCodeEmpty">O código de rastreamento é obrigatório!</string>
+    <string name="dialogParcelCodeInvalid">Código de rastreamento inválido!</string>
     <string name="dialogParcelAdd">Adicionar</string>
     <string name="dialogParcelSave">Salvar</string>
     <string name="dialogParcelCancel">Cancelar</string>
 
-    <string name="dialog_edit_code_copied">Código copiado!</string>
     <string name="dialog_edit_parcel_deleted">Encomenda excluída!</string>
     <string name="dialog_edit_parcel_saved">Encomenda salva!</string>
     <string name="dialog_edit_parcel_delete">Excluir</string>

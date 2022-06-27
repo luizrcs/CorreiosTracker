@@ -92,7 +92,7 @@ class ParcelItemFinishedViewHolder(itemBinding: ParcelItemBinding):
 					val clipData = ClipData.newPlainText("trackingCode", parcel.trackingCode)
 					clipboardManager?.setPrimaryClip(clipData)
 					
-					Toast.makeText(context, R.string.dialog_edit_code_copied, Toast.LENGTH_SHORT).show()
+					Toast.makeText(context, R.string.dialogParcelCodeCopied, Toast.LENGTH_SHORT).show()
 				}
 				
 				dialogBinding.cancel.setOnClickListener { dialog.dismiss() }
