@@ -377,6 +377,7 @@ fun MainParcelDialog(
 						focusedLabelColor = contentColor,
 						unfocusedLeadingIconColor = colorScheme.onSurfaceVariant,
 						unfocusedLabelColor = colorScheme.onSurfaceVariant,
+						errorLeadingIconColor = colorScheme.error,
 					)
 					
 					val keyboardActions = KeyboardActions(
@@ -386,12 +387,12 @@ fun MainParcelDialog(
 						}
 					)
 					
+					// Name field
 					Column(
 						modifier = Modifier.constrainAs(nameRef) {
 							top.linkTo(titleRef.bottom, margin = 8.dp)
 						},
 					) {
-						// Name field
 						TextField(
 							value = name,
 							onValueChange = { name = it },
@@ -426,13 +427,13 @@ fun MainParcelDialog(
 						}
 					}
 					
+					// Code field
 					Column(
 						modifier = Modifier.constrainAs(codeRef) {
 							top.linkTo(nameRef.bottom, margin = 8.dp)
 							end.linkTo(nameRef.end)
 						},
 					) {
-						// Code field
 						TextField(
 							value = code,
 							onValueChange = { code = it; codeValid = true },
