@@ -43,7 +43,7 @@ data class Address(
 	@SerializedName("longitude") val longitude: Double,
 	@SerializedName("cep") val cep: Int?,
 	@SerializedName("logradouro") val street: String?,
-	@SerializedName("numero") val number: Int?,
+	@SerializedName("numero") val number: String?, // May not be a number, like "KM 62"
 	@SerializedName("bairro") val neighbourhood: String?,
 	@SerializedName("localidade") val city: String?,
 	@SerializedName("uf") val state: String?,
