@@ -54,7 +54,7 @@ android {
 	}
 	
 	composeOptions {
-		kotlinCompilerExtensionVersion = "1.2.0-beta02"
+		kotlinCompilerExtensionVersion = "1.2.0"
 	}
 }
 
@@ -70,13 +70,13 @@ dependencies {
 	androidxKtx("collection", Versions.collection)
 	androidx("constraintlayout", Versions.constraintLayout)
 	androidxKtx("core", Versions.coreKtx)
-	androidxKtx("lifecycle", "livedata", Versions.lifecycle)
-	androidxKtx("lifecycle", "runtime", Versions.lifecycle)
-	androidxKtx("lifecycle", "viewmodel", Versions.lifecycle)
-	androidxKtx("navigation", "fragment", Versions.navigation)
-	androidxKtx("navigation", "runtime", Versions.navigation)
-	androidxKtx("navigation", "ui", Versions.navigation)
-	androidxKtx("palette", Versions.palette)
+	androidxKtx("lifecycle", "livedata", Versions.lifecycleKtx)
+	androidxKtx("lifecycle", "runtime", Versions.lifecycleKtx)
+	androidxKtx("lifecycle", "viewmodel", Versions.lifecycleKtx)
+	androidxKtx("navigation", "fragment", Versions.navigationKtx)
+	androidxKtx("navigation", "runtime", Versions.navigationKtx)
+	androidxKtx("navigation", "ui", Versions.navigationKtx)
+	androidxKtx("palette", Versions.paletteKtx)
 	androidx("recyclerview", Versions.recyclerView)
 	androidx("swiperefreshlayout", Versions.swipeRefreshLayout)
 	
@@ -89,7 +89,7 @@ dependencies {
 	androidx("activity", "compose", Versions.activityCompose)
 	androidx("constraintlayout", "compose", Versions.constraintLayoutCompose)
 	androidx("lifecycle", "viewmodel-compose", Versions.lifecycleViewModelCompose)
-	androidx("navigation", "compose", Versions.navigation)
+	androidx("navigation", "compose", Versions.navigationKtx)
 	
 	implementation("com.google.android.material", "material", Versions.material)
 	
