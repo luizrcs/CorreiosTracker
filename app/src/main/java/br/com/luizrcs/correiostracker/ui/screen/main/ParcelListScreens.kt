@@ -1,6 +1,5 @@
 @file:OptIn(
 	ExperimentalFoundationApi::class,
-	ExperimentalMaterial3Api::class,
 )
 
 package br.com.luizrcs.correiostracker.ui.screen.main
@@ -11,8 +10,6 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.*
-import androidx.compose.material.icons.*
-import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
@@ -34,9 +31,9 @@ import br.com.luizrcs.correiostracker.repository.*
 import br.com.luizrcs.correiostracker.ui.theme.*
 import br.com.luizrcs.correiostracker.ui.util.*
 import br.com.luizrcs.correiostracker.ui.util.extensions.*
+import coil.compose.*
 import coil.request.*
 import com.google.accompanist.swiperefresh.*
-import kotlin.OptIn
 
 @Composable
 fun NoParcels(
@@ -51,7 +48,8 @@ fun NoParcels(
 		val outlineColor = correiosTrackerColorScheme().outline
 		
 		Icon(
-			imageVector = icon,
+			icon,
+			contentDescription = null,
 			modifier = Modifier.size(120.dp),
 			tint = outlineColor,
 		)
@@ -68,14 +66,13 @@ fun NoParcels(
 fun ParcelList(
 	navController: NavController,
 	parcels: List<Parcel>,
-	onRefresh: () -> Unit = {},
 	onParcelLongPress: (Parcel) -> Unit = {},
 ) {
 	val isRefreshing by remember { mutableStateOf(false) }
 	
 	SwipeRefresh(
 		state = rememberSwipeRefreshState(isRefreshing),
-		onRefresh = onRefresh,
+		onRefresh = {},
 	) {
 		LazyColumn(
 			contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
@@ -95,7 +92,6 @@ fun ParcelList(
 	}
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Parcel(
 	navController: NavController,
@@ -161,8 +157,9 @@ fun Parcel(
 				contentAlignment = Alignment.Center,
 			) {
 				Icon(
-					imageVector = statusIcon,
-					modifier = Modifier.size(28.dp),
+					painterResource(statusIcon),
+					contentDescription = null,
+					modifier = Modifier.size(32.dp),
 					tint = Color.White,
 				)
 			}
@@ -228,11 +225,12 @@ fun Parcel(
 					verticalAlignment = Alignment.CenterVertically,
 				) {
 					Icon(
-						imageVector = Icons.Outlined.Place,
+						painterResource(R.drawable.location_on_outlined_24),
+						contentDescription = null,
 						modifier = Modifier.size(16.dp),
 						tint = Color.Red,
 					)
-					Spacer(modifier = Modifier.width(4.dp))
+					Spacer(Modifier.width(4.dp))
 					Text(
 						text = location,
 						style = CorreiosTrackerTypography.bodyMedium,
@@ -259,16 +257,17 @@ fun Parcel(
 									color = colorScheme.onSurfaceVariant,
 									shape = RoundedCornerShape(4.dp),
 								)
-								.padding(4.dp, 1.dp, 4.dp, 2.dp)
+								.padding(horizontal = 4.dp),
 						)
 					} else {
 						val context = LocalContext.current
 						val flagResource = country.flagResource(context)
 						AsyncImage(
-							model = ImageRequest.Builder(context)
+							ImageRequest.Builder(context)
 								.data(flagResource)
 								.crossfade(true)
 								.build(),
+							contentDescription = null,
 							modifier = Modifier.size(24.dp),
 						)
 					}

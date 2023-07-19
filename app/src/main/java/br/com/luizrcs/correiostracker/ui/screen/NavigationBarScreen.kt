@@ -18,7 +18,7 @@ open class NavigationBarScreen(
 }
 
 data class NavigationBarItemDescriptor(
-	val iconActive: ImageVector,
-	val iconInactive: ImageVector,
+	@DrawableRes val iconActive: Int,
+	@DrawableRes val iconInactive: Int,
 	@StringRes val label: Int,
 )

@@ -1,33 +1,29 @@
-import org.gradle.api.JavaVersion.*
+@file:Suppress("UnstableApiUsage")
 
 plugins {
-	`android-application`
-	`kotlin-android`
-	kapt
-	
-	id("androidx.navigation.safeargs.kotlin")
-	id("dagger.hilt.android.plugin")
+	id("com.android.application") version Versions.androidApplication
+	id("org.jetbrains.kotlin.android") version Versions.kotlin
+	id("org.jetbrains.kotlin.kapt") version Versions.kotlin
+	id("com.google.dagger.hilt.android") version Versions.hilt
+	id("androidx.navigation.safeargs.kotlin") version Versions.navigationSafeArgs
 }
 
+val id = "br.com.luizrcs.correiostracker"
+
 android {
-	buildToolsVersion = "32.0.0"
-	compileSdk = 32
+	buildToolsVersion = "34.0.0"
+	compileSdk = 34
 	
-	namespace = "br.com.luizrcs.correiostracker"
+	namespace = id
 	
 	defaultConfig {
-		applicationId = "br.com.luizrcs.correiostracker"
+		applicationId = id
 		
 		minSdk = 21
-		targetSdk = 32
+		targetSdk = 33
 		
 		versionCode = 1
 		versionName = "1.0.0"
-	}
-	
-	buildFeatures {
-		compose = true
-		viewBinding = true
 	}
 	
 	buildTypes {
@@ -37,14 +33,19 @@ android {
 		}
 	}
 	
-	compileOptions {
-		sourceCompatibility = VERSION_1_8
-		targetCompatibility = VERSION_1_8
+	buildFeatures {
+		compose = true
+		viewBinding = true
+	}
+	
+	composeOptions {
+		kotlinCompilerExtensionVersion = Versions.kotlinCompilerExtension
 	}
 	
 	kotlinOptions {
-		apiVersion = "1.7"
-		languageVersion = "1.7"
+		apiVersion = "1.9"
+		languageVersion = "1.9"
+		jvmTarget = "1.8"
 		
 		freeCompilerArgs += listOf(
 			"-Xopt-in=kotlin.RequiresOptIn",
@@ -52,10 +53,10 @@ android {
 			"plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=true"
 		)
 	}
-	
-	composeOptions {
-		kotlinCompilerExtensionVersion = "1.2.0"
-	}
+}
+
+kapt {
+	correctErrorTypes = true
 }
 
 repositories {
@@ -63,7 +64,10 @@ repositories {
 }
 
 dependencies {
-	kotlin("stdlib-jdk8", Versions.kotlin)
+	kotlin("stdlib", Versions.kotlin)
+	
+	implementation("com.google.dagger", "hilt-android", Versions.hilt)
+	kapt("com.google.dagger", "hilt-android-compiler", Versions.hilt)
 	
 	androidx("appcompat", Versions.appCompat)
 	androidx("cardview", Versions.cardView)
@@ -85,11 +89,11 @@ dependencies {
 	compose("material3", version = Versions.material3Compose)
 	compose("runtime", name = "livedata")
 	compose("ui", name = "tooling")
-	accompanist("swiperefresh")
 	androidx("activity", "compose", Versions.activityCompose)
 	androidx("constraintlayout", "compose", Versions.constraintLayoutCompose)
 	androidx("lifecycle", "viewmodel-compose", Versions.lifecycleViewModelCompose)
 	androidx("navigation", "compose", Versions.navigationKtx)
+	accompanist("swiperefresh")
 	
 	implementation("com.google.android.material", "material", Versions.material)
 	
@@ -104,7 +108,4 @@ dependencies {
 	okHttp("logging-interceptor", Versions.okHttp)
 	retrofit("converter-gson", Versions.retrofit)
 	retrofit(Versions.retrofit)
-	
-	implementation("com.google.dagger", "hilt-android", Versions.hilt)
-	kapt("com.google.dagger", "hilt-android-compiler", Versions.hilt)
 }

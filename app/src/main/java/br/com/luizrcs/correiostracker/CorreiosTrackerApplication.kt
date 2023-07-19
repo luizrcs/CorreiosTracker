@@ -1,15 +1,14 @@
 package br.com.luizrcs.correiostracker
 
 import android.app.*
+import android.content.*
 import android.content.Context.*
-import android.content.SharedPreferences
 import br.com.luizrcs.correiostracker.Preferences.Type.*
 import dagger.hilt.android.*
 import kotlin.reflect.*
 
 @HiltAndroidApp
 class CorreiosTrackerApplication: Application() {
-	
 	override fun onCreate() {
 		super.onCreate()
 		instance = this
@@ -29,6 +28,7 @@ object Preferences {
 	
 	private inline fun <reified T> preference(default: T? = null) = Preference(default, Type.get<T>())
 	
+	@Suppress("IMPLICIT_CAST_TO_ANY", "UNCHECKED_CAST")
 	private fun <T> SharedPreferences.get(key: String, type: Type) = if (contains(key)) when (type) {
 		STRING     -> getString(key, null)
 		STRING_SET -> getStringSet(key, null)
@@ -38,6 +38,7 @@ object Preferences {
 		BOOLEAN    -> getBoolean(key, false)
 	} as T? else null
 	
+	@Suppress("UNCHECKED_CAST")
 	private fun <T> SharedPreferences.set(key: String, value: T, type: Type) = when (type) {
 		STRING     -> edit().putString(key, value as String).apply()
 		STRING_SET -> edit().putStringSet(key, value as Set<String>).apply()
@@ -47,8 +48,7 @@ object Preferences {
 		BOOLEAN    -> edit().putBoolean(key, value as Boolean).apply()
 	}
 	
-	class Preference<T>(val default: T?, private val type: Type) {
-		
+	class Preference<T>(private val default: T?, private val type: Type) {
 		private var value: T? = null
 		private var initialized = false
 		

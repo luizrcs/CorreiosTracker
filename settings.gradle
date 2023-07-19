@@ -1,3 +1,10 @@
-rootProject.name = "Correios Tracker"
+pluginManagement {
+	repositories {
+		google()
+		mavenCentral()
+		gradlePluginPortal()
+	}
+}
 
+rootProject.name = "Correios Tracker"
 include ':app'

@@ -7,9 +7,6 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*
 import androidx.compose.foundation.text.*
-import androidx.compose.material.icons.*
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.*
@@ -44,31 +41,31 @@ sealed class MainScreen(
 	// content,
 	navigationBarItemDescriptor
 ) {
-	object InTransit: MainScreen(
+	data object InTransit: MainScreen(
 		route = "inTransit",
 		navigationBarItemDescriptor = NavigationBarItemDescriptor(
-			iconActive = Icons.Filled.LocalShipping,
-			iconInactive = Icons.Outlined.LocalShipping,
+			iconActive = R.drawable.local_shipping_filled_24,
+			iconInactive = R.drawable.local_shipping_outlined_24,
 			label = R.string.mainNavigationBarItemInTransit
 		),
 		// content = { navController -> InTransitScreen(navController = navController) }
 	)
 	
-	object Finished: MainScreen(
+	data object Finished: MainScreen(
 		route = "finished",
 		navigationBarItemDescriptor = NavigationBarItemDescriptor(
-			iconActive = Icons.Filled.CheckCircle,
-			iconInactive = Icons.Outlined.CheckCircle,
+			iconActive = R.drawable.check_circle_filled_24,
+			iconInactive = R.drawable.check_circle_outlined_24,
 			label = R.string.mainNavigationBarItemFinished
 		),
 		// content = { navController -> FinishedScreen(navController = navController) }
 	)
 	
-	object Tools: MainScreen(
+	data object Tools: MainScreen(
 		route = "tools",
 		navigationBarItemDescriptor = NavigationBarItemDescriptor(
-			iconActive = Icons.Filled.Handyman,
-			iconInactive = Icons.Outlined.Handyman,
+			iconActive = R.drawable.handyman_filled_24,
+			iconInactive = R.drawable.handyman_outlined_24,
 			label = R.string.mainNavigationBarItemTools
 		),
 		// content = { navController -> ToolsScreen(navController = navController) }
@@ -158,6 +155,7 @@ fun MainScaffold(
 	}
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainTopAppBar() {
 	val useDynamicColors = useDynamicColors()
@@ -200,9 +198,11 @@ fun MainExtendedFloatingActionButton(
 		enter = slideInHorizontally(initialOffsetX = offsetX),
 		exit = slideOutHorizontally(targetOffsetX = offsetX),
 	) {
+		val mainExtendedFloatingActionButtonAdd = stringResource(R.string.mainExtendedFloatingActionButtonAdd)
+		
 		ExtendedFloatingActionButton(
-			text = { Text(text = stringResource(id = R.string.mainExtendedFloatingActionButtonAdd)) },
-			icon = { Icon(Icons.Filled.Add) },
+			text = { Text(mainExtendedFloatingActionButtonAdd) },
+			icon = { Icon(painterResource(R.drawable.add_outlined_24), contentDescription = mainExtendedFloatingActionButtonAdd) },
 			onClick = onClick,
 			// containerColor = correiosTrackerColorScheme().primary,
 			// contentColor = correiosTrackerColorScheme().onPrimary,
@@ -230,7 +230,7 @@ fun MainNavigationBar(
 		mainScreens.forEach { screen ->
 			// val (route, _, itemDescriptor) = screen
 			val (route, itemDescriptor) = screen
-			val (iconActive, iconInactive, label) = itemDescriptor
+			val (iconActive, iconInactive, labelResource) = itemDescriptor
 			
 			val isActive = navBackStackEntry?.isInHierarchy(screen.route) == true
 			val setActive = {
@@ -251,9 +251,16 @@ fun MainNavigationBar(
 					unselectedTextColor = colorScheme.onTertiaryContainer,
 				)
 			
+			val label = stringResource(labelResource)
+			
 			NavigationBarItem(
-				icon = { Icon(if (isActive) iconActive else iconInactive) },
-				label = { Text(stringResource(label)) },
+				icon = {
+					Icon(
+						painterResource(if (isActive) iconActive else iconInactive),
+						contentDescription = label,
+					)
+				},
+				label = { Text(label) },
 				selected = isActive,
 				onClick = setActive,
 				colors = navigationBarItemColors,
@@ -262,6 +269,7 @@ fun MainNavigationBar(
 	}
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainParcelDialog(
 	openDialog: Boolean,
@@ -360,7 +368,8 @@ fun MainParcelDialog(
 							},
 						) {
 							Icon(
-								imageVector = Icons.Outlined.Delete,
+								painterResource(R.drawable.delete_outlined_24),
+								contentDescription = null,
 								modifier = Modifier.size(iconSize),
 							)
 						}
@@ -368,16 +377,20 @@ fun MainParcelDialog(
 					
 					val contentColor = if (!darkTheme) colorScheme.secondary else colorScheme.onSurface
 					
-					val textFieldColors = if (useDynamicColors) TextFieldDefaults.textFieldColors(
-						containerColor = Color.Transparent,
-					) else TextFieldDefaults.textFieldColors(
-						containerColor = Color.Transparent,
+					val textFieldColors = if (useDynamicColors) TextFieldDefaults.colors(
+						focusedContainerColor = Color.Transparent,
+						unfocusedContainerColor = Color.Transparent,
+						disabledContainerColor = Color.Transparent,
+					) else TextFieldDefaults.colors(
+						focusedContainerColor = Color.Transparent,
+						unfocusedContainerColor = Color.Transparent,
+						disabledContainerColor = Color.Transparent,
 						cursorColor = contentColor,
 						focusedLeadingIconColor = contentColor,
-						focusedLabelColor = contentColor,
 						unfocusedLeadingIconColor = colorScheme.onSurfaceVariant,
-						unfocusedLabelColor = colorScheme.onSurfaceVariant,
 						errorLeadingIconColor = colorScheme.error,
+						focusedLabelColor = contentColor,
+						unfocusedLabelColor = colorScheme.onSurfaceVariant,
 					)
 					
 					val keyboardActions = KeyboardActions(
@@ -397,7 +410,7 @@ fun MainParcelDialog(
 							value = name,
 							onValueChange = { name = it },
 							label = { Text(stringResource(R.string.dialogParcelName)) },
-							leadingIcon = { Icon(Icons.Outlined.Edit) },
+							leadingIcon = { Icon(painterResource(R.drawable.edit_outlined_24), contentDescription = null) },
 							keyboardOptions = KeyboardOptions(imeAction = if (editParcel) ImeAction.Done else ImeAction.Next),
 							keyboardActions = keyboardActions,
 							singleLine = true,
@@ -412,7 +425,8 @@ fun MainParcelDialog(
 								modifier = Modifier.padding(top = 4.dp),
 							) {
 								Icon(
-									imageVector = Icons.Outlined.Error,
+									painterResource(R.drawable.error_filled_24),
+									contentDescription = null,
 									modifier = Modifier.size(16.dp),
 									tint = colorScheme.error,
 								)
@@ -446,7 +460,7 @@ fun MainParcelDialog(
 									maxLines = 1,
 								)
 							},
-							leadingIcon = { Icon(Icons.Outlined.QrCode) },
+							leadingIcon = { Icon(painterResource(R.drawable.qr_code_outlined_24), contentDescription = null) },
 							keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
 							keyboardActions = keyboardActions,
 							singleLine = true,
@@ -462,7 +476,8 @@ fun MainParcelDialog(
 								modifier = Modifier.padding(top = 4.dp),
 							) {
 								Icon(
-									imageVector = Icons.Outlined.Error,
+									painterResource(R.drawable.error_filled_24),
+									contentDescription = null,
 									modifier = Modifier.size(16.dp),
 									tint = colorScheme.error,
 								)
@@ -493,7 +508,8 @@ fun MainParcelDialog(
 							},
 						) {
 							Icon(
-								imageVector = Icons.Outlined.ContentCopy,
+								painterResource(R.drawable.content_copy_outlined_24),
+								contentDescription = null,
 								modifier = Modifier.size(iconSize),
 							)
 						}
